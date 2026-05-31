@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme {
+  --font-family-nunito: 'Nunito', sans-serif;
+}
+
+body {
+    @apply bg-mist-50
+    /*background-color: bg-mist-50;*/
+}
