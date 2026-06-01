@@ -1,4 +1,5 @@
 import {BookOpen, Plus} from "lucide-react";
+import {useBookModalStore} from "@/components/dialog/bookModal.ts";
 
 export default function Header() {
     return (
@@ -11,7 +12,8 @@ export default function Header() {
                 <button className={"text-xl hover:underline hover:scale-105 hover:text-gray-900/90 transition-all duration-300"}>
                     Library
                 </button>
-                <button className={"flex flex-row bg-transparent items-center gap-2 px-4 py-1 border-2 rounded-4xl border-lime-600 text-green-700 group hover:bg-green-50 hover:scale-105 transition-all duration-300 cursor-pointer"}>
+                <button className={"flex flex-row bg-transparent items-center gap-2 px-4 py-1 border-2 rounded-4xl border-lime-600 text-green-700 group hover:bg-green-50 hover:scale-105 transition-all duration-300 cursor-pointer"}
+                    onClick={() => useBookModalStore.getState().open()}>
                     <div className={"group-hover:rotate-180 transition-transform duration-300"}>
                         <Plus/>
                     </div>

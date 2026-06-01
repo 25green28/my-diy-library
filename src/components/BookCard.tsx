@@ -1,7 +1,10 @@
+import {useBookModalStore} from "@/components/dialog/bookModal.ts";
+
 export default function BookCard({title, author, category, year}: {title:string, author:string, category:string, year:number}) {
 
     return (
-        <button className={"flex flex-col justify-center items-start bg-white rounded-2xl w-fit pb-4 hover:bg-gray-100 shadow-2xl group hover:scale-105 transition-transform duration-300 cursor-pointer"}>
+        <button className={"flex flex-col justify-center items-start bg-white rounded-2xl w-fit pb-4 hover:bg-gray-100 shadow-2xl group hover:scale-105 transition-transform duration-300 cursor-pointer"}
+        onClick={() => {useBookModalStore.getState().open()}}>
             <div className={"w-60 h-80 bg-blue-300 rounded-t-2xl group-hover:bg-blue-900/80 transition-colors duration-300"}>
 
             </div>
