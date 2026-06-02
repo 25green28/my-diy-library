@@ -23,11 +23,15 @@ import {useBookModalStore} from "@/components/dialog/bookModal.ts";
 import {Input} from "@/components/ui/input.tsx";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
+import {BOOK_GENRES} from "@/assets/bookGeneres.ts";
 
 export default function BookDialog() {
-    const { isOpen, close } = useBookModalStore();
+    const { isOpen, close, payload } = useBookModalStore();
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+    const isEditMode = payload?.mode === "edit";
+    const bookToEdit = payload?.mode === "edit" ? payload.book : undefined;
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -100,6 +104,7 @@ export default function BookDialog() {
                         <Input
                             id={"bookTitle"}
                             placeholder="Programming in Python"
+                            defaultValue={bookToEdit?.title}
                             required={true}
                         />
                     </Field>
@@ -110,6 +115,7 @@ export default function BookDialog() {
                         <Input
                             id={"bookAuthor"}
                             placeholder="Mateusz Laski"
+                            defaultValue={bookToEdit?.author}
                             required={true}
                         />
                     </Field>
@@ -118,63 +124,31 @@ export default function BookDialog() {
                             <FieldLabel htmlFor={"bookGenre"}>
                                 Book Genre
                             </FieldLabel>
-                            <Select defaultValue="">
+                            <Select defaultValue={bookToEdit?.genre}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select a genre"/>
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="fantasy">Fantasy</SelectItem>
-                                    <SelectItem value="science-fiction">Science Fiction</SelectItem>
-                                    <SelectItem value="mystery">Mystery</SelectItem>
-                                    <SelectItem value="thriller">Thriller</SelectItem>
-                                    <SelectItem value="horror">Horror</SelectItem>
-                                    <SelectItem value="romance">Romance</SelectItem>
-                                    <SelectItem value="historical-fiction">Historical Fiction</SelectItem>
-                                    <SelectItem value="adventure">Adventure</SelectItem>
-                                    <SelectItem value="action">Action</SelectItem>
-                                    <SelectItem value="contemporary-fiction">Contemporary Fiction</SelectItem>
-                                    <SelectItem value="literary-fiction">Literary Fiction</SelectItem>
-                                    <SelectItem value="young-adult">Young Adult (YA)</SelectItem>
-                                    <SelectItem value="childrens-fiction">Children's Fiction</SelectItem>
-                                    <SelectItem value="graphic-novels-comics">Graphic Novels & Comics</SelectItem>
-                                    <SelectItem value="dystopian">Dystopian</SelectItem>
-                                    <SelectItem value="paranormal">Paranormal</SelectItem>
-
-                                    <SelectItem value="biography">Biography</SelectItem>
-                                    <SelectItem value="autobiography">Autobiography</SelectItem>
-                                    <SelectItem value="memoir">Memoir</SelectItem>
-                                    <SelectItem value="history">History</SelectItem>
-                                    <SelectItem value="science">Science</SelectItem>
-                                    <SelectItem value="technology">Technology</SelectItem>
-                                    <SelectItem value="business-economics">Business & Economics</SelectItem>
-                                    <SelectItem value="self-help">Self-Help</SelectItem>
-                                    <SelectItem value="psychology">Psychology</SelectItem>
-                                    <SelectItem value="philosophy">Philosophy</SelectItem>
-                                    <SelectItem value="politics">Politics</SelectItem>
-                                    <SelectItem value="religion-spirituality">Religion & Spirituality</SelectItem>
-                                    <SelectItem value="health-fitness">Health & Fitness</SelectItem>
-                                    <SelectItem value="travel">Travel</SelectItem>
-                                    <SelectItem value="true-crime">True Crime</SelectItem>
-                                    <SelectItem value="education">Education</SelectItem>
-                                    <SelectItem value="arts-culture">Arts & Culture</SelectItem>
-                                    <SelectItem value="cooking-food">Cooking & Food</SelectItem>
-
-                                    <SelectItem value="poetry">Poetry</SelectItem>
-                                    <SelectItem value="drama-plays">Drama & Plays</SelectItem>
-                                    <SelectItem value="essays">Essays</SelectItem>
-                                    <SelectItem value="short-stories">Short Stories</SelectItem>
-                                    <SelectItem value="anthology">Anthology</SelectItem>
-                                    <SelectItem value="reference">Reference</SelectItem>
+                                    {BOOK_GENRES.map((genre) => (
+                                        <SelectItem key={genre.value} value={genre.value}>
+                                            {genre.label}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </Field>
                         <Field className={"flex-1"}>
                             <FieldLabel htmlFor={"bookYear"}>Year</FieldLabel>
-                            <Input id={"bookYear"} placeholder="2026" required/>
+                            <Input
+                                id={"bookYear"}
+                                placeholder="2026"
+                                required
+                                defaultValue={bookToEdit?.year}
+                            />
                         </Field>
                     </div>
                     <div className={"flex flex-row gap-2"}>
-                        <Button className={"flex-2"} type={"submit"}>Create</Button>
+                        <Button className={"flex-2"} type={"submit"}>{isEditMode ? "Update" : "Create"}</Button>
                         <Button className={"flex-1"}>Cancel</Button>
                     </div>
                 </FieldGroup>
