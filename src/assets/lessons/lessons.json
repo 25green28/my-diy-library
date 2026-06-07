@@ -8,7 +8,32 @@
         {
           "id": 0,
           "title": "Hello World",
-          "path": "/src/assets/lessons/lessons/first-app/hello-world.md"
+          "path": "/src/assets/lessons/lessons/first-app/hello-world.md",
+          "tests": [
+            {
+              "id": 0,
+              "name": "Check ping",
+              "url": "/api/ping",
+              "method": "GET",
+              "expectedStatus": 200,
+              "expectedBody": "{\"status\":\"ok\"}"
+            }, {
+              "id": 1,
+              "name": "Check non existing endpoint",
+              "url": "/api/",
+              "method": "GET",
+              "expectedStatus": 403,
+              "hint": "This endpoint should not exist"
+            },
+            {
+              "id": 2,
+              "name": "Check ping again",
+              "url": "/api/ping",
+              "method": "GET",
+              "expectedStatus": 200,
+              "expectedBody": "{\"status\":\"ok\"}"
+            }
+          ]
         }, {
           "id": 1,
           "title": "Python installation",

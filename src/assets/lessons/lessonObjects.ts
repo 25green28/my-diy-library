@@ -10,7 +10,18 @@ export type category = {
 export type lesson = {
     id: number,
     title: string,
-    path: string
+    path: string,
+    tests?: lessonTest[]
+}
+
+export type lessonTest = {
+    id: number,
+    name: string,
+    url: string,
+    method: string,
+    expectedStatus: number,
+    expectedBody?: string,
+    hint?: string
 }
 
 export type currentLesson = {
