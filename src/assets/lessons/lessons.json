@@ -1,0 +1,41 @@
+{
+  "categories": [
+    {
+      "id": 0,
+      "title": "First application",
+      "icon": "code",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Hello World",
+          "path": "/src/assets/lessons/lessons/first-app/hello-world.md"
+        }, {
+          "id": 1,
+          "title": "Python installation",
+          "path": "/src/assets/lessons/lessons/first-app/python-installation.md"
+        }
+      ]
+    },
+    {
+
+      "id": 1,
+      "title": "Python",
+      "icon": "file-braces",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Python introduction",
+          "path": "/src/assets/lessons/lessons/python/introduction.md"
+        }, {
+          "id": 1,
+          "title": "What is flask",
+          "path": "/src/assets/lessons/lessons/python/what-is-flask.md"
+        }, {
+          "id": 2,
+          "title": "What is python",
+          "path": "/src/assets/lessons/lessons/python/what-is-python.md"
+        }
+      ]
+    }
+  ]
+}
