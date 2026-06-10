@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronRight } from "lucide-react"
 
 import {
@@ -34,6 +34,13 @@ export function NavMain({
     currentLesson: currentLesson | undefined
 }) {
     const [openCategories, setOpenCategories] = useState<Set<number>>(new Set())
+
+    // Automatically update open categories when current lesson changes
+    useEffect(() => {
+        if (currentLesson !== undefined) {
+            setOpenCategories(new Set([currentLesson.parentCategory]))
+        }
+    }, [currentLesson])
 
     const isCategoryOpen = (categoryId: number) => {
         if (currentLesson?.parentCategory === categoryId) return true
@@ -79,7 +86,7 @@ export function NavMain({
                                         <SidebarMenuSubItem key={subItem.title}>
                                             <SidebarMenuSubButton asChild isActive={currentLesson?.parentCategory === item.id && currentLesson?.data.id === subItem.id}>
                                                 <button onClick={() => setLesson(item.id, subItem.id)}>
-                                                    {subItem.title}
+                                                    <span className={"truncate"}>{subItem.title}</span>
                                                 </button>
                                             </SidebarMenuSubButton>
                                         </SidebarMenuSubItem>
