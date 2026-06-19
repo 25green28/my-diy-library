@@ -221,6 +221,43 @@
     },
     {
       "id": 12,
+      "title": "Image Uploads",
+      "icon": "image",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Adding image support to the Book model",
+          "path": "/src/assets/lessons/lessons/image-uploads/adding-image-support.md"
+        },
+        {
+          "id": 1,
+          "title": "Uploading images when creating books",
+          "path": "/src/assets/lessons/lessons/image-uploads/handling-image-uploads.md"
+        },
+        {
+          "id": 2,
+          "title": "Serving images via a new route",
+          "path": "/src/assets/lessons/lessons/image-uploads/serving-images.md"
+        },
+        {
+          "id": 3,
+          "title": "Replacing book images",
+          "path": "/src/assets/lessons/lessons/image-uploads/updating-images.md"
+        },
+        {
+          "id": 4,
+          "title": "Deleting images when deleting books",
+          "path": "/src/assets/lessons/lessons/image-uploads/deleting-images.md"
+        },
+        {
+          "id": 5,
+          "title": "How image uploads work",
+          "path": "/src/assets/lessons/lessons/image-uploads/how-image-uploads-work.md"
+        }
+      ]
+    },
+    {
+      "id": 13,
       "title": "Conclusion",
       "icon": "party-popper",
       "lessons": [
