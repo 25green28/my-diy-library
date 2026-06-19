@@ -2,63 +2,232 @@
   "categories": [
     {
       "id": 0,
-      "title": "First application",
-      "icon": "code",
+      "title": "Welcome on the board",
+      "icon": "book-check",
       "lessons": [
         {
           "id": 0,
-          "title": "Hello World",
-          "path": "/src/assets/lessons/lessons/first-app/hello-world.md",
-          "tests": [
-            {
-              "id": 0,
-              "name": "Check ping",
-              "url": "/api/ping",
-              "method": "GET",
-              "expectedStatus": 200,
-              "expectedBody": "{\"status\":\"ok\"}"
-            }, {
-              "id": 1,
-              "name": "Check non existing endpoint",
-              "url": "/api/",
-              "method": "GET",
-              "expectedStatus": 403,
-              "hint": "This endpoint should not exist"
-            },
-            {
-              "id": 2,
-              "name": "Check ping again",
-              "url": "/api/ping",
-              "method": "GET",
-              "expectedStatus": 200,
-              "expectedBody": "{\"status\":\"ok\"}"
-            }
-          ]
-        }, {
-          "id": 1,
-          "title": "Python installation",
-          "path": "/src/assets/lessons/lessons/first-app/python-installation.md"
+          "title": "About this project & me",
+          "path": "/src/assets/lessons/lessons/welcome-on-the-board/about-this-project.md"
         }
       ]
     },
     {
-
       "id": 1,
-      "title": "Python",
-      "icon": "file-braces",
+      "title": "Project Setup",
+      "icon": "bolt",
       "lessons": [
         {
           "id": 0,
-          "title": "Python introduction",
-          "path": "/src/assets/lessons/lessons/python/introduction.md"
-        }, {
+          "title": "Installing Python",
+          "path": "/src/assets/lessons/lessons/project-setup/installing-python.md"
+        },
+        {
           "id": 1,
-          "title": "What is flask",
-          "path": "/src/assets/lessons/lessons/python/what-is-flask.md"
-        }, {
+          "title": "Creating a virtual environment",
+          "path": "/src/assets/lessons/lessons/project-setup/creating-a-virtual-environment.md"
+        },
+        {
           "id": 2,
-          "title": "What is python",
-          "path": "/src/assets/lessons/lessons/python/what-is-python.md"
+          "title": "Installing Flask",
+          "path": "/src/assets/lessons/lessons/project-setup/installing-flask.md"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Backend Fundamentals",
+      "icon": "cloud",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "What is a backend?",
+          "path": "/src/assets/lessons/lessons/backend-fundamentals/what-is-backend.md"
+        },
+        {
+          "id": 1,
+          "title": "Client vs server",
+          "path": "/src/assets/lessons/lessons/backend-fundamentals/client-vs-server.md"
+        },
+        {
+          "id": 2,
+          "title": "HTTP requests",
+          "path": "/src/assets/lessons/lessons/backend-fundamentals/http-requests.md"
+        },
+        {
+          "id": 3,
+          "title": "JSON",
+          "path": "/src/assets/lessons/lessons/backend-fundamentals/json.md"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Flask basics",
+      "icon": "code",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "What is Flask?",
+          "path": "/src/assets/lessons/lessons/flask-basics/what-is-flask.md"
+        },
+        {
+          "id": 1,
+          "title": "Running the development server",
+          "path": "/src/assets/lessons/lessons/flask-basics/running-the-development-server.md"
+        },
+        {
+          "id": 2,
+          "title": "More about routes",
+          "path": "/src/assets/lessons/lessons/flask-basics/more-about-routes.md"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Working with data and routes",
+      "icon": "file-text",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Route parameters",
+          "path": "/src/assets/lessons/lessons/working-with-data/route-parameters.md"
+        },
+        {
+          "id": 1,
+          "title": "Query parameters",
+          "path": "/src/assets/lessons/lessons/working-with-data/query-parameters.md"
+        },
+        {
+          "id": 2,
+          "title": "Returning JSON",
+          "path": "/src/assets/lessons/lessons/working-with-data/returning-json.md"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Databases",
+      "icon": "database",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "What is a database?",
+          "path": "/src/assets/lessons/lessons/databases/what-is-database.md"
+        },
+        {
+          "id": 1,
+          "title": "What is SQL?",
+          "path": "/src/assets/lessons/lessons/databases/what-is-sql.md"
+        },
+        {
+          "id": 2,
+          "title": "Database configuration",
+          "path": "/src/assets/lessons/lessons/databases/database-configuration.md"
+        },
+        {
+          "id": 3,
+          "title": "Creating the Book model",
+          "path": "/src/assets/lessons/lessons/databases/creating-the-book-model.md"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "POST requests",
+      "icon": "send",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Creating books (POST)",
+          "path": "/src/assets/lessons/lessons/post-requests/creating-books.md"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Reading data (GET)",
+      "icon": "hard-drive-upload",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Fetching a single book",
+          "path": "/src/assets/lessons/lessons/fetching-data/fetching-a-single-book.md"
+        },
+        {
+          "id": 1,
+          "title": "Fetching multiple books (GET)",
+          "path": "/src/assets/lessons/lessons/fetching-data/fetching-books.md"
+        },
+        {
+          "id": 2,
+          "title": "Searching for books",
+          "path": "/src/assets/lessons/lessons/fetching-data/searching-for-books.md"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Modifying data (PUT)",
+      "icon": "file-pen-line",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Updating a book (PUT)",
+          "path": "/src/assets/lessons/lessons/modifying-data/updating-a-book.md"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Data validation",
+      "icon": "globe-check",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Required fields",
+          "path": "/src/assets/lessons/lessons/data-validation/required-fields.md"
+        },
+        {
+          "id": 1,
+          "title": "Returning errors",
+          "path": "/src/assets/lessons/lessons/data-validation/returning-errors.md"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Deleting data",
+      "icon": "shredder",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Deleting a book (DELETE)",
+          "path": "/src/assets/lessons/lessons/deleting-data/deleting-a-book.md"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Testing (basics)",
+      "icon": "chart-network",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Using Postman",
+          "path": "/src/assets/lessons/lessons/testing-basics/using-postman.md"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Conclusion",
+      "icon": "party-popper",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Conclusion & Next Steps",
+          "path": "/src/assets/lessons/lessons/conclusion/conclusion.md"
         }
       ]
     }
