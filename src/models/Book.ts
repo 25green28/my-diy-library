@@ -2,6 +2,6 @@ export type Book = {
     id: string;
     title: string;
     author: string;
-    year: number;
+    published_year: number;
     genre: string;
 }

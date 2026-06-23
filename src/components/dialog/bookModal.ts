@@ -8,23 +8,30 @@ type BookDialogPayload =
 type BookModalState = {
     isOpen: boolean;
     payload?: BookDialogPayload;
+    onBookCreated?: (book: Book) => void;
+    onBookUpdated?: (book: Book) => void;
 
-    open: (payload: BookDialogPayload) => void;
+    open: (payload: BookDialogPayload, onBookCreated?: (book: Book) => void, onBookUpdated?: (book: Book) => void) => void;
     close: () => void;
 };
 
 export const useBookModalStore = create<BookModalState>((set) => ({
     isOpen: false,
     payload: undefined,
+    onBookCreated: undefined,
+    onBookUpdated: undefined,
 
-    open: (payload) =>
+    open: (payload, onBookCreated, onBookUpdated) =>
         set({
-            isOpen: true ,
-            payload
+            isOpen: true,
+            payload,
+            onBookCreated,
+            onBookUpdated
         }),
     close: () =>
         set({
             isOpen: false,
-            payload: undefined
+            onBookCreated: undefined,
+            onBookUpdated: undefined
         }),
 }));

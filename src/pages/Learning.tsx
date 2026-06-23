@@ -254,10 +254,16 @@ export default function Learning() {
                         ) : (
                             <ReactMarkdown
                                 components={{
-                                    h1: ({ node, ...props }) => <h1 {...props} className="text-2xl text-center font-bold leading-8" />,
-                                    h2: ({ node, ...props }) => <h2 {...props} className="text-xl font-bold leading-8" />,
-                                    h3: ({ node, ...props }) => <h3 {...props} className="text-lg font-bold leading-8" />,
-                                    p: ({ node, ...props }) => <p {...props} className="text-base leading-8" />,
+                                    h1: ({ node, ...props }) => <h1 {...props} className="text-3xl font-bold mb-6 mt-8" />,
+                                    h2: ({ node, ...props }) => <h2 {...props} className="text-2xl font-bold mb-4 mt-6" />,
+                                    h3: ({ node, ...props }) => <h3 {...props} className="text-xl font-bold mb-3 mt-4" />,
+                                    p: ({ node, ...props }) => <p {...props} className="text-base leading-relaxed mb-4" />,
+                                    ul: ({ node, ...props }) => <ul {...props} className="list-disc list-inside mb-4 space-y-2" />,
+                                    ol: ({ node, ...props }) => <ol {...props} className="list-decimal list-inside mb-4 space-y-2" />,
+                                    li: ({ node, ...props }) => <li {...props} className="text-base leading-relaxed" />,
+                                    strong: ({ node, ...props }) => <strong {...props} className="font-semibold" />,
+                                    blockquote: ({ node, ...props }) => <blockquote {...props} className="border-l-4 border-gray-300 pl-4 py-2 mb-4 bg-gray-100" />,
+                                    a: ({ node, ...props }) => <a {...props} className="text-blue-500 hover:underline" />,
                                     code(props) {
                                         const { node, className, children, ...rest } = props;
                                         const match = /language-(\w+)/.exec(className || '');
