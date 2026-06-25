@@ -24,6 +24,7 @@ Let's add validation to our POST endpoint (by modifying the existing one) to ens
 def create_book():
     data = request.get_json()
 
+    # Validate that data is provided
     if not data:
         return jsonify({'error': 'No data provided'}), 400
 
@@ -33,6 +34,7 @@ def create_book():
     if 'author' not in data:
         return jsonify({'error': 'Author is required'}), 400
 
+    # Create a new book from the request data
     new_book = Book(
         title=data['title'],
         author=data['author'],
@@ -40,9 +42,11 @@ def create_book():
         published_year=data.get('published_year')
     )
 
+    # Add the new book to the database
     db.session.add(new_book)
     db.session.commit()
-
+    
+    # Return the created book with a 201 status code
     return jsonify(book_to_dict(new_book)), 201
 ```
 
@@ -99,7 +103,7 @@ For example:
 }
 ```
 
-We can check whether the value is a number (please replate the current validation of published_year with the following one):
+We can check whether the value is a number (please add this validation of published_year bellow the validation of title and author):
 
 ```python
 if 'published_year' in data:

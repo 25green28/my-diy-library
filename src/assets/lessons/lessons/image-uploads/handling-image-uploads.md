@@ -67,6 +67,7 @@ Remove it completely.
 Replace it with:
 
 ```python
+# Get form data
 title = request.form.get('title')
 author = request.form.get('author')
 genre = request.form.get('genre')
@@ -88,15 +89,28 @@ Replace your old validation:
 
 ```python
 if not data:
-    return error_response('No data provided', 400)
+    return error_response(
+        'No data provided',
+        400
+    )
 
-if 'title' not in data or 'author' not in data:
-    return error_response('Title and author are required', 400)
+if not data['title'].strip():
+    return error_response(
+        'Title cannot be empty',
+        400
+    )
+
+if not data['author'].strip():
+    return error_response(
+        'Author cannot be empty',
+        400
+    )
 ```
 
 with:
 
 ```python
+# Validate required fields
 if not title or not author:
     return error_response(
         'Title and author are required',
@@ -108,11 +122,12 @@ if not title or not author:
 
 ### Step 3: Save the uploaded image
 
-Before creating the book, add:
+Before validating `published_year` of the book (`if 'published_year' in data:`), add:
 
 ```python
 filename = None
 
+# Save the uploaded image (if present)
 if image:
     filename = secure_filename(image.filename)
 
@@ -169,9 +184,10 @@ This stores the uploaded image name inside the database.
 
 ### Step 5: Convert the year to a number
 
-Before creating the book, add:
+Before creating the book, replace the current validation of `published_year` with the following one:
 
 ```python
+# Validate published year
 if published_year:
     try:
         published_year = int(published_year)
@@ -195,6 +211,7 @@ After all modifications, your route should look like:
 @app.route('/api/books', methods=['POST'])
 def create_book():
 
+    # Get form data
     title = request.form.get('title')
     author = request.form.get('author')
     genre = request.form.get('genre')
@@ -202,6 +219,7 @@ def create_book():
 
     image = request.files.get('image')
 
+    # Validate required fields
     if not title or not author:
         return error_response(
             'Title and author are required',
@@ -210,6 +228,7 @@ def create_book():
 
     filename = None
 
+    # Save the uploaded image (if present)
     if image:
         filename = secure_filename(image.filename)
 
@@ -220,6 +239,7 @@ def create_book():
             )
         )
 
+    # Validate published year
     if published_year:
         try:
             published_year = int(published_year)
@@ -230,6 +250,7 @@ def create_book():
                 400
             )
 
+    # Create a new book from the request data
     new_book = Book(
         title=title,
         author=author,
@@ -239,11 +260,19 @@ def create_book():
     )
 
     db.session.add(new_book)
-    db.session.commit()
 
-    return jsonify(
-        book_to_dict(new_book)
-    ), 201
+    try:
+        db.session.commit()
+
+    except Exception:
+        db.session.rollback()
+
+        return error_response(
+            'Internal server error',
+            500
+        )
+
+    return jsonify(book_to_dict(new_book)), 201
 ```
 
 ---

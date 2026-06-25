@@ -6,9 +6,10 @@ A model is a Python class that represents a database table. Instead of writing S
 
 ## Define the Book model
 
-Add this to your `app.py` file:
+Add this to your `app.py` file (after the initialization of SQLAlchemy):
 
 ```python
+# Book model
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -16,11 +17,12 @@ class Book(db.Model):
     genre = db.Column(db.String(50))
     published_year = db.Column(db.Integer)
 
+    # Return a readable output
     def __repr__(self):
         return f'<Book {self.title}>'
 ```
 
-And make sure your database is created when you run the app:
+And make sure your database is created when you run the app (if not replace the current `if __name__ == '__main__':` block with the following):
 
 ```python
 if __name__ == '__main__':

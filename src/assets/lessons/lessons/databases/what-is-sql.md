@@ -2,6 +2,8 @@
 
 SQL (**S**tructured **Q**uery **L**anguage) is the standard language used to interact with relational databases. It's how developers tell a database what data they want to retrieve, create, update, or delete.
 
+---
+
 ## What does SQL do?
 
 SQL allows you to:
@@ -28,8 +30,6 @@ SELECT title, author FROM books;
 SELECT * FROM books WHERE year = 1949;
 ```
 
----
-
 ## INSERT - Add data
 
 This adds a new record:
@@ -38,8 +38,6 @@ This adds a new record:
 INSERT INTO books (title, author, year)
 VALUES ('1984', 'George Orwell', 1949);
 ```
-
----
 
 ## UPDATE - Modify data
 
@@ -50,8 +48,6 @@ UPDATE books
 SET year = 1950
 WHERE id = 1;
 ```
-
----
 
 ## DELETE - Remove data
 

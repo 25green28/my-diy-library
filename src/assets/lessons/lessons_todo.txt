@@ -1,7 +1,0 @@
-TODO 1: Validate the JSON representation of book in backend-fundamentas/json.md
-TODO 2: Maybe a lessons about IDEs?
-TODO 3: Decide what to do with flask-basics/more-about-routes.md file? Remove it? It has the same context as working-with-data/(query-parameters.md/route-parameters.md)
-TODO 4: Lesson about query parameters is too boring and hard to understand
-TODO 5: database-configuration.md - specify if the user needs to remove all code written before or not?
-TODO 6: create-books.md - is the line 12 "from flask import request, jsonify" necessary?
-TODO 7: updating-a-book.md mentions Postman that wasn't explained anywhere

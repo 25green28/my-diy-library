@@ -6,13 +6,13 @@ Query parameters are optional key-value pairs that appear in the URL after the `
 
 Query parameters are the part of the URL after the `?`. For example, in `/search?q=python`, the query parameter is `q=python`. Multiple parameters are separated by `&`: `/books?author=Orwell&year=1949`.
 
+---
+
 ## Basic usage
 
 Here's how to access query parameters in Flask:
 
 ```python
-from flask import request
-
 @app.route('/search')
 def search():
     query = request.args.get('q', '')
@@ -35,7 +35,9 @@ def get_books():
 
 Visiting `/books?author=Orwell&year=1949` would return "Author: Orwell, Year: 1949"
 
-### Think-first exercise
+---
+
+### Exercise
 
 Before looking at the solution, try to predict what this route returns:
 
@@ -79,6 +81,8 @@ def get_items():
 
 The `type=int` parameter automatically converts the string to an integer.
 
+---
+
 ## Multiple values for the same parameter
 
 Sometimes a parameter can have multiple values:
@@ -91,6 +95,8 @@ def get_tags():
 ```
 
 Visiting `/tags?tag=python&tag=flask` would return "Tags: ['python', 'flask']"
+
+---
 
 ## Checking if a parameter exists
 
@@ -118,16 +124,6 @@ def filter():
 ---
 
 ## Troubleshooting
-
-### `NameError: request is not defined`
-
-You forgot to import `request`.
-
-```python
-from flask import request
-```
-
----
 
 ### Parameter always returns `None`
 

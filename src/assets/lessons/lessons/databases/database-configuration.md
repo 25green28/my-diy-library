@@ -16,11 +16,12 @@ pip install flask-sqlalchemy
 
 ## Configure the database
 
-Open your `app.py` file and update it like this:
+Open your `app.py` file and replace its content with the following code:
 
 ```python
-from flask import Flask
+from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -34,6 +35,8 @@ db = SQLAlchemy(app)
 if __name__ == '__main__':
     app.run(debug=True)
 ```
+
+> **Info**: For simplicity, I've included all the necessary imports upfront, so you don't have to worry about adding them later.
 
 ---
 

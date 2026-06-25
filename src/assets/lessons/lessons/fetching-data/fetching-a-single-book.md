@@ -2,6 +2,8 @@
 
 Now let's create an endpoint to retrieve a specific book by its ID. This is a very common pattern in APIs — getting a single resource from the database.
 
+---
+
 ## The GET endpoint
 
 Add this route to your `app.py` (bellow the post rotue):
@@ -11,6 +13,7 @@ Add this route to your `app.py` (bellow the post rotue):
 def get_book(book_id):
     book = Book.query.get(book_id)
 
+    # Return the book data if found
     if book:
         return jsonify({
             'id': book.id,
@@ -20,6 +23,7 @@ def get_book(book_id):
             'published_year': book.published_year
         }), 200
 
+    # Return error if book not found
     return jsonify({'error': 'Book not found'}), 404
 ```
 
@@ -46,9 +50,11 @@ This tells SQLAlchemy:
 
 If no matching book exists, SQLAlchemy returns `None`.
 
+---
+
 ## Testing the endpoint
 
-After creating a few books, try opening:
+After creating a few books, try opening (in Postman or a browser):
 
 ```text
 http://127.0.0.1:5000/api/books/1
@@ -76,13 +82,16 @@ If the book does not exist:
 
 and the server will return status code `404`.
 
+---
+
 ## Creating a helper function
 
 As your project grows, you may notice that you repeat the same JSON structure in multiple routes.
 
-A helper function can make your code cleaner:
+A helper function can make your code cleaner (please put it between the model and the post route):
 
 ```python
+# Helper function to convert book into JSON
 def book_to_dict(book):
     return {
         'id': book.id,
@@ -100,9 +109,11 @@ Now the route becomes:
 def get_book(book_id):
     book = Book.query.get(book_id)
 
+    # Return the book data if found
     if book:
         return jsonify(book_to_dict(book)), 200
 
+    # Return error if book not found
     return jsonify({'error': 'Book not found'}), 404
 ```
 

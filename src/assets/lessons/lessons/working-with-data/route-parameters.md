@@ -1,20 +1,22 @@
 # Route parameters
 
-Route parameters let you capture variable parts of the URL and pass them to your function as arguments. This is essential for building APIs where you need to work with specific resources.
+Route parameters allow Flask to capture values directly from a URL and pass them to your Python functions.
 
-## Before we start
+They are essential when building APIs because they let you work with specific resources, such as individual books, users, or orders.
 
-Imagine you're building an API for a library.
+> **Tip:** You don't have to copy all examples from this lesson into your `app.py`. The examples are here to help you understand how route parameters work.
 
-How would the server know which book the user wants?
+## Why do we need route parameters?
 
-For example:
+Imagine you're building a library API.
 
-- Book 1
-- Book 15
-- Book 42
+A user might want to view:
 
-Creating a separate route for every book would be impossible:
+* Book 1
+* Book 15
+* Book 42
+
+Creating a separate route for every book would quickly become impossible:
 
 ```text
 /book/1
@@ -23,34 +25,97 @@ Creating a separate route for every book would be impossible:
 ...
 ```
 
-Instead, we use **route parameters** to make part of the URL dynamic.
+Instead, Flask allows part of the URL to be dynamic.
+
+For example:
+
+```python
+@app.route('/book/<book_id>')
+def get_book(book_id):
+    return f'Book ID: {book_id}'
+```
+
+Now the same route can handle:
+
+```text
+/book/1
+/book/15
+/book/42
+```
+
+Flask extracts the value from the URL and passes it to the function.
 
 ---
 
 ## Your first route parameter
 
-Try to complete the route below.
-
-What should replace the missing parts?
+A route parameter is written inside angle brackets:
 
 ```python
-@app.route('/user/<_____>')
-def user_profile(_____):
+@app.route('/user/<username>')
+def user_profile(username):
     return f'User: {username}'
 ```
 
-### Your task
-
-- Capture the username from the URL
-- Pass it into the function
-- Test it with a URL such as:
+If someone visits:
 
 ```text
 /user/john
 ```
 
+Flask captures:
+
+```text
+john
+```
+
+and passes it into:
+
+```python
+username
+```
+
+The response becomes:
+
+```text
+User: john
+```
+
+---
+
+## How Flask passes the value
+
+Notice that the parameter name appears twice:
+
+```python
+@app.route('/user/<username>')
+def user_profile(username):
+```
+
+The name inside the route:
+
+```python
+<username>
+```
+
+must match the function parameter:
+
+```python
+def user_profile(username):
+```
+
+Otherwise Flask won't know where to put the captured value.
+
+---
+
+## Try it yourself
+
+Create a route that captures a username and displays it.
+
+Try writing it before opening the solution.
+
 <details>
-<summary>Show solution</summary>
+<summary>Solution</summary>
 
 ```python
 @app.route('/user/<username>')
@@ -64,9 +129,46 @@ def user_profile(username):
 
 ## Type converters
 
-Flask can automatically convert URL parameters to specific Python types.
+By default, route parameters are treated as text.
 
-Try to complete the route below so that `post_id` becomes an integer.
+However, Flask can automatically convert them into specific Python types.
+
+Example:
+
+```python
+@app.route('/post/<int:post_id>')
+def show_post(post_id):
+    return f'Post ID: {post_id}'
+```
+
+Now Flask only accepts numbers:
+
+```text
+/post/42
+```
+
+works, while:
+
+```text
+/post/hello
+```
+
+does not.
+
+### Available converters
+
+| Converter        | Description            |
+| ---------------- | ---------------------- |
+| `<int:id>`       | Integer                |
+| `<float:value>`  | Decimal number         |
+| `<string:name>`  | Text (default)         |
+| `<path:subpath>` | Text including slashes |
+
+---
+
+## Try it yourself
+
+What should replace the blank?
 
 ```python
 @app.route('/post/<_____:post_id>')
@@ -75,7 +177,7 @@ def show_post(post_id):
 ```
 
 <details>
-<summary>Show solution</summary>
+<summary>Solution</summary>
 
 ```python
 @app.route('/post/<int:post_id>')
@@ -85,26 +187,13 @@ def show_post(post_id):
 
 </details>
 
-### Available converters
-
-- `<int:id>` → integer
-- `<float:value>` → decimal number
-- `<string:name>` → text (default)
-- `<path:subpath>` → text including slashes
-
 ---
 
 ## Multiple parameters
 
-Sometimes you need more than one piece of information.
+Routes can capture more than one value.
 
-Can you identify what values Flask will capture from this URL?
-
-```text
-/user/john/post/42
-```
-
-Now look at the route:
+Example:
 
 ```python
 @app.route('/user/<username>/post/<int:post_id>')
@@ -112,28 +201,32 @@ def show_user_post(username, post_id):
     return f"{username}'s post #{post_id}"
 ```
 
-Flask will capture:
+Visiting:
 
-- `username` → `john`
-- `post_id` → `42`
+```text
+/user/john/post/42
+```
+
+captures:
+
+```text
+username = john
+post_id = 42
+```
+
+and returns:
+
+```text
+john's post #42
+```
 
 ---
 
 ## Optional parameters
 
-Sometimes you want a route to work with or without a parameter.
+Sometimes a route should work both with and without a parameter.
 
-Try to understand what happens when someone visits:
-
-```text
-/page
-```
-
-and:
-
-```text
-/page/5
-```
+Example:
 
 ```python
 @app.route('/page')
@@ -142,16 +235,7 @@ def show_page(page_num=1):
     return f'Page {page_num}'
 ```
 
-<details>
-<summary>Explanation</summary>
-
-If no page number is provided, Flask uses the default value:
-
-```python
-page_num = 1
-```
-
-So:
+Visiting:
 
 ```text
 /page
@@ -163,7 +247,9 @@ returns:
 Page 1
 ```
 
-while:
+because the default value is used.
+
+Visiting:
 
 ```text
 /page/5
@@ -175,69 +261,13 @@ returns:
 Page 5
 ```
 
-</details>
+because Flask provides the parameter.
 
 ---
 
-## Validation
+## Why validation still matters
 
-Even when Flask converts parameters for you, you should still validate them.
-
-Try to complete the missing condition.
-
-```python
-@app.route('/book/<int:book_id>')
-def get_book(book_id):
-    if _______:
-        return 'Invalid book ID', 400
-
-    return f'Book {book_id}'
-```
-
-### Your task
-
-Reject IDs smaller than 1.
-
-<details>
-<summary>Show solution</summary>
-
-```python
-@app.route('/book/<int:book_id>')
-def get_book(book_id):
-    if book_id < 1:
-        return 'Invalid book ID', 400
-
-    return f'Book {book_id}'
-```
-
-</details>
-
----
-
-## Conclusion
-
-In this lesson, you learned:
-
-- What route parameters are
-- How Flask captures values from URLs
-- How to use type converters
-- How to work with multiple parameters
-- How to create optional parameters
-- Why validating route parameters is important
-
-You now understand how to create dynamic routes that work with specific resources. In the next lesson, we will learn how to read additional information from URLs using query parameters.
-
----
-
-## Troubleshooting
-
-### 404 Not Found
-
-If Flask returns a 404 error:
-
-- Check that the URL matches the route pattern
-- Make sure parameter types are correct
-- Verify that the server is running
+Type converters only check the type.
 
 For example:
 
@@ -245,7 +275,118 @@ For example:
 @app.route('/book/<int:book_id>')
 ```
 
-will work with:
+ensures the value is an integer.
+
+However, Flask does not know whether the value makes sense.
+
+A user could still request:
+
+```text
+/book/0
+```
+
+or:
+
+```text
+/book/-10
+```
+
+You should validate values manually when necessary.
+
+Example:
+
+```python
+@app.route('/book/<int:book_id>')
+def get_book(book_id):
+
+    if book_id < 1:
+        return 'Invalid book ID', 400
+
+    return f'Book {book_id}'
+```
+
+---
+
+## Try it yourself
+
+Complete the condition below so IDs smaller than 1 are rejected.
+
+```python
+@app.route('/book/<int:book_id>')
+def get_book(book_id):
+
+    if _______:
+        return 'Invalid book ID', 400
+
+    return f'Book {book_id}'
+```
+
+<details>
+<summary>Solution</summary>
+
+```python
+if book_id < 1:
+```
+
+</details>
+
+---
+
+## Why route parameters matter
+
+Route parameters are used throughout real APIs.
+
+Examples:
+
+```text
+GET /api/books/1
+GET /api/books/15
+DELETE /api/books/42
+```
+
+The route might look like:
+
+```python
+@app.route('/api/books/<int:book_id>')
+```
+
+and Flask automatically provides the requested ID.
+
+Without route parameters, building APIs would be much more difficult.
+
+---
+
+## Conclusion
+
+In this lesson you learned:
+
+* What route parameters are
+* How Flask captures values from URLs
+* How Flask passes values into functions
+* How to use type converters
+* How to work with multiple parameters
+* How to create optional parameters
+* Why validation is still important
+
+Route parameters are one of the most important building blocks of REST APIs because they allow your application to work with specific resources dynamically.
+
+In the next lesson, you'll learn how to read additional information from URLs using query parameters.
+
+---
+
+## Troubleshooting
+
+### I get a 404 error
+
+Make sure the URL matches the route.
+
+Example:
+
+```python
+@app.route('/book/<int:book_id>')
+```
+
+works with:
 
 ```text
 /book/10
@@ -254,47 +395,58 @@ will work with:
 but not:
 
 ```text
-/book/abc
+/book/hello
 ```
+
+because Flask expects an integer.
 
 ---
 
-### Function parameter missing
+### The parameter isn't available inside my function
 
-If you capture a parameter in the route, you must also add it to the function:
-
-❌ Incorrect:
-
-```python
-@app.route('/user/<username>')
-def user_profile():
-    pass
-```
-
-✅ Correct:
+Make sure the parameter name appears in both places:
 
 ```python
 @app.route('/user/<username>')
 def user_profile(username):
-    pass
 ```
+
+The names must match exactly.
 
 ---
 
-### Wrong parameter type
+### The route works, but the value is wrong
 
-If Flask expects an integer:
+Print the captured value:
 
 ```python
-<int:book_id>
+print(book_id)
 ```
 
-and the URL contains text:
+and verify that the URL contains the expected data.
+
+---
+
+### My changes don't appear
+
+If Flask doesn't reload automatically:
+
+1. Stop the server:
 
 ```text
-/book/hello
+Ctrl + C
 ```
 
-the route will not match.
+2. Start it again:
 
-Make sure the URL contains the correct type of value.
+```bash
+python app.py
+```
+
+Also make sure:
+
+```python
+app.run(debug=True)
+```
+
+is enabled.

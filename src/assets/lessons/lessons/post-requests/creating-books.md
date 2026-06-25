@@ -9,12 +9,11 @@ POST requests are used to create new resources. In our case, we will use them to
 Add this route to your `app.py` (after the model definition, before the `if __name__ == '__main__':` block):
 
 ```python
-from flask import request, jsonify
-
 @app.route('/api/books', methods=['POST'])
 def create_book():
     data = request.get_json()
 
+    # Create a new book from the request data
     new_book = Book(
         title=data['title'],
         author=data['author'],
@@ -22,9 +21,11 @@ def create_book():
         published_year=data.get('published_year')
     )
 
+    # Add the new book to the database
     db.session.add(new_book)
     db.session.commit()
 
+    # Return the created book with a 201 status code
     return jsonify({
         'id': new_book.id,
         'title': new_book.title,
@@ -93,13 +94,43 @@ We use both depending on whether a field is required or optional.
 
 ---
 
-## Testing with curl
+## Try it with Postman
 
-You can test this endpoint using:
+Create a new request in Postman.
 
-```bash
-curl -X POST http://127.0.0.1:5000/api/books -H "Content-Type: application/json" -d "{\"title\":\"1984\",\"author\":\"George Orwell\",\"published_year\":1949}"
+**Method**
+
+```text
+POST
 ```
+
+**URL**
+
+```text
+http://127.0.0.1:5000/api/books
+```
+
+Open the **Body** tab and select:
+
+```text
+raw → JSON
+```
+
+Then send:
+
+```json
+{
+    "title": "1984",
+    "author": "George Orwell",
+    "genre": "Dystopian",
+    "published_year": 1949
+}
+```
+
+Click **Send**.
+
+If the request is successful, Postman will return the newly created book and a `201 Created` status code.
+
 
 ---
 

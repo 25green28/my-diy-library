@@ -31,7 +31,7 @@ Flask is built around a few key ideas:
 ## When should you use Flask?
 
 Flask is great for:
-- Building REST APIs (like our book management system)
+- Building REST APIs (like our My DIY Library)
 - Small to medium web applications
 - When you want flexibility and simplicity
 - Learning web development

@@ -1,235 +1,251 @@
 # How image uploads work
 
-Now that you've implemented image uploads, let's understand the complete architecture and how all the pieces fit together.
+Now that you've implemented image uploads, it's useful to understand how all the pieces work together.
 
 ---
 
 ## The big picture
 
-Image uploads involve multiple components working together:
+Image uploads involve several components:
 
 1. **Database model** → stores the image filename
 2. **Upload handling** → receives and saves the file
-3. **File storage** → keeps the image on disk
-4. **Serving route** → returns the image when requested
-5. **Update handling** → replaces images when needed
-6. **Cleanup** → removes files when books are deleted
+3. **File storage** → stores the image on disk
+4. **Image route** → serves the image to clients
+5. **Update logic** → replaces old images
+6. **Delete logic** → removes unused images
+
+Together, these components allow users to upload, view, update, and delete book covers.
 
 ---
 
-## The complete flow
+## Uploading an image
 
-### 1. User uploads an image
+When a user creates a book with an image:
 
 ```text
-User → POST /api/books (multipart/form-data)
-     → Flask receives form data + file
-     → Image is saved to uploads folder
-     → Filename is stored in database
+Client
+  │
+  ├─ POST /api/books
+  │   (multipart/form-data)
+  ▼
+Flask application
+  │
+  ├─ Save image to uploads folder
+  ├─ Store filename in database
+  ▼
+Database + Filesystem
 ```
 
-**Key points:**
-- Request uses `multipart/form-data`
-- `request.form` → text fields (title, author, etc.)
-- `request.files` → uploaded image
-- `secure_filename()` → sanitizes filename
-- File is saved to the upload folder
+Key points:
+
+* Requests use `multipart/form-data`
+* Text fields are accessed through `request.form`
+* Uploaded files are accessed through `request.files`
+* `secure_filename()` sanitizes filenames before saving
+* The image is stored in the uploads folder
 
 ---
 
-### 2. Image is stored
+## Where is the image stored?
 
-The image exists in two places:
+The image is stored in two places:
 
 ```text
-Filesystem: uploads/book-cover.jpg
-Database:   Book.image_filename = "book-cover.jpg"
+Filesystem:
+uploads/book-cover.jpg
+
+Database:
+Book.image_filename = "book-cover.jpg"
 ```
 
-**Why this split?**
+The actual image file lives on disk, while the database stores only its filename.
 
-- **Filesystem** → stores actual image data efficiently
-- **Database** → stores reference (filename only)
+### Why store only the filename?
 
-**Benefits:**
-- Database stays small and fast
-- Images can scale independently
-- Easy to migrate to CDNs later
-- Standard production architecture
+Keeping images out of the database has several advantages:
+
+* Smaller database size
+* Faster database queries
+* Easier backups
+* Better performance
+* Easier migration to cloud storage later
+
+This is the most common approach in web applications.
 
 ---
 
-### 3. Image is served
+## Serving an image
+
+When a client requests an image:
 
 ```text
-User → GET /api/books/1/image
-     → Flask looks up book
-     → Reads filename from database
-     → Loads file from uploads folder
-     → Returns image to client
+Client
+  │
+  ├─ GET /api/books/1/image
+  ▼
+Flask application
+  │
+  ├─ Find book in database
+  ├─ Read image filename
+  ├─ Load image from uploads folder
+  ▼
+Image response
 ```
 
-Example route:
-
-```python
-@app.route('/api/books/<int:book_id>/image')
-def get_book_image(book_id):
-    book = Book.query.get_or_404(book_id)
-
-    if not book.image_filename:
-        return error_response('Image not found', 404)
-
-    return send_from_directory(
-        app.config['UPLOAD_FOLDER'],
-        book.image_filename
-    )
-```
+The image route connects the database record with the file stored on disk.
 
 ---
 
-### 4. Image is updated
+## Updating an image
+
+When a user uploads a new image for an existing book:
 
 ```text
-User → PUT /api/books/1 (multipart/form-data)
-     → New image received
-     → Old image deleted (if exists)
-     → New image saved
-     → Database updated
+Client
+  │
+  ├─ PUT /api/books/1
+  ▼
+Flask application
+  │
+  ├─ Delete old image (if it exists)
+  ├─ Save new image
+  ├─ Update filename in database
+  ▼
+Database + Filesystem
 ```
 
-**Old file cleanup:**
-
-```python
-if book.image_filename:
-    old_path = os.path.join(
-        app.config['UPLOAD_FOLDER'],
-        book.image_filename
-    )
-
-    if os.path.exists(old_path):
-        os.remove(old_path)
-```
+Removing the old image prevents unused files from accumulating over time.
 
 ---
 
-### 5. Image is deleted
+## Deleting a book
+
+When a book is deleted:
 
 ```text
-User → DELETE /api/books/1
-     → Book removed from database
-     → Image file removed from disk
+Client
+  │
+  ├─ DELETE /api/books/1
+  ▼
+Flask application
+  │
+  ├─ Delete image file
+  ├─ Delete database record
+  ▼
+Cleanup complete
 ```
 
-**Cleanup code:**
-
-```python
-if book.image_filename:
-    image_path = os.path.join(
-        app.config['UPLOAD_FOLDER'],
-        book.image_filename
-    )
-
-    if os.path.exists(image_path):
-        os.remove(image_path)
-```
+Without this cleanup step, image files would remain on disk even though their books no longer exist.
 
 ---
 
-## Architecture diagram
+## Architecture overview
 
-```
+```text
 ┌─────────────┐
 │   Client    │
 └──────┬──────┘
-       │ POST multipart/form-data
+       │
        ▼
 ┌────────────────────┐
 │   Flask Backend    │
 │                    │
-│  Routes / Logic    │
+│  Routes & Logic    │
 └────────┬───────────┘
          │
          ├───────────────┐
          ▼               ▼
 ┌──────────────┐   ┌──────────────┐
-│  Database    │   │  Uploads     │
-│              │   │  Folder      │
+│   Database   │   │   Uploads    │
+│              │   │   Folder     │
+│              │   │              │
 │image_filename│   │ book.jpg     │
-│ = "book.jpg" │   │              │
 └──────────────┘   └──────────────┘
-         │               │
-         └───────┬───────┘
-                 ▼
-        GET /api/books/1/image
-                 ▼
-            Image response
 ```
 
----
-
-## Why this architecture?
-
-### Separation of concerns
-
-- **Database** → metadata only
-- **Filesystem** → binary data (images)
-- **API layer** → request handling
+The database stores metadata, while the filesystem stores the actual image.
 
 ---
+
+## Why use this architecture?
+
+### Separation of responsibilities
+
+Each component has a single job:
+
+* Database → stores book information
+* Filesystem → stores image files
+* Flask routes → handle requests and responses
+
+This keeps the application easier to maintain.
 
 ### Scalability
 
-- DB stays lightweight
-- Images can move to CDNs easily
-- Works across multiple servers
-- Fast backups
+This approach works well as applications grow:
 
----
+* Database remains fast
+* Images can be moved to cloud storage
+* Images can be served through a CDN
+* Multiple servers can share the same storage
 
 ### Security
 
-- `secure_filename()` prevents path traversal
-- Upload folder isolated from code
-- File validation can be added
-- Size limits can be enforced
+The upload system includes several protections:
+
+```python
+filename = secure_filename(image.filename)
+```
+
+This prevents dangerous filenames from being saved.
+
+You can also add:
+
+* File type validation
+* File size limits
+* Authentication and authorization
 
 ---
 
-## Think-first exercise
+## Think before continuing
 
-What if we stored the full image bytes inside the database instead of filenames?
+Suppose we stored the entire image inside the database instead of storing only the filename.
+
+What advantages and disadvantages would that have?
 
 <details>
 <summary>Solution</summary>
 
-**Database storage (BLOB approach)**
+### Store image data in the database
 
-Pros:
-- Single storage system
-- Easier consistency
-- Atomic transactions
+Advantages:
 
-Cons:
-- Database grows very fast
-- Slower queries
-- Heavy backups
-- Poor performance for large files
+* Single storage system
+* Simpler backups
+* Database transactions guarantee consistency
 
----
+Disadvantages:
 
-**Current approach (filesystem + filename)**
+* Much larger database
+* Slower queries
+* Larger backups
+* Higher memory usage
 
-Pros:
-- Fast database
-- Efficient file serving
-- Standard industry practice
-- Easy to scale with CDNs
+### Store filenames in the database
 
-Cons:
-- Two systems to manage
-- Must handle file cleanup manually
+Advantages:
 
-👉 The filename approach is preferred in real-world systems.
+* Smaller database
+* Faster performance
+* Easier scaling
+* Industry-standard approach
+
+Disadvantages:
+
+* Two storage systems to manage
+* Requires file cleanup when records are removed
+
+For most applications, storing filenames is the better choice.
 
 </details>
 
@@ -237,112 +253,66 @@ Cons:
 
 ## Best practices
 
-- Store filenames, not file content
-- Always sanitize filenames
-- Use dedicated upload folder
-- Clean up files on update/delete
-- Validate file types and size
-- Keep storage and DB in sync
+* Store filenames instead of image data
+* Always use `secure_filename()`
+* Validate file types
+* Limit upload sizes
+* Remove old files when updating images
+* Remove files when deleting records
+* Keep the database and filesystem synchronized
 
 ---
 
-## Security considerations
+## Performance considerations
 
-### Path traversal
+As applications grow, image handling can be improved by:
 
-Without protection:
-
-```text
-../../../etc/passwd
-```
-
-Fix:
-
-```python
-filename = secure_filename(image.filename)
-```
-
----
-
-### File type validation
-
-```python
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-```
-
----
-
-### File size limit
-
-```python
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
-```
-
----
-
-## Performance tips
-
-- Use CDN in production
-- Compress images before saving
-- Serve static files via nginx/Apache
-- Cache image responses
-- Consider object storage (S3, R2)
+* Compressing images before saving
+* Using modern formats such as WebP
+* Serving files through nginx or Apache
+* Using cloud storage (S3, Cloudflare R2, etc.)
+* Using a CDN for faster delivery
 
 ---
 
 ## Conclusion
 
-You now understand the full image upload lifecycle:
+You now understand the complete image upload workflow:
 
-### Flow:
-1. Upload image via multipart request
-2. Save file to uploads folder
-3. Store filename in database
-4. Serve via API route
-5. Update replaces old file
-6. Delete removes file
+1. Upload image using `multipart/form-data`
+2. Save the image to the uploads folder
+3. Store the filename in the database
+4. Serve the image through a dedicated route
+5. Replace old files during updates
+6. Remove files when deleting books
 
----
-
-## Key principles
-
-- Database stores references, not files
-- Filesystem stores image data
-- Always sanitize inputs
-- Clean up unused files
-- Design for scalability
+This architecture is widely used in real-world web applications because it is simple, efficient, and scalable.
 
 ---
 
 ## Troubleshooting
 
-### Images not showing
-- Check file path
-- Check filename match
-- Check route logic
+### Image does not appear
+
+Check:
+
+* The image route exists
+* The filename is stored in the database
+* The file exists in the uploads folder
 
 ---
 
-### Orphan files exist
-- Missing delete logic
-- Missing update cleanup
+### Old images remain on disk
+
+Make sure old files are removed when:
+
+* Updating images
+* Deleting books
 
 ---
 
-### Upload folder growing too large
-- Old files not being removed
-- Missing cleanup step
+### Upload folder keeps growing
 
----
+This usually means old files are not being cleaned up properly.
 
-## Further learning
-
-- AWS S3 / Cloud storage
-- Image optimization (WebP, AVIF)
-- CDN integration
-- Background uploads
-- Image resizing pipelines
+Review your update and delete routes to ensure unused files are removed.

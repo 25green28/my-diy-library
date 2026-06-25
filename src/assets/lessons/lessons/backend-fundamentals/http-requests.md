@@ -1,6 +1,8 @@
 # HTTP requests
 
-HTTP (**H**yper**t**ext **T**ransfer **P**rotocol) is the language that clients and servers use to communicate on the web. Every time you visit a website, your browser is making HTTP requests to servers.
+HTTP (**H**yper**t**ext **T**ransfer **P**rotocol) is the "language" that clients and servers use to communicate on the web. Every time you visit a website, your browser is making HTTP requests to servers.
+
+---
 
 ## What are HTTP methods?
 
@@ -30,6 +32,8 @@ DELETE requests remove a resource from the server. For example:
 - Delete a book from the library
 - Remove a user account
 
+---
+
 ## HTTP status codes
 
 When a server responds to a request, it sends a status code to tell the client what happened. Common codes include:
@@ -39,6 +43,8 @@ When a server responds to a request, it sends a status code to tell the client w
 - **400 Bad Request**: The client sent something invalid
 - **404 Not Found**: The requested resource doesn't exist
 - **500 Internal Server Error**: Something went wrong on the server
+
+----
 
 ## Anatomy of an HTTP request
 
@@ -55,6 +61,8 @@ We'll use all these HTTP methods to create a complete API:
 - POST to add new books
 - PUT to update book information
 - DELETE to remove books from the library
+
+---
 
 ## Conclusion
 

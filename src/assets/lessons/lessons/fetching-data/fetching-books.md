@@ -2,9 +2,11 @@
 
 Now let's create an endpoint to retrieve all books from the database. This is useful when clients want to display a list of books or see everything stored in the library.
 
+---
+
 ## The GET all endpoint
 
-Add this route to your `app.py`:
+Add this route to your `app.py` (bellow the route from the previous lesson):
 
 ```python
 @app.route('/api/books', methods=['GET'])
@@ -13,6 +15,7 @@ def get_books():
 
     books_list = []
 
+    # Convert each book to a dictionary and add to the list
     for book in books:
         books_list.append({
             'id': book.id,
@@ -54,6 +57,8 @@ which retrieves **all books** from the database.
 
 If there are 5 books stored, SQLAlchemy returns a list containing 5 Book objects.
 
+---
+
 ## Using the helper function
 
 If you created the helper function from the previous lesson, your code becomes much cleaner:
@@ -62,6 +67,7 @@ If you created the helper function from the previous lesson, your code becomes m
 @app.route('/api/books', methods=['GET'])
 def get_books():
     books = Book.query.all()
+    # Convert each book to a dictionary and return as JSON
     return jsonify([book_to_dict(book) for book in books]), 200
 ```
 
@@ -104,35 +110,6 @@ If the database is empty, Flask returns:
 This is completely normal.
 
 An empty list simply means no books have been created yet.
-
----
-
-## Bonus: Filtering books
-
-Later in the course you'll learn more about filtering results.
-
-For example:
-
-```python
-@app.route('/api/books', methods=['GET'])
-def get_books():
-    author = request.args.get('author')
-
-    if author:
-        books = Book.query.filter_by(author=author).all()
-    else:
-        books = Book.query.all()
-
-    return jsonify([book_to_dict(book) for book in books]), 200
-```
-
-This allows requests such as:
-
-```text
-/api/books?author=George Orwell
-```
-
-to return only books written by that author.
 
 ---
 

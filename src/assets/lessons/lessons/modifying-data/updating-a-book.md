@@ -1,21 +1,57 @@
 # Updating a book (PUT)
 
-PUT requests are used to update existing resources. Let's implement an endpoint that allows clients to modify book information already stored in the database.
+PUT requests are used to modify existing resources.
 
-## The PUT endpoint
+In our library API, this means updating information about a book that already exists in the database.
 
-Add this route to your `app.py`:
+> **Tip:** In this project, our PUT endpoint updates only the fields provided in the request. Technically this behaves more like a PATCH request, but we'll continue using PUT for simplicity.
+
+---
+
+## Why do we need an update route?
+
+Imagine a user wants to correct a typo in a book title.
+
+Current book:
+
+```json
+{
+  "id": 1,
+  "title": "19844",
+  "author": "George Orwell"
+}
+```
+
+Updated book:
+
+```json
+{
+  "id": 1,
+  "title": "1984",
+  "author": "George Orwell"
+}
+```
+
+Instead of creating a new book, we update the existing one.
+
+---
+
+## The update route
+
+Add the following route below the route from the previous lesson:
 
 ```python
 @app.route('/api/books/<int:book_id>', methods=['PUT'])
 def update_book(book_id):
     book = Book.query.get(book_id)
 
+    # Handle missing book
     if not book:
         return jsonify({'error': 'Book not found'}), 404
 
     data = request.get_json()
 
+    # Update fields if provided
     if 'title' in data:
         book.title = data['title']
 
@@ -28,45 +64,77 @@ def update_book(book_id):
     if 'published_year' in data:
         book.published_year = data['published_year']
 
+    # Save changes
     db.session.commit()
 
     return jsonify(book_to_dict(book)), 200
 ```
 
-## How it works
+---
 
-1. We search for a book using its ID.
-2. If the book doesn't exist, we return a `404 Not Found` error.
-3. We read the JSON data sent by the client.
-4. We update only the fields that were provided.
-5. We save the changes using `db.session.commit()`.
-6. We return the updated book as JSON.
+## Understanding the route
 
-## Why do we need `commit()`?
-
-Changing the object's properties does not immediately update the database.
-
-For example:
+### Finding the book
 
 ```python
-book.title = "New Title"
+book = Book.query.get(book_id)
 ```
 
-only changes the object in memory.
+The book ID comes from the URL:
 
-The change becomes permanent only after:
+```text
+/api/books/1
+```
+
+If the book exists, SQLAlchemy returns the matching record.
+
+---
+
+### Handling missing books
 
 ```python
-db.session.commit()
+if not book:
+    return jsonify({'error': 'Book not found'}), 404
 ```
 
-Think of `commit()` as clicking the **Save** button.
+If no book matches the provided ID, we return a `404 Not Found` response.
 
-Without it, the changes would be lost.
+---
 
-## Understanding partial updates
+### Reading JSON data
 
-This route updates only the fields included in the request.
+```python
+data = request.get_json()
+```
+
+This converts the JSON request body into a Python dictionary.
+
+Example:
+
+```json
+{
+  "title": "Nineteen Eighty-Four"
+}
+```
+
+becomes:
+
+```python
+{
+    "title": "Nineteen Eighty-Four"
+}
+```
+
+---
+
+### Updating fields
+
+```python
+if 'title' in data:
+    book.title = data['title']
+```
+
+Only fields included in the request are updated.
 
 For example:
 
@@ -78,38 +146,82 @@ For example:
 
 updates only the title.
 
-The author, genre, and publication year remain unchanged.
+All other fields remain unchanged.
 
-## Testing the endpoint
+---
 
-Create a PUT request in Postman:
+## Why do we need commit()?
 
-**URL**
+Changing a value does not immediately update the database.
 
-```text
-http://127.0.0.1:5000/api/books/1
+For example:
+
+```python
+book.title = "New Title"
 ```
 
-**Body → Raw → JSON**
+only changes the object in memory.
+
+To permanently save the change:
+
+```python
+db.session.commit()
+```
+
+Think of `commit()` as pressing a Save button.
+
+Without it, the changes would be lost.
+
+---
+
+## Try it yourself
+
+Assume the database contains:
 
 ```json
 {
-  "title": "Nineteen Eighty-Four",
+  "id": 1,
+  "title": "1984",
+  "author": "George Orwell",
+  "genre": "Dystopian",
   "published_year": 1949
 }
 ```
 
-If the book exists, the API will return the updated data.
+What will the book look like after sending:
+
+```json
+{
+  "title": "Nineteen Eighty-Four"
+}
+```
+
+<details>
+<summary>Solution</summary>
+
+```json
+{
+  "id": 1,
+  "title": "Nineteen Eighty-Four",
+  "author": "George Orwell",
+  "genre": "Dystopian",
+  "published_year": 1949
+}
+```
+
+Only the title changes.
+
+</details>
 
 ---
 
 ## PUT vs PATCH
 
-Technically, our implementation behaves more like a PATCH request.
+There are two common update methods:
 
 ### PUT
 
-A traditional PUT request replaces the entire resource.
+Traditionally replaces the entire resource.
 
 Example:
 
@@ -124,7 +236,7 @@ Example:
 
 ### PATCH
 
-A PATCH request updates only the provided fields.
+Updates only the provided fields.
 
 Example:
 
@@ -134,9 +246,58 @@ Example:
 }
 ```
 
-Because our route updates only the fields that exist in the request, it behaves more like PATCH.
+Because our route updates only supplied fields, it behaves more like PATCH.
 
-For simplicity, we continue using PUT in this project.
+For simplicity, we'll continue using PUT.
+
+---
+
+## Try it with Postman
+
+Create a new request in Postman.
+
+**Method**
+
+```text
+PUT
+```
+
+**URL**
+
+```text
+http://127.0.0.1:5000/api/books/1
+```
+
+Replace `1` with the ID of an existing book.
+
+Open the **Body** tab and select:
+
+```text
+raw → JSON
+```
+
+Then send:
+
+```json
+{
+    "genre": "Science Fiction"
+}
+```
+
+Click **Send**.
+
+If the request is successful, Postman will return the updated book as JSON.
+
+---
+
+## Best practices
+
+* Always check that the resource exists before updating it
+* Validate incoming data before saving it
+* Use `commit()` after making changes
+* Return the updated resource when the update succeeds
+* Use appropriate status codes (`200`, `404`, etc.)
+
 
 ---
 
@@ -144,14 +305,14 @@ For simplicity, we continue using PUT in this project.
 
 In this lesson you learned:
 
-- How to update existing records in the database
-- How to retrieve a book before modifying it
-- Why `db.session.commit()` is required
-- How partial updates work
-- The difference between PUT and PATCH
-- How to return updated data as JSON
+* How PUT requests work
+* How to retrieve a book before updating it
+* How to read JSON request data
+* How partial updates work
+* Why `db.session.commit()` is required
+* The difference between PUT and PATCH
 
-In the next lesson, you'll learn how to validate incoming data and prevent invalid information from being stored in the database.
+In the next lesson, we'll validate incoming data before storing it in the database.
 
 ---
 
@@ -163,15 +324,9 @@ In the next lesson, you'll learn how to validate incoming data and prevent inval
 Book not found
 ```
 
-The requested ID does not exist in the database.
+The provided ID does not exist in the database.
 
-Try:
-
-```text
-GET /api/books
-```
-
-to see which IDs are available.
+Make sure the book exists before trying to update it.
 
 ---
 
@@ -207,15 +362,9 @@ from flask import request
 TypeError: argument of type 'NoneType' is not iterable
 ```
 
-This usually means no JSON was sent with the request.
+This usually means no JSON data was sent with the request.
 
-Make sure you selected:
-
-```text
-Body → Raw → JSON
-```
-
-in Postman.
+Make sure the request body contains valid JSON.
 
 ---
 
@@ -223,11 +372,11 @@ in Postman.
 
 Make sure:
 
-- The Flask server is running
-- You saved your file
-- The server restarted after your changes
+* The Flask server is running
+* The file was saved
+* The server restarted after your changes
 
-If necessary, stop the server and run:
+If necessary:
 
 ```bash
 python app.py

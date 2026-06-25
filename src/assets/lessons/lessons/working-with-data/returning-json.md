@@ -1,42 +1,100 @@
 # Returning JSON
 
-When building an API, you typically return data in JSON format. Flask provides a handy function called `jsonify` that makes this easy.
+When building APIs, we usually don't return plain text.
 
-## What is jsonify?
+Instead, APIs return data in a format called **JSON**.
 
-`jsonify` is a Flask helper function that converts Python data (like dictionaries and lists) into JSON format. It also automatically sets the correct HTTP headers so the client knows they're receiving JSON.
+JSON is the standard format used by web applications to exchange data between a frontend and a backend.
 
-> **Important**: Before using `jsonify`, make sure you have imported it from Flask. `from flask import jsonify`
+> **Tip:** You don't have to copy all examples from this lesson into your `app.py`. The examples are here to help you understand how JSON responses work.
+
+## What is JSON?
+
+JSON stands for:
+
+```text
+JavaScript Object Notation
+```
+
+Despite the name, JSON is used by almost every programming language, not just JavaScript.
+
+A JSON object looks like this:
+
+```json
+{
+    "id": 1,
+    "title": "1984",
+    "author": "George Orwell"
+}
+```
+
+JSON stores information using:
+
+* Keys (`"title"`)
+* Values (`"1984"`)
+
+You can think of it as a structured way to organize data.
 
 ---
 
-## Basic example
+## Why APIs use JSON
 
-Let’s create an endpoint that returns a book.
+Imagine a frontend asks your backend for information about a book.
 
-Try to complete the missing parts yourself before looking at the solution.
+Returning this:
 
-```python
-from flask import Flask, jsonify
-
-app = Flask(__name__)
-
-@app.route('/api/book')
-def get_book():
-    # Create a book dictionary
-    book = {
-        "id": 1,
-        "title": "1984",
-        "author": "George Orwell",
-        # TODO: add publication year
-    }
-
-    # TODO: return the book as JSON
-    return
+```text
+1984 by George Orwell
 ```
 
-<details>
-<summary>Show solution</summary>
+might be readable for humans, but it is difficult for programs to process.
+
+Instead, APIs return structured data:
+
+```json
+{
+    "id": 1,
+    "title": "1984",
+    "author": "George Orwell"
+}
+```
+
+Now the frontend can easily access:
+
+```text
+title → 1984
+author → George Orwell
+```
+
+This is why JSON is the standard response format for APIs.
+
+---
+
+## What is jsonify()?
+
+Flask provides a helper function called:
+
+```python
+jsonify()
+```
+
+It converts Python data structures into JSON and automatically sets the correct HTTP headers.
+
+Before using it, import it:
+
+```python
+from flask import jsonify
+```
+
+Without `jsonify()`, Flask would not know that you want to return JSON data.
+
+---
+
+## Returning a JSON object
+
+A Python dictionary can be converted into JSON using `jsonify()`.
+
+Example:
 
 ```python
 from flask import Flask, jsonify
@@ -45,103 +103,241 @@ app = Flask(__name__)
 
 @app.route('/api/book')
 def get_book():
+
     book = {
         "id": 1,
         "title": "1984",
-        "author": "George Orwell",
-        "year": 2026
+        "author": "George Orwell"
     }
 
     return jsonify(book)
 ```
+
+When visiting:
+
+```text
+/api/book
+```
+
+Flask returns:
+
+```json
+{
+    "id": 1,
+    "title": "1984",
+    "author": "George Orwell"
+}
+```
+
+---
+
+## Try it yourself
+
+Add a publication year to the book and return it as JSON.
+
+Try it before opening the solution.
+
+<details>
+<summary>Solution</summary>
+
+```python
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route('/api/book')
+def get_book():
+
+    book = {
+        "id": 1,
+        "title": "1984",
+        "author": "George Orwell",
+        "year": 1949
+    }
+
+    return jsonify(book)
+```
+
 </details>
 
 ---
 
-## Returning a list of items
+## Returning multiple items
 
-You can also return multiple items:
+APIs often return lists of data.
 
-Try to complete the missing parts yourself before looking at the solution. 
+Example:
 
 ```python
 @app.route('/api/books')
 def get_books():
+
     books = [
         {"id": 1, "title": "1984"},
         {"id": 2, "title": "Brave New World"}
-        # TODO: add another book
     ]
-    
-    # TODO: return the books as JSON
-    return 
+
+    return jsonify(books)
 ```
 
+This returns:
+
+```json
+[
+    {
+        "id": 1,
+        "title": "1984"
+    },
+    {
+        "id": 2,
+        "title": "Brave New World"
+    }
+]
+```
+
+---
+
+## Try it yourself
+
+Add a third book to the list.
+
+Try it before opening the solution.
+
 <details>
-<summary>Show solution</summary>
+<summary>Solution</summary>
 
 ```python
 @app.route('/api/books')
 def get_books():
+
     books = [
         {"id": 1, "title": "1984"},
         {"id": 2, "title": "Brave New World"},
         {"id": 3, "title": "Fahrenheit 451"}
     ]
+
     return jsonify(books)
 ```
+
 </details>
 
 ---
 
-## Setting status codes
+## HTTP status codes
 
-You can return a status code with your response:
+A response can include a status code.
+
+Example:
 
 ```python
 return jsonify(book), 200
 ```
 
-- `200` = success
-- `201` = created
-- `404` = not found
+The second value tells the client whether the request succeeded.
+
+Common status codes:
+
+| Code | Meaning               |
+| ---- | --------------------- |
+| 200  | Success               |
+| 201  | Resource created      |
+| 400  | Bad request           |
+| 404  | Not found             |
+| 500  | Internal server error |
 
 ---
 
-## Error responses
+## Returning error responses
 
-You can also return errors in JSON format:
+Errors should also be returned as JSON.
+
+Example:
 
 ```python
 @app.route('/api/book/<int:book_id>')
 def get_book(book_id):
-    if book_id > 100:
-        return jsonify({"error": "Book not found"}), 404
 
-    return jsonify({"id": book_id, "title": "Book Title"}), 200
+    if book_id > 100:
+        return jsonify({
+            "error": "Book not found"
+        }), 404
+
+    return jsonify({
+        "id": book_id,
+        "title": "Book Title"
+    }), 200
 ```
+
+If a user requests a book that doesn't exist, the API returns:
+
+```json
+{
+    "error": "Book not found"
+}
+```
+
+along with a:
+
+```text
+404 Not Found
+```
+
+status code.
+
+---
+
+## Why consistent JSON matters
+
+Imagine one route returns:
+
+```json
+{
+    "title": "1984"
+}
+```
+
+and another returns:
+
+```json
+{
+    "book_title": "1984"
+}
+```
+
+The frontend now has to handle both formats.
+
+A consistent API is easier to use and easier to maintain.
+
+Try to keep response structures similar throughout your project.
 
 ---
 
 ## Best practices
 
-- Always return JSON using `jsonify`
-- Keep response data minimal (only what is needed)
-- Use correct HTTP status codes
-- Keep error messages clear and simple
-- Keep response structure consistent
+* Always return JSON using `jsonify()`
+* Keep responses simple and consistent
+* Use meaningful property names
+* Return appropriate HTTP status codes
+* Return errors in JSON format
+* Only send data the client actually needs
 
-
+---
 
 ## Conclusion
 
-In this lesson, you learned:
+In this lesson you learned:
 
-- What `jsonify` is and why it is used
-- How to design API responses before coding
-- How to return JSON objects and lists
-- How to use HTTP status codes with responses
-- How to return error messages in JSON format
+* What JSON is
+* Why APIs use JSON
+* What `jsonify()` does
+* How to return JSON objects
+* How to return JSON lists
+* How to use HTTP status codes
+* How to return JSON error messages
+
+JSON is the primary way that frontend applications communicate with backend APIs, so understanding it is essential before building your own API endpoints.
+
+In the next lesson, you'll start creating API routes that return real data from your application.
 
 ---
 
@@ -151,26 +347,64 @@ In this lesson, you learned:
 
 If you see:
 
-```bash
+```text
 NameError: name 'jsonify' is not defined
 ```
 
-Make sure you imported it:
+make sure you imported it:
 
 ```python
 from flask import jsonify
 ```
 
-### Route returns plain text instead of JSON
+---
 
-If your response is not JSON:
+### The response is not JSON
 
-- Make sure you are using `jsonify()`
-- Do not return raw Python dictionaries directly
-- Check that you are hitting the correct route
+Make sure you are using:
 
-### Server not updating changes
+```python
+return jsonify(data)
+```
 
-- Stop server: `Ctrl + C`
-- Restart: `python app.py`
-- Make sure `debug=True` is enabled
+instead of:
+
+```python
+return data
+```
+
+---
+
+### My changes don't appear
+
+If Flask doesn't reload automatically:
+
+1. Stop the server:
+
+```text
+Ctrl + C
+```
+
+2. Start it again:
+
+```bash
+python app.py
+```
+
+Also make sure:
+
+```python
+app.run(debug=True)
+```
+
+is enabled.
+
+---
+
+### The browser shows raw JSON
+
+This is normal.
+
+Browsers display JSON as text.
+
+In a real application, the frontend reads the JSON and displays it in a user-friendly way.

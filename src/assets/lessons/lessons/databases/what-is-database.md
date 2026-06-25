@@ -2,6 +2,8 @@
 
 A database is an organized collection of data that can be easily stored, accessed, and managed. Think of it like a super-powered spreadsheet that can handle thousands (or even millions) of records efficiently.
 
+---
+
 ## Why do we need a database?
 
 Without a database, your data would disappear every time you stop your program.
@@ -24,6 +26,8 @@ Databases also provide:
 - **Scalability**: Handle growing amounts of data
 - **Concurrent access**: Multiple users can access data at the same time
 
+---
+
 ## Types of databases
 
 There are many database systems available, but they generally fall into two categories.
@@ -38,7 +42,7 @@ Examples include:
 - MySQL
 - PostgreSQL
 
-These databases use SQL (Structured Query Language) to store, retrieve, and modify data.
+These databases use **SQL** (**S**tructured **Q**uery **L**anguage) to store, retrieve, and modify data.
 
 They are ideal when your data has a clear structure and relationships.
 
@@ -54,6 +58,8 @@ Examples include:
 They are often used for highly flexible or specialized applications.
 
 For this project, we will focus on relational databases because they are easier to learn and fit our book library perfectly.
+
+---
 
 ## Key database concepts
 
@@ -91,6 +97,8 @@ A foreign key links data between tables.
 
 We won't use foreign keys immediately, but they become important when applications grow larger.
 
+---
+
 ## Example: Books table
 
 Here's how our books might look in a database table:
@@ -126,6 +134,8 @@ because its value is unique for every book and can be used to identify a specifi
 
 </details>
 
+---
+
 ## Why SQLite for this project?
 
 We're using SQLite because:
@@ -135,6 +145,8 @@ We're using SQLite because:
 - It stores data in a single file
 - It uses standard SQL, which means the skills you learn transfer to larger databases later
 - It works perfectly with Flask and SQLAlchemy
+
+---
 
 ## Conclusion
 
@@ -146,6 +158,8 @@ We're using SQLite because:
 - In this project, we will use a database to store our books permanently
 
 You now understand what a database is and why it is an essential part of most applications. In the next lesson, we will learn how databases organize data using SQL.
+
+---
 
 ## FAQ
 

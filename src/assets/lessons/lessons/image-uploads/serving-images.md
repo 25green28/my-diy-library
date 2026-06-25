@@ -6,16 +6,18 @@ Now that we can upload images, we need a way to serve them back to the client. W
 
 ## Create the image serving route
 
-Add this new route to your app:
+Add this new route to your app (bellow the delete route):
 
 ```python
 @app.route('/api/books/<int:book_id>/image', methods=['GET'])
 def get_book_image(book_id):
     book = Book.query.get(book_id)
 
+    # Check if book exists and has an image
     if not book or not book.image_filename:
         return error_response('Image not found', 404)
 
+    # Serve the image file from the upload folder
     return send_from_directory(
         app.config['UPLOAD_FOLDER'],
         book.image_filename
@@ -64,7 +66,7 @@ return send_from_directory(
 - First argument → upload directory
 - Second argument → filename stored in the database
 
-👉 This works with **any image format automatically**, such as:
+This works with **any image format automatically**, such as:
 - `.jpg`
 - `.jpeg`
 - `.png`
@@ -73,16 +75,6 @@ return send_from_directory(
 - `.bmp`
 
 Flask does NOT require or assume a specific format — it simply serves the file as it exists.
-
----
-
-## Import the function
-
-Make sure to import `send_from_directory`:
-
-```python
-from flask import Flask, request, jsonify, send_from_directory
-```
 
 ---
 
@@ -126,9 +118,9 @@ Frontend usage:
 
 ---
 
-## Think-first exercise
+## Exercise
 
-What happens if someone requests:
+Suppose that we have books with indexes from 1 to 100 in a database, what happens if someone requests:
 
 ```
 /api/books/999/image

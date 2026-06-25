@@ -1,18 +1,18 @@
 # More about routes
 
-Routes are the heart of a Flask application. They define how different URLs map to different Python functions in your code.
+Routes are the heart of every Flask application.  They define what code should run when someone visits a specific URL.  then routes, Flask would not know how to respond to requests. You can think about routes as a map between URLs and Python functions.
 
----
+> **Tip**: You don’t have to copy the code from this lesson into your `app.py`, unless you want to do the exercise.
 
 ## What is a route?
 
-A route is like a mapping between a URL and a function. When someone visits a specific URL on your website, Flask looks at your routes to figure out which function should run. Think of it like a receptionist directing visitors to the right room.
+A route connects:
 
----
+```text
+URL → Python function
+```
 
-## Basic route example
-
-Here's the simplest possible route from previous lesson:
+For example:
 
 ```python
 @app.route('/')
@@ -20,49 +20,134 @@ def home():
     return 'Hello, World!'
 ```
 
-When someone visits the root URL (`http://127.0.0.1:5000/`), Flask calls the `home()` function and sends back whatever that function returns.
+When someone visits:
+
+```text
+http://127.0.0.1:5000/
+```
+
+Flask executes the `home()` function and returns its result.
 
 ---
 
-## Route rules to remember
+## How routes work
 
-- Routes must always start with `/`
-- Routes are case-sensitive (`/Books` and `/books` are different)
-- Each route needs its own function
-- The function name doesn't have to match the URL
+Let's break the route down:
+
+```python
+@app.route('/')
+def home():
+    return 'Hello, World!'
+```
+
+- **`@app.route('/')`**
+    - Tells Flask:
+      > "Run the function below whenever someone visits `/`."
+
+- **`def home():`**
+    - Defines the function that should run.
+
+- **`return`**
+    - Returns the response sent back to the browser.
+
+## Route rules
+
+Keep these rules in mind:
+
+* Every route starts with `/`
+* Routes are case-sensitive
+* Each route needs a function
+* Function names do not need to match URLs
+
+Example:
+
+```python
+@app.route('/books')
+def library():
+    return 'Books page'
+```
+
+The URL is `/books`, but the function is called `library()`.
 
 ---
 
-## Multiple routes for one function
+## Multiple routes
 
-You can map multiple URLs to the same function:
+Sometimes multiple URLs should display the same content.
+
+Example:
 
 ```python
 @app.route('/')
 @app.route('/home')
 def home():
-    return 'Home page'
+    return 'Welcome!'
 ```
 
-Now both `/` and `/home` will show "Home page".
+Both URLs work:
+
+```text
+/
+```
+
+and
+
+```text
+/home
+```
 
 ---
 
-## Handling different HTTP methods
+## Try it yourself
 
-By default, routes respond to GET requests. To handle other methods like POST, specify them:
+Create a route called `/about`. It should return "About page".
+
+Before looking at the solution, try writing it yourself.
+
+<details>
+<summary>Solution</summary>
+
+```python
+@app.route('/about')
+def about():
+    return 'About page'
+```
+
+</details>
+
+---
+
+## Handling HTTP methods
+
+By default, routes only respond to GET requests.
+
+You can allow other methods:
+
+```python
+@app.route('/submit', methods=['POST'])
+def submit():
+    return 'Form submitted'
+```
+
+This route only accepts POST requests.
+
+---
+
+## Multiple methods
+
+A route can support more than one method.
+
+Example:
 
 ```python
 from flask import request
 
-@app.route('/submit', methods=['POST'])
-def submit():
-    return 'Form submitted!'
-
 @app.route('/data', methods=['GET', 'POST'])
 def data():
+
     if request.method == 'POST':
         return 'Data received'
+
     return 'Send data via POST'
 ```
 
@@ -70,7 +155,9 @@ def data():
 
 ## URL parameters
 
-You can capture parts of the URL as variables:
+Routes can capture values directly from the URL.
+
+Example:
 
 ```python
 @app.route('/book/<int:book_id>')
@@ -78,71 +165,191 @@ def get_book(book_id):
     return f'Book ID: {book_id}'
 ```
 
-Visiting `/book/42` will show "Book ID: 42". The `<int:book_id>` part captures the number and passes it to the function.
+Visiting:
+
+```text
+/book/42
+```
+
+returns:
+
+```text
+Book ID: 42
+```
+
+Flask automatically converts the value to an integer.
+
+---
+
+## Try it yourself
+
+What will be displayed when visiting:
+
+```text
+/book/100
+```
+
+using this route?
+
+```python
+@app.route('/book/<int:book_id>')
+def get_book(book_id):
+    return f'Book ID: {book_id}'
+```
+
+<details>
+<summary>Solution</summary>
+
+```text
+Book ID: 100
+```
+
+</details>
 
 ---
 
 ## Query parameters
 
-You can also get data from the query string (the part after `?` in a URL):
+Sometimes data comes after a `?` in the URL.
+
+Example:
+
+```text
+/search?q=python
+```
+
+The value after `q=` is called a query parameter.
+
+Example route:
 
 ```python
 from flask import request
 
 @app.route('/search')
 def search():
+
     query = request.args.get('q', '')
+
     return f'Searching for: {query}'
 ```
 
-Visiting `/search?q=python` will show "Searching for: python".
+Visiting:
+
+```text
+/search?q=python
+```
+
+returns:
+
+```text
+Searching for: python
+```
+
+---
+
+## Why routes matter
+
+Every API endpoint you build later will use routes.
+
+For example:
+
+```text
+GET    /api/books
+POST   /api/books
+PUT    /api/books/1
+DELETE /api/books/1
+```
+
+These are simply routes that respond to different requests.
+
+Learning routes now will make building your API much easier.
 
 ---
 
 ## Conclusion
 
-In this lesson, you learned:
+In this lesson you learned:
 
-- What routes are in Flask
-- How URLs map to Python functions
-- How to use multiple routes for one function
-- How to handle different HTTP methods (GET, POST)
-- How to use URL parameters
-- How to use query parameters
+* What routes are
+* How URLs connect to Python functions
+* How to create multiple routes
+* How to use GET and POST methods
+* How URL parameters work
+* How query parameters work
 
-You now understand how Flask decides what code runs for each URL. In the next lessons, we will start using routes to build real API endpoints for our My DIY Library.
+Routes are the foundation of every Flask application and every API endpoint you'll build throughout this course.
+
+In the next lesson, we'll start creating routes that return structured data instead of simple text.
 
 ---
 
 ## Troubleshooting
 
-### Route not found (404 error)
+### I get a 404 error
 
-If you see a 404 error:
-- Check that the URL is correct
-- Make sure your route starts with `/`
-- Ensure your Flask server is running
+Make sure:
 
+```python
+@app.route('/about')
+```
 
+matches the URL you are visiting:
 
-### request is not defined
+```text
+http://127.0.0.1:5000/about
+```
 
-If you get an error like:
+Routes must match exactly.
 
-```bash
+---
+
+### I get:
+
+```text
 NameError: name 'request' is not defined
 ```
 
-Make sure you imported it:
+Make sure you imported `request`:
 
 ```python
 from flask import request
 ```
 
+---
 
+### My changes don't appear
 
-### Server not updating changes
+If the server does not reload automatically:
 
-- Stop the server (`Ctrl + C`)
-- Restart it with `python app.py`
-- Make sure `debug=True` is enabled
+1. Stop the server:
+
+```text
+Ctrl + C
+```
+
+2. Start it again:
+
+```bash
+python app.py
+```
+
+Also make sure:
+
+```python
+app.run(debug=True)
+```
+
+is enabled.
+
+---
+
+### The URL parameter isn't working
+
+Make sure the parameter exists in both places:
+
+```python
+@app.route('/book/<int:book_id>')
+def get_book(book_id):
+```
+
+The variable name must match exactly.

@@ -44,32 +44,15 @@ Let's create a helper function that generates error responses for us.
 
 Open `app.py`.
 
-Place the following function **below your imports** and **above your first route**.
+Place the following function below `book_to_dict` function and above your first route.
 
 ```python
+# Helper function to return an error response
 def error_response(message, status_code):
     return jsonify({
         'error': message,
         'status': status_code
     }), status_code
-```
-
-Your file should now look similar to:
-
-```python
-from flask import Flask, jsonify, request
-
-app = Flask(__name__)
-
-def error_response(message, status_code):
-    return jsonify({
-        'error': message,
-        'status': status_code
-    }), status_code
-
-@app.route('/api/books')
-def get_books():
-    ...
 ```
 
 ### Step 2: Use the helper function
@@ -150,73 +133,6 @@ return error_response(
 
 ---
 
-## Using error responses in routes
-
-Let's improve the route you created earlier.
-
-If your current code looks like this:
-
-```python
-@app.route('/api/books/<int:book_id>')
-def get_book(book_id):
-
-    book = Book.query.get(book_id)
-
-    if not book:
-        return jsonify({
-            'error': 'Book not found'
-        }), 404
-
-    return jsonify(book_to_dict(book))
-```
-
-Replace only this part:
-
-```python
-return jsonify({
-    'error': 'Book not found'
-}), 404
-```
-
-with:
-
-```python
-return error_response(
-    'Book not found',
-    404
-)
-```
-
-Your updated route becomes:
-
-```python
-@app.route('/api/books/<int:book_id>')
-def get_book(book_id):
-
-    book = Book.query.get(book_id)
-
-    if not book:
-        return error_response(
-            'Book not found',
-            404
-        )
-
-    return jsonify(book_to_dict(book))
-```
-
-If the book exists, the API returns the book.
-
-If it doesn't exist, the API returns:
-
-```json
-{
-  "error": "Book not found",
-  "status": 404
-}
-```
-
----
-
 ## Handling unexpected errors
 
 Sometimes something unexpected happens while interacting with the database.
@@ -233,6 +149,15 @@ db.session.commit()
 
 return jsonify(book_to_dict(new_book)), 201
 ```
+in your `create_book` function and,
+
+```python
+db.session.commit()
+
+return jsonify(book_to_dict(book)), 200
+```
+in your `update_book` function.
+
 
 ### Step 2: Wrap the commit in try/except
 
@@ -242,9 +167,11 @@ Replace it with:
 db.session.add(new_book)
 
 try:
+    # Commit the transaction
     db.session.commit()
 
 except Exception:
+    # Rollback the transaction and return an error
     db.session.rollback()
 
     return error_response(
@@ -254,6 +181,26 @@ except Exception:
 
 return jsonify(book_to_dict(new_book)), 201
 ```
+for the `create_book` function, and with
+
+```python
+try: 
+    # Commit the transaction
+    db.session.commit()
+
+except Exception:
+    # Rollback the transaction and return an error
+    db.session.rollback()
+
+    return error_response(
+        'Internal server error',
+        500
+    )
+
+return jsonify(book_to_dict(book)), 200
+```
+
+for the `update_book` function.
 
 ### What does this do?
 
@@ -298,6 +245,8 @@ if not book:
 ---
 
 ## Returning validation errors
+
+> **Note:** This section is only for information purposes. I recommend skipping the implementation of this section.
 
 Sometimes multiple problems exist in the request.
 
@@ -368,6 +317,7 @@ NameError: name 'error_response' is not defined
 Make sure you created the helper function:
 
 ```python
+# Helper function to return an error response
 def error_response(message, status_code):
     return jsonify({
         'error': message,
@@ -376,24 +326,6 @@ def error_response(message, status_code):
 ```
 
 before using it.
-
----
-
-### I get:
-
-```text
-Book not found
-```
-
-The requested ID does not exist in the database.
-
-Try:
-
-```text
-GET /api/books
-```
-
-to see available books.
 
 ---
 

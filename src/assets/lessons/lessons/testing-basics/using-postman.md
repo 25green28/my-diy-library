@@ -1,278 +1,183 @@
-# Using Postman
+# Introduction to Postman
 
-Postman is a popular tool for testing APIs. Instead of using terminal commands, Postman provides a graphical interface that makes it easy to send requests and inspect responses.
+Postman is a tool for testing APIs.
 
-In this lesson, you'll use Postman to test the API endpoints you've created throughout the project.
+Instead of using a browser or terminal commands, Postman provides a graphical interface where you can send HTTP requests and inspect responses.
+
+Throughout this course, you'll use Postman to test the endpoints you build.
+
+---
 
 ## Installing Postman
 
-1. Visit https://www.postman.com/downloads/
-2. Download the version for your operating system
-3. Install and launch Postman
-
-You do not need to create an account to test APIs locally, although creating one allows you to save collections online.
-
----
-
-## Creating your first request
-
-1. Open Postman.
-2. Click **New** → **HTTP Request**.
-3. Enter the URL:
+1. Visit:
 
 ```text
-http://127.0.0.1:5000/api/books
+https://www.postman.com/downloads/
 ```
 
-4. Choose an HTTP method from the dropdown:
+2. Download the version for your operating system.
+3. Install and launch Postman.
 
-- GET
-- POST
-- PUT
-- DELETE
-
-5. Click **Send**.
+Creating an account is optional.
 
 ---
 
-## Testing the GET endpoint
+## What can Postman do?
 
-Let's test the endpoint that returns all books.
+Postman allows you to:
 
-### Request
+* Send HTTP requests
+* View responses
+* Inspect status codes
+* Send JSON data
+* Test APIs without writing frontend code
 
-Method:
+For example:
+
+```text
+GET    /books
+POST   /books
+PUT    /books/1
+DELETE /books/1
+```
+
+All of these requests can be tested directly from Postman.
+
+---
+
+## Your first request
+
+Before testing your own Flask application that you'll write in the future lessons, let's use a public API.
+
+Create a new request:
+
+1. Click **New → HTTP Request**
+2. Select **GET**
+3. Enter:
+
+```text
+https://jsonplaceholder.typicode.com/posts/1
+```
+
+4. Click **Send**
+
+You should receive a response similar to:
+
+```json
+{
+  "userId": 1,
+  "id": 1,
+  "title": "...",
+  "body": "..."
+}
+```
+
+Congratulations — you've made your first API request.
+
+---
+
+## Understanding the interface
+
+Every request contains:
+
+### HTTP Method
+
+Examples:
 
 ```text
 GET
+POST
+PUT
+DELETE
 ```
 
-URL:
+The method describes what action you want to perform.
+
+### URL
+
+The address of the API endpoint:
 
 ```text
-http://127.0.0.1:5000/api/books
+https://jsonplaceholder.typicode.com/posts/1
 ```
 
-Click **Send**.
+### Response
 
-### Expected response
+After clicking **Send**, Postman shows:
 
-If books exist in your database, you'll see something similar to:
-
-```json
-[
-    {
-        "id": 1,
-        "title": "1984",
-        "author": "George Orwell",
-        "genre": "Dystopian",
-        "published_year": 1949
-    }
-]
-```
-
-If no books exist yet, you'll receive:
-
-```json
-[]
-```
+* Response body
+* Status code
+* Headers
 
 ---
 
-## Testing the POST endpoint
+## Understanding status codes
 
-Now let's create a new book.
-
-### Request
-
-Method:
+Common status codes include:
 
 ```text
-POST
+200 OK
 ```
 
-URL:
-
-```text
-http://127.0.0.1:5000/api/books
-```
-
-### Body
-
-1. Click the **Body** tab.
-2. Select **raw**.
-3. Select **JSON** from the dropdown.
-
-Paste:
-
-```json
-{
-    "title": "1984",
-    "author": "George Orwell",
-    "genre": "Dystopian",
-    "published_year": 1949
-}
-```
-
-Click **Send**.
-
-### Expected response
-
-```json
-{
-    "id": 1,
-    "title": "1984",
-    "author": "George Orwell",
-    "genre": "Dystopian",
-    "published_year": 1949
-}
-```
-
-Status code:
+Request succeeded.
 
 ```text
 201 Created
 ```
 
----
-
-## Testing the GET single book endpoint
-
-Let's retrieve a specific book.
-
-### Request
-
-Method:
+Resource created successfully.
 
 ```text
-GET
+404 Not Found
 ```
 
-URL:
+Requested resource does not exist.
 
 ```text
-http://127.0.0.1:5000/api/books/1
+500 Internal Server Error
 ```
 
-Click **Send**.
-
-### Expected response
-
-```json
-{
-    "id": 1,
-    "title": "1984",
-    "author": "George Orwell",
-    "genre": "Dystopian",
-    "published_year": 1949
-}
-```
+Something went wrong on the server.
 
 ---
 
-## Testing the PUT endpoint
+## Collections
 
-Let's update an existing book.
+As your project grows, you'll create many requests.
 
-### Request
+Postman allows you to organize them into collections.
 
-Method:
-
-```text
-PUT
-```
-
-URL:
-
-```text
-http://127.0.0.1:5000/api/books/1
-```
-
-### Body
-
-```json
-{
-    "genre": "Science Fiction"
-}
-```
-
-Click **Send**.
-
-### Expected response
-
-```json
-{
-    "id": 1,
-    "title": "1984",
-    "author": "George Orwell",
-    "genre": "Science Fiction",
-    "published_year": 1949
-}
-```
-
----
-
-## Testing the DELETE endpoint
-
-Let's delete a book.
-
-### Request
-
-Method:
-
-```text
-DELETE
-```
-
-URL:
-
-```text
-http://127.0.0.1:5000/api/books/1
-```
-
-Click **Send**.
-
-### Expected response
-
-```json
-{
-    "message": "Book deleted successfully"
-}
-```
-
----
-
-## Saving requests
-
-You can save requests so you don't have to recreate them.
-
-1. Click **Save**.
-2. Enter a name such as:
-
-```text
-Get All Books
-```
-
-3. Create a collection called:
+Example:
 
 ```text
 My DIY Library API
 ```
 
-4. Save the request.
+Inside the collection you can save:
 
-Repeat this process for each endpoint.
+```text
+Get All Books
+Get Book
+Create Book
+Update Book
+Delete Book
+```
 
 ---
 
-## Using variables
+## Variables
 
-As your API grows, typing the same URL repeatedly becomes annoying.
+Instead of repeatedly typing:
 
-Create a variable:
+```text
+http://127.0.0.1:5000
+```
 
-| Variable | Value |
-|-----------|---------|
+you can create a variable:
+
+| Variable | Value                 |
+| -------- | --------------------- |
 | base_url | http://127.0.0.1:5000 |
 
 Then use:
@@ -281,33 +186,36 @@ Then use:
 {{base_url}}/api/books
 ```
 
-instead of:
-
-```text
-http://127.0.0.1:5000/api/books
-```
-
-If the server URL changes later, you'll only update it in one place.
+This makes requests easier to maintain.
 
 ---
 
 ## Try it yourself
 
-Create a request that retrieves a single book.
-
-Fill in the missing URL:
+Send a GET request to:
 
 ```text
-http://127.0.0.1:5000/?
+https://jsonplaceholder.typicode.com/users/1
 ```
 
-The request should retrieve the book with ID 5.
+Before clicking Send, try to predict:
+
+* Which method should be used?
+* Will the response be JSON or plain text?
 
 <details>
 <summary>Solution</summary>
 
+Method:
+
 ```text
-http://127.0.0.1:5000/api/books/5
+GET
+```
+
+Response:
+
+```text
+JSON
 ```
 
 </details>
@@ -318,109 +226,39 @@ http://127.0.0.1:5000/api/books/5
 
 In this lesson you learned:
 
-- What Postman is and why developers use it
-- How to create and send HTTP requests
-- How to test GET, POST, PUT and DELETE endpoints
-- How to send JSON data in request bodies
-- How to inspect API responses and status codes
-- How to save requests in collections
-- How to use variables to simplify testing
+* What Postman is
+* Why developers use it
+* How to create requests
+* How to inspect responses
+* What status codes mean
+* How collections and variables work
 
-In the next lesson, we'll finish our API and prepare it for real-world usage.
+You'll use Postman throughout the rest of the course to test the API endpoints you build.
 
 ---
 
 ## Troubleshooting
 
-### I get:
+### Could not send request
 
-```text
-Could not send request
-```
-
-Make sure your Flask application is running.
-
-You should see something similar to:
-
-```text
-Running on http://127.0.0.1:5000
-```
-
-in your terminal.
+Check your internet connection and verify the URL.
 
 ---
 
-### I get:
+### SSL or certificate errors
+
+Make sure the URL starts with:
 
 ```text
-404 Not Found
+https://
 ```
 
-Check that:
-
-- The route exists in your Flask application
-- The URL is typed correctly
-- The server has been restarted after code changes
+when required by the API.
 
 ---
 
-### I get:
+### Response is different from the lesson
 
-```text
-405 Method Not Allowed
-```
+Public APIs can change over time.
 
-You're using the wrong HTTP method.
-
-For example:
-
-```text
-GET /api/books
-```
-
-works, but
-
-```text
-POST /api/books/1
-```
-
-may not.
-
-Check the route definition in your code.
-
----
-
-### I get:
-
-```text
-400 Bad Request
-```
-
-Your JSON data is invalid or missing required fields.
-
-Make sure the JSON is properly formatted:
-
-```json
-{
-    "title": "1984",
-    "author": "George Orwell"
-}
-```
-
----
-
-### My request never finishes
-
-Make sure:
-
-- Flask is running
-- The URL is correct
-- No firewall is blocking localhost connections
-
-Also verify that you're using:
-
-```text
-http://127.0.0.1:5000
-```
-
-and not a different port.
+Focus on understanding the request and response structure rather than matching every field exactly.

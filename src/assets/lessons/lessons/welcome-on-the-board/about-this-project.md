@@ -1,8 +1,13 @@
 # About This Project & Me
 
-Welcome to **My DIY Library**!
+Hi! I'm Mateusz Laski *(25green28)* and welcome to **My DIY Library**!
 
+I created this project to provide a beginner-friendly introduction to backend development. Instead of focusing only on theory, we'll build a real application together and learn concepts as we need them.
+
+My goal is to help you understand not only *how* to build a backend, but also *why* things work the way they do. 
 This project is a hands-on tutorial that will guide you through building a complete backend API from scratch using **Python** and **Flask**. Throughout the course, you'll create an API capable of managing a library of books by adding, reading, updating, and deleting records.
+
+---
 
 ## What You'll Build
 
@@ -25,7 +30,7 @@ You'll learn:
 - What a backend is and how it works
 - How to build APIs using Flask
 - How to work with SQLite databases
-- How to implement CRUD operations (**Create, Read, Update, Delete**)
+- How to implement CRUD operations (**C**reate, **R**ead, **U**pdate, **D**elete)
 - How to validate and test API requests
 
 ## Prerequisites
@@ -38,13 +43,7 @@ You only need:
 - Basic familiarity with using a browser and managing files
 - Curiosity and a willingness to learn
 
-## About Me
-
-Hi! I'm **Mateusz Laski** *(25green28)*.
-
-I created this project to provide a beginner-friendly introduction to backend development. Instead of focusing only on theory, we'll build a real application together and learn concepts as we need them.
-
-My goal is to help you understand not only *how* to build a backend, but also *why* things work the way they do.
+---
 
 ## Before We Start
 

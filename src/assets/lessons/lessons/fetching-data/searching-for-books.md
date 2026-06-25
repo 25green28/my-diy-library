@@ -2,18 +2,22 @@
 
 Let's implement search functionality to find books by title or author. Search is a common feature in APIs that makes it easy for users to find specific items.
 
+---
+
 ## The search endpoint
 
-Add this route to your `app.py`:
+Add this route to your `app.py` (bellow the route from the previous lesson):
 
 ```python
 @app.route('/api/books/search', methods=['GET'])
 def search_books():
     query = request.args.get('q', '')
 
+    # Check if the query is empty
     if not query:
         return jsonify({'error': 'Search query is required'}), 400
 
+    # Perform the search
     books = Book.query.filter(
         (Book.title.ilike(f'%{query}%')) |
         (Book.author.ilike(f'%{query}%'))
@@ -30,6 +34,8 @@ def search_books():
 4. `%` acts as a wildcard and matches any characters.
 5. `|` means OR.
 6. All matching books are returned as JSON.
+
+---
 
 ## Understanding the search
 
@@ -78,7 +84,7 @@ Without `%`, the title would have to match exactly.
 
 ## Testing the endpoint
 
-Start your Flask server and visit:
+Start your Flask server and visit (in Postman or a browser):
 
 ```text
 http://127.0.0.1:5000/api/books/search?q=1984

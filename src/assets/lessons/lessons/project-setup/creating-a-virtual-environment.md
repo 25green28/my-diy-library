@@ -18,6 +18,21 @@ Example:
 cd my-project-folder
 ```
 
+> **Recommendation:** The easiest way to navigate to your project folder is to:
+>
+> 1. Open your file explorer.
+> 2. Find your project folder.
+> 3. Copy the **full folder path** (you can usually right-click the folder and choose **Copy as path**, or copy the path shown in the address bar at the top of your file explorer).
+> 4. In the terminal, type `cd ` (with a space after it).
+> 5. Paste the path and press Enter.
+>
+> Example:
+>
+> ```bash
+> cd "C:/Users/<Your Username>/Documents/Book Management Backend"
+> ```
+>
+> The quotation marks are needed when the folder name contains spaces.
 ## Creating your virtual environment
 
 Then run:
@@ -74,7 +89,7 @@ The `(venv)` will disappear from your prompt.
 > Important: You need to activate the virtual environment every time you reopen your terminal and return to this project.
 
 
-## Summary
+## Conclusion
 
 - A virtual environment isolates project dependencies
 - Always create it inside your project folder

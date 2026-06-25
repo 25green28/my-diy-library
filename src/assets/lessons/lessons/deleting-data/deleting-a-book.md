@@ -2,18 +2,22 @@
 
 DELETE requests are used to remove resources from the database. Let's implement an endpoint that allows clients to delete books from our library.
 
+---
+
 ## The DELETE endpoint
 
-Add this route to your `app.py`:
+Add this route to your `app.py` (after your other routes):
 
 ```python
 @app.route('/api/books/<int:book_id>', methods=['DELETE'])
 def delete_book(book_id):
     book = Book.query.get(book_id)
 
+    # If the book doesn't exist, return a 404 error
     if not book:
         return error_response('Book not found', 404)
 
+    # Delete the book from the database
     db.session.delete(book)
     db.session.commit()
 
@@ -27,44 +31,6 @@ def delete_book(book_id):
 3. `db.session.delete(book)` marks the book for deletion
 4. `db.session.commit()` permanently removes it from the database
 5. We return a success message with status 200
-
-## Updating your existing code
-
-You already created:
-
-- The `Book` model
-- The `error_response()` helper
-- The GET, POST and PUT endpoints
-
-👉 Add the new `delete_book()` route below your other routes.
-
-You do **not** need to modify your model or existing endpoints.
-
-Simply add the new route and restart the Flask server.
-
-## Testing the endpoint
-
-### Windows PowerShell
-
-```powershell
-Invoke-RestMethod `
-    -Method DELETE `
-    -Uri "http://127.0.0.1:5000/api/books/1"
-```
-
-### Windows Command Prompt
-
-```cmd
-curl -X DELETE http://127.0.0.1:5000/api/books/1
-```
-
-### Expected response
-
-```json
-{
-  "message": "Book deleted successfully"
-}
-```
 
 ## Handling database errors
 
@@ -83,6 +49,7 @@ with:
 
 ```python
 try:
+    # Delete the book from the database
     db.session.delete(book)
     db.session.commit()
 
@@ -91,6 +58,7 @@ try:
     }), 200
 
 except Exception:
+    # In case of an error, rollback the transaction
     db.session.rollback()
 
     return error_response(
@@ -126,10 +94,11 @@ The `204` status code means:
 
 Both approaches are valid.
 
-## Think before writing code
+## The best option
 
 Your library currently stores:
 
+- book_id
 - title
 - author
 - genre
@@ -138,13 +107,6 @@ Your library currently stores:
 Before looking at the solution, think:
 
 If a user deletes a book, which value should be used to identify the book?
-
-Should the DELETE endpoint use:
-
-- title
-- author
-- genre
-- id
 
 <details>
 <summary>Solution</summary>
@@ -167,6 +129,33 @@ This is why our route uses:
 
 </details>
 
+---
+
+## Try it with Postman
+
+Create a new request in Postman.
+
+**Method**
+
+```text
+DELETE
+```
+
+**URL**
+
+```text
+http://127.0.0.1:5000/api/books/1
+```
+
+Replace `1` with the ID of an existing book.
+
+Click **Send**.
+
+If the request is successful, the book will be removed from the database and the API will return a success response.
+
+---
+
+
 ## Best practices
 
 - Always check if the resource exists before deleting it
@@ -174,8 +163,6 @@ This is why our route uses:
 - Return clear success and error messages
 - Wrap database operations in `try/except`
 - Call `rollback()` when a database error occurs
-- Test the endpoint after deleting a record
-
 ---
 
 ## Conclusion

@@ -134,6 +134,18 @@
     },
     {
       "id": 6,
+      "title": "Testing (basics)",
+      "icon": "chart-network",
+      "lessons": [
+        {
+          "id": 0,
+          "title": "Using Postman",
+          "path": "/src/assets/lessons/lessons/testing-basics/using-postman.md"
+        }
+      ]
+    },
+    {
+      "id": 7,
       "title": "POST requests",
       "icon": "send",
       "lessons": [
@@ -145,7 +157,7 @@
       ]
     },
     {
-      "id": 7,
+      "id": 8,
       "title": "Reading data (GET)",
       "icon": "hard-drive-upload",
       "lessons": [
@@ -167,7 +179,7 @@
       ]
     },
     {
-      "id": 8,
+      "id": 9,
       "title": "Modifying data (PUT)",
       "icon": "file-pen-line",
       "lessons": [
@@ -179,7 +191,7 @@
       ]
     },
     {
-      "id": 9,
+      "id": 10,
       "title": "Data validation",
       "icon": "globe-check",
       "lessons": [
@@ -196,7 +208,7 @@
       ]
     },
     {
-      "id": 10,
+      "id": 11,
       "title": "Deleting data",
       "icon": "shredder",
       "lessons": [
@@ -204,18 +216,6 @@
           "id": 0,
           "title": "Deleting a book (DELETE)",
           "path": "/src/assets/lessons/lessons/deleting-data/deleting-a-book.md"
-        }
-      ]
-    },
-    {
-      "id": 11,
-      "title": "Testing (basics)",
-      "icon": "chart-network",
-      "lessons": [
-        {
-          "id": 0,
-          "title": "Using Postman",
-          "path": "/src/assets/lessons/lessons/testing-basics/using-postman.md"
         }
       ]
     },

@@ -2,6 +2,8 @@
 
 JSON (**J**ava**S**cript **O**bject **N**otation) is the format we'll use to send data between clients and our backend. It's a simple, readable way to structure data.
 
+---
+
 ## What is JSON?
 
 JSON is a text format for storing and transporting data. Despite the name, it's not specific to JavaScript (programming language used mainly for websites) - it works with all programming languages. JSON is popular because it's easy for humans to read and easy for computers to process.
@@ -35,6 +37,8 @@ JSON supports several types of data:
 - **Objects**: Nested key-value pairs in curly braces
 - **null**: Represents no value
 
+---
+
 ## Example: A book in JSON
 
 Here's how we'll represent a book in our Book Management Backend:
@@ -45,7 +49,7 @@ Here's how we'll represent a book in our Book Management Backend:
   "title": "1984",
   "author": "George Orwell",
   "publication_year": 2022,
-  "category": "dystopian"
+  "genre": "dystopian"
 }
 ```
 
@@ -60,6 +64,8 @@ When clients communicate with our backend:
 
 Python makes it easy to work with JSON. Python dictionaries can be converted to JSON strings, and JSON strings can be converted back to dictionaries. Flask handles this automatically with the `jsonify` function we'll use later.
 
+---
+
 ## Conclusion
 
 In this lesson, you learned:
@@ -67,7 +73,7 @@ In this lesson, you learned:
 - What JSON is and why it is used
 - How JSON structures data using key-value pairs
 - The most common JSON data types
-- How JSON is used in our Book Management Backend API
+- How JSON is used in our My DIY Library API
 - How Python works with JSON data
 
 

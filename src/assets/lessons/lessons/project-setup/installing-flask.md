@@ -8,6 +8,7 @@ Before installing anything, make sure you activated your virtual environment fro
 
 If not, go back to the section **Activating the virtual environment** in the previous lesson.
 
+> **Important:** Before installing any packages or running Python code, make sure your virtual environment is activated. Otherwise, packages may be installed in the wrong place and your project may not work correctly.
 ---
 
 ## Installing Flask

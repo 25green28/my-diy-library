@@ -2,6 +2,8 @@
 
 Python is a programming language that's easy to read and write. It's perfect for beginners because its code looks similar to English. Many companies use Python for web development, data science, and automation. In our case, we'll use it to build our **My DIY Library** application.
 
+---
+
 ## Installing on Windows
 
 1. Visit [python.org](https://www.python.org/downloads/)
@@ -32,6 +34,8 @@ sudo apt install python3  # For Ubuntu/Debian
 sudo dnf install python3  # For Fedora
 ```
 
+---
+
 ## Verify Your Installation
 
 After installing, open a terminal (or Command Prompt on Windows) and type:
@@ -49,6 +53,8 @@ Python 3.12.4
 (The exact version may be different, but it should be 3.11 or newer.)
 
 > If the `python` command does not work on your system, try `python3` instead. This is common on Linux and macOS.
+
+---
 
 ## Conclusion
 You now have Python installed. You're ready to create your first virtual environment!

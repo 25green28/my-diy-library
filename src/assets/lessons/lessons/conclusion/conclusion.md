@@ -1,6 +1,8 @@
 # Conclusion & Next Steps
 
-Congratulations! You've built a complete RESTful API from scratch using Python and Flask. You now have a fully functional Book Management Backend that can create, read, update, and delete books.
+Congratulations! You've built a complete RESTful API from scratch using Python and Flask. You now have a fully functional **My DIY Library** that can create, read, update, and delete books.
+
+---
 
 ## What you've accomplished
 
@@ -25,6 +27,8 @@ Your DIY Library can:
 * Search for books by title or author
 * Validate input data and return helpful error messages
 
+---
+
 ## What's next?
 
 Now that you have a working API, here are some ways to expand your knowledge:
@@ -35,7 +39,6 @@ Now that you have a working API, here are some ways to expand your knowledge:
 * Implement pagination for large datasets
 * Add sorting options (by title, author, or publication year)
 * Create relationships between books and other entities
-* Add file upload support for book covers
 * Implement rate limiting to prevent abuse
 
 ### Improve your code
@@ -54,6 +57,8 @@ Now that you have a working API, here are some ways to expand your knowledge:
 * Learn how production servers work
 * Explore continuous deployment workflows
 * Add monitoring and error tracking
+
+---
 
 ## Connect your backend
 
@@ -83,6 +88,8 @@ If something doesn't work, use it as a debugging exercise:
 
 Real-world development often involves connecting existing systems together, and this is a great opportunity to practice that skill.
 
+---
+
 ### Continue learning
 
 Once you're comfortable with Flask and APIs, consider exploring:
@@ -105,9 +112,11 @@ Useful resources include:
 
 Reading documentation is an essential developer skill. Learning how to find answers yourself will make you a stronger programmer over time.
 
+---
+
 ## A note from the course author
 
-If you've reached this point, congratulations.
+If you've reached this point, congratulations 🎉.
 
 You didn't just learn Flask syntax—you built a complete backend application from scratch.
 
@@ -116,7 +125,6 @@ The purpose of this course was not to teach you how to copy code.
 Instead, it was designed to help you:
 
 - Understand how APIs work
-- Think through problems before writing code
 - Read and modify existing code confidently
 - Connect backend concepts together
 - Build a complete project step by step
@@ -129,7 +137,9 @@ Keep experimenting, keep debugging, and keep building.
 
 Every project you complete will make the next one easier.
 
-Thank you for following this course, and good luck with connecting your backend to the frontend application.
+Thank you for following this course, and good luck with connecting your backend to the frontend application 💻!
+
+---
 
 ## Keep building
 
@@ -153,7 +163,7 @@ Each project will reinforce the same core concepts you've learned throughout thi
 * Error handling
 * CRUD operations
 
-Thank you for following along with the My DIY Library project.
+Thank you for following along with the **My DIY Library** project.
 
 You now have the foundation to continue your journey into backend development and full-stack development.
 

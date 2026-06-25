@@ -6,13 +6,14 @@ Just as we can upload images when creating books, we should also allow users to 
 
 ## Update the update_book route
 
-Modify your PUT route to handle image updates:
+Modify your PUT route to handle image updates (the `update_book` function):
 
 ```python
 @app.route('/api/books/<int:book_id>', methods=['PUT'])
 def update_book(book_id):
     book = Book.query.get(book_id)
 
+   # Handle missing book
     if not book:
         return error_response('Book not found', 404)
 
@@ -22,6 +23,7 @@ def update_book(book_id):
     published_year = request.form.get('published_year')
     image = request.files.get('image')
 
+    # Update fields if provided
     if title:
         book.title = title
 
@@ -38,12 +40,28 @@ def update_book(book_id):
             return error_response('Published year must be a number', 400)
 
     if image:
+        # Delete old image if it exists
+        if book.image_filename:
+            old_path = os.path.join(app.config['UPLOAD_FOLDER'], book.image_filename)
+            if os.path.exists(old_path):
+                os.remove(old_path)
+
+        # Save new image
         filename = secure_filename(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         book.image_filename = filename
 
-    db.session.commit()
+    try: 
+        db.session.commit()
 
+    except Exception:
+        db.session.rollback()
+
+        return error_response(
+            'Internal server error',
+            500
+        )
+    
     return jsonify(book_to_dict(book)), 200
 ```
 
@@ -78,13 +96,15 @@ if image:
 
 ---
 
-## Important: Old file cleanup (optional improvement)
+## Important: Old file cleanup
 
 Right now, old images are NOT deleted automatically.
 
 That means replacing images will leave old files on disk.
 
-### Optional improvement (recommended in real projects):
+### Recommended improvement (especially in real projects):
+
+Please update the current `if image` block to include the old file cleanup:
 
 ```python
 if image:
@@ -104,7 +124,7 @@ This prevents unused files from accumulating.
 
 ---
 
-## Important behavior (VERY IMPORTANT)
+## Important behavior
 
 ### What if only an image is sent?
 
@@ -142,28 +162,6 @@ So:
     - image (type: File)
 
 Then click **Send**
-
----
-
-## Think-first exercise
-
-What happens if a user sends only an image in a PUT request?
-
-<details>
-<summary>Solution</summary>
-
-Only the image will be updated.
-
-All other fields remain unchanged because updates are conditional:
-
-```python
-if title:
-    book.title = title
-```
-
-So missing fields are ignored, not overwritten.
-
-</details>
 
 ---
 

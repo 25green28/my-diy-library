@@ -11,15 +11,20 @@ Open your existing `Book` model.
 Currently it should look similar to:
 
 ```python
+# Book model
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     author = db.Column(db.String(100), nullable=False)
     genre = db.Column(db.String(50))
     published_year = db.Column(db.Integer)
+
+    # Return a readable output
+    def __repr__(self):
+        return f'<Book {self.title}>'
 ```
 
-Add the following line at the bottom of the model:
+Add the following line after the `published_year` column:
 
 ```python
 image_filename = db.Column(db.String(200))
@@ -28,6 +33,7 @@ image_filename = db.Column(db.String(200))
 Your updated model should now look like:
 
 ```python
+# Book model
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -35,6 +41,10 @@ class Book(db.Model):
     genre = db.Column(db.String(50))
     published_year = db.Column(db.Integer)
     image_filename = db.Column(db.String(200))
+
+    # Return a readable output
+    def __repr__(self):
+        return f'<Book {self.title}>'
 ```
 
 ---
@@ -62,7 +72,7 @@ We don't store the actual image data in the database because:
 
 Open your existing `book_to_dict()` function.
 
-Add the following line inside the returned dictionary:
+Add the following line inside the returned dictionary (after `published_year`):
 
 ```python
 'image_url': f"/api/books/{book.id}/image" if book.image_filename else None
@@ -71,6 +81,7 @@ Add the following line inside the returned dictionary:
 Your updated helper function should look like:
 
 ```python
+# Helper function to convert book into JSON
 def book_to_dict(book):
     return {
         'id': book.id,
@@ -115,6 +126,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Directly below it add:
 
 ```python
+# Configuration for file uploads
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -124,9 +136,11 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 Your configuration section should now look like:
 
 ```python
+# Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Configuration for file uploads
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 

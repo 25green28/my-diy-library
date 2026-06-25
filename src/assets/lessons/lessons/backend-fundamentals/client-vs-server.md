@@ -1,6 +1,8 @@
 # Client vs Server
 
-To understand how web applications work, you need to understand the relationship between clients and servers. This is fundamental to building our Book Management Backend.
+To understand how web applications work, you need to understand the relationship between clients and servers. This is fundamental to building our My DIY Library.
+
+---
 
 ## What is a client?
 
@@ -18,6 +20,8 @@ A server is a computer or program that provides resources, data, or services to 
 - Web servers that serve websites
 - Application servers like our Flask app
 - Database servers that store data
+
+---
 
 ## How they work together
 
@@ -38,10 +42,12 @@ When you visit Amazon.com:
 
 ## In our project
 
-For our Book Management Backend:
+For our My DIY Library:
 - Our Flask application is the **server** - it will handle requests and manage book data
 - A web browser or API testing tool is the **client** - it will send requests to our server
 - We'll build "endpoints" - specific URLs that clients can request to perform actions like adding or viewing books
+
+---
 
 ## Conclusion
 
@@ -51,6 +57,6 @@ In this lesson, you learned:
 - What a server is and what it does
 - How clients and servers communicate using the request-response cycle
 - How real-world apps like Amazon use this system
-- How this applies to our Book Management Backend project
+- How this applies to our My DIY Library project
 
 You now understand how data moves between users and servers. In the next lesson, we will explore how this communication happens in detail using HTTP requests.

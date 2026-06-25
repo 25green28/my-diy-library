@@ -18,7 +18,7 @@ The **frontend** is what users see and interact with - the visual interface. The
 
 In our **My DIY Library** project:
 
-- A frontend could be a website showing books
+- A frontend could be a website showing books (that is already made for you)
 - The backend is the system that stores, updates, and deletes those books
 
 ## How they communicate
