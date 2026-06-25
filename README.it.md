@@ -156,4 +156,8 @@ La ricerca funziona su:
 
 ## 📄 Licenza
 
-Questo progetto è a scopo didattico.
+Questo progetto è distribuito sotto licenza MIT.
+
+## 🤖 Assistenza AI
+
+Gli strumenti di intelligenza artificiale (inclusi i sistemi di supporto alla codifica basati su agenti e i suggerimenti in linea) sono stati utilizzati in misura limitata durante lo sviluppo, principalmente come supporto all'apprendimento, aiuto nel debugging e per la traduzione. Il loro utilizzo è stato occasionale e mirato a compiti specifici, piuttosto che esteso a tutto il progetto. Tutti i suggerimenti sono stati rivisti, compresi e applicati in modo selettivo. L'architettura, la struttura e l'implementazione principale sono state progettate e realizzate manualmente.

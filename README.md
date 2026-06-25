@@ -148,4 +148,11 @@ Search works on:
 
 ## 📄 License
 
-This project is for educational purposes.
+This project is licensed under the MIT License.
+
+## 🤖 AI Assistance
+
+AI tools (including agentic coding support and inline suggestions) were used to a limited extent during development, 
+mainly for learning assistance, debugging help, and translation support. Their use was occasional and task-specific 
+rather than project-wide. All suggestions were reviewed, understood, and selectively applied. The architecture,
+structure, and core implementation were designed and implemented manually.
