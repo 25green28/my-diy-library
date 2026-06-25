@@ -10,8 +10,6 @@ It focuses on learning by building: from basic Flask concepts to a fully working
 - 🇵🇱 [Polski](README.pl.md)
 - 🇮🇹 [Italiano](README.it.md)
 
----
-
 ## 🚀 Features
 
 - Full CRUD API for managing books
@@ -22,8 +20,6 @@ It focuses on learning by building: from basic Flask concepts to a fully working
 - Pre-built React frontend included
 - Beginner-friendly step-by-step learning structure
 
----
-
 ## 🧠 What you'll learn
 
 - Backend fundamentals with Flask
@@ -33,8 +29,6 @@ It focuses on learning by building: from basic Flask concepts to a fully working
 - Route & query parameters
 - File uploads and image handling
 - Testing APIs using tools like Postman
-
----
 
 ## 🛠️ Tech Stack
 
@@ -50,8 +44,6 @@ It focuses on learning by building: from basic Flask concepts to a fully working
 - Vite
 - Tailwind CSS
 - Lucide Icons
-
----
 
 ## ⚙️ Installation
 
@@ -87,8 +79,6 @@ http://localhost:5173
 
 8. Click on `Learning`
 
----
-
 ### Advanced setup
 
 ```bash
@@ -97,8 +87,6 @@ cd my-diy-library
 npm install
 npm run dev
 ```
-
----
 
 ## 🔌 API Endpoints
 
@@ -111,8 +99,6 @@ npm run dev
 | PUT    | /api/books/<id>                   | Update book             |
 | DELETE | /api/books/<id>                   | Delete book             |
 | GET    | /api/books/<id>/image             | Get book image          |
-
----
 
 ## 📦 Example Book Object
 
@@ -127,8 +113,6 @@ npm run dev
 }
 ```
 
----
-
 ## 🖼️ Image Uploads
 
 Book covers are stored in the `/uploads` folder.
@@ -140,8 +124,6 @@ Images are served via:
 ```
 GET /api/books/<id>/image
 ```
-
----
 
 ## 🔍 Search Feature
 
@@ -156,8 +138,6 @@ Search works on:
 - title
 - author
 
----
-
 ## 📈 Future Improvements
 
 * Authentication system (JWT)
@@ -165,8 +145,6 @@ Search works on:
 * Advanced filtering
 * Cloud storage for images
 * Deployment (Render / Railway / Vercel)
-
----
 
 ## 📄 License
 

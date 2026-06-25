@@ -10,8 +10,6 @@ Il focus è sull'apprendimento pratico: dai concetti base di Flask fino a un bac
 - 🇵🇱 [Polski](README.pl.md)
 - 🇮🇹 Italiano (corrente)
 
----
-
 ## 🚀 Funzionalità
 
 - API CRUD completa per la gestione dei libri
@@ -22,8 +20,6 @@ Il focus è sull'apprendimento pratico: dai concetti base di Flask fino a un bac
 - Frontend in React pre-creato incluso
 - Struttura di apprendimento passo dopo passo adatta ai principianti
 
----
-
 ## 🧠 Cosa imparerai
 
 - Fondamenti di backend con Flask
@@ -33,8 +29,6 @@ Il focus è sull'apprendimento pratico: dai concetti base di Flask fino a un bac
 - Parametri di rotta (route) e di query
 - Caricamento di file e gestione delle immagini
 - Testare le API utilizzando strumenti come Postman
-
----
 
 ## 🛠️ Stack Tecnologico
 
@@ -50,8 +44,6 @@ Il focus è sull'apprendimento pratico: dai concetti base di Flask fino a un bac
 - Vite
 - Tailwind CSS
 - Lucide Icons
-
----
 
 ## ⚙️ Installazione
 
@@ -91,8 +83,6 @@ http://localhost:5173
 
 8. Clicca su `Learning`
 
----
-
 ### Configurazione avanzata
 
 ```bash
@@ -102,8 +92,6 @@ npm install
 npm run dev
 
 ```
-
----
 
 ## 🔌 Endpoint dell'API
 
@@ -116,8 +104,6 @@ npm run dev
 | PUT | /api/books/ | Aggiorna un libro |
 | DELETE | /api/books/ | Elimina un libro |
 | GET | /api/books//image | Ottieni l'immagine del libro |
-
----
 
 ## 📦 Esempio di Oggetto Libro
 
@@ -133,8 +119,6 @@ npm run dev
 
 ```
 
----
-
 ## 🖼️ Caricamento Immagini
 
 Le copertine dei libri sono memorizzate nella cartella `/uploads`.
@@ -147,8 +131,6 @@ Le immagini vengono servite tramite:
 GET /api/books/<id>/image
 
 ```
-
----
 
 ## 🔍 Funzionalità di Ricerca
 
@@ -164,8 +146,6 @@ La ricerca funziona su:
 * titolo (title)
 * autore (author)
 
----
-
 ## 📈 Miglioramenti Futuri
 
 * Sistema di autenticazione (JWT)
@@ -173,8 +153,6 @@ La ricerca funziona su:
 * Filtraggio avanzato
 * Archiviazione cloud per le immagini
 * Distribuzione / Deployment (Render / Railway / Vercel)
-
----
 
 ## 📄 Licenza
 

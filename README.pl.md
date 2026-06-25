@@ -10,8 +10,6 @@ Skupia się na nauce poprzez praktykę: od podstawowych pojęć związanych z Fl
 - 🇵🇱 Polski (bieżący)
 - 🇮🇹 [Italiano](README.it.md)
 
----
-
 ## 🚀 Funkcje
 
 - Pełne API CRUD do zarządzania książkami
@@ -22,8 +20,6 @@ Skupia się na nauce poprzez praktykę: od podstawowych pojęć związanych z Fl
 - Gotowy frontend w React w zestawie
 - Przyjazna dla początkujących struktura nauki krok po kroku
 
----
-
 ## 🧠 Czego się nauczysz
 
 - Podstaw backendu z Flaskiem
@@ -33,8 +29,6 @@ Skupia się na nauce poprzez praktykę: od podstawowych pojęć związanych z Fl
 - Parametrów ścieżki (route) i zapytania (query)
 - Przesyłania plików i obsługi obrazów
 - Testowania API za pomocą narzędzi takich jak Postman
-
----
 
 ## 🛠️ Stos technologiczny
 
@@ -50,8 +44,6 @@ Skupia się na nauce poprzez praktykę: od podstawowych pojęć związanych z Fl
 - Vite
 - Tailwind CSS
 - Lucide Icons
-
----
 
 ## ⚙️ Instalacja
 
@@ -91,8 +83,6 @@ http://localhost:5173
 
 8. Kliknij na `Learning`
 
----
-
 ### Konfiguracja zaawansowana
 
 ```bash
@@ -102,8 +92,6 @@ npm install
 npm run dev
 
 ```
-
----
 
 ## 🔌 Punkty końcowe API (Endpoints)
 
@@ -116,8 +104,6 @@ npm run dev
 | PUT | /api/books/ | Zaktualizuj książkę |
 | DELETE | /api/books/ | Usuń książkę |
 | GET | /api/books//image | Pobierz okładkę książki |
-
----
 
 ## 📦 Przykładowy obiekt książki
 
@@ -133,8 +119,6 @@ npm run dev
 
 ```
 
----
-
 ## 🖼️ Przesyłanie zdjęć
 
 Okładki książek są przechowywane w folderze `/uploads`.
@@ -147,8 +131,6 @@ Zdjęcia są serwowane przez:
 GET /api/books/<id>/image
 
 ```
-
----
 
 ## 🔍 Funkcja wyszukiwania
 
@@ -164,8 +146,6 @@ Wyszukiwanie działa po polach:
 * tytuł (title)
 * autor (author)
 
----
-
 ## 📈 Przyszłe ulepszenia
 
 * System uwierzytelniania (JWT)
@@ -173,8 +153,6 @@ Wyszukiwanie działa po polach:
 * Zaawansowane filtrowanie
 * Przechowywanie zdjęć w chmurze
 * Wdrożenie / Deployment (Render / Railway / Vercel)
-
----
 
 ## 📄 Licencja
 
