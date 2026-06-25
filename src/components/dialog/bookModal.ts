@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type {Book} from "@/models/Book.ts";
+import type { Book } from "@/models/Book.ts";
 
 type BookDialogPayload =
     | { mode: "new" }

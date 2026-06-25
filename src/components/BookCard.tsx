@@ -19,16 +19,16 @@ export default function BookCard({book, removeBook, onBookUpdated}: BookCardProp
     const open = useBookModalStore(state => state.open);
     const [image, setImage] = useState<string | null>(null);
 
-    const fetchImage = async () => {
-        const res = await fetch(`/api/books/${book.id}/image`);
-        if (res.ok) {
-            const imageBlob = await res.blob();
-            const imageObjectURL = URL.createObjectURL(imageBlob);
-            setImage(imageObjectURL);
-        }
-    }
-
     useEffect(() => {
+        const fetchImage = async () => {
+            const res = await fetch(`/api/books/${book.id}/image`);
+            if (res.ok) {
+                const imageBlob = await res.blob();
+                const imageObjectURL = URL.createObjectURL(imageBlob);
+                setImage(imageObjectURL);
+            }
+        }
+
         fetchImage();
     }, [book]);
 

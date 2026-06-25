@@ -3,21 +3,19 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import lessonData from "@/assets/lessons/lessons.json"
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
-import {Button} from "@/components/ui/button.tsx";
-import {ArrowRight, Bot, Loader2, CheckCircle2, XCircle, ServerCrash, Copy, Check} from "lucide-react";
-import {useCallback, useEffect, useState, useMemo} from "react";
+import { Prism as SyntaxHighlighter} from "react-syntax-highlighter";
+import { oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { Button} from "@/components/ui/button.tsx";
+import { ArrowRight, Bot, Loader2, CheckCircle2, XCircle, ServerCrash, Copy, Check } from "lucide-react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar.tsx";
-import { useSearchParams} from "react-router-dom";
-import type { currentLesson, category} from "@/assets/lessons/lessonObjects.ts";
+import { useSearchParams } from "react-router-dom";
+import type { currentLesson, category } from "@/assets/lessons/lessonObjects.ts";
 
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -73,7 +71,7 @@ export default function Learning() {
             const lessonPath = currentLesson.data.paths?.[currentLanguage] || currentLesson.data.path;
             const content = await import(lessonPath + "?raw");
             setMarkdownContent(content.default);
-        } catch (err) {
+        } catch {
             setMarkdownError("Failed to load lesson content");
         } finally {
             setIsLoadingMarkdown(false);
@@ -94,7 +92,7 @@ export default function Learning() {
     }, [currentLanguage]);
 
     useEffect(() => {
-        fetchMarkdown();
+        setTimeout(() => fetchMarkdown(), 0);
     }, [fetchMarkdown]);
 
     const setLesson = useCallback((category: number, lesson: number) => {
@@ -168,6 +166,7 @@ export default function Learning() {
                 } catch (error) {
                     return {
                         id: test.id,
+                        name: test.name,
                         passed: false,
                         error: error instanceof Error ? error.message : 'Unknown error'
                     };
@@ -295,26 +294,26 @@ export default function Learning() {
                                 rehypePlugins={[rehypeRaw]}
                                 remarkPlugins={[remarkGfm]}
                                 components={{
-                                    h1: ({ node, ...props }) => <h1 {...props} className="text-3xl font-bold mb-6 mt-8" />,
-                                    h2: ({ node, ...props }) => <h2 {...props} className="text-2xl font-bold mb-5 mt-6" />,
-                                    h3: ({ node, ...props }) => <h3 {...props} className="text-xl font-bold mb-4 mt-4" />,
-                                    p: ({ node, ...props }) => <p {...props} className="text-base leading-relaxed mb-4" />,
-                                    ul: ({ node, ...props }) => <ul {...props} className="list-disc mb-4 space-y-2 pl-6" />,
-                                    ol: ({ node, ...props }) => <ol {...props} className="list-decimal mb-4 space-y-2 pl-6" />,
-                                    li: ({ node, ...props }) => <li {...props} className="text-base leading-relaxed" />,
-                                    strong: ({ node, ...props }) => <strong {...props} className="font-semibold" />,
-                                    blockquote: ({ node, ...props }) => <blockquote {...props} className="border-l-4 border-gray-300 pl-4 py-2 mb-4 bg-gray-50" />,
-                                    a: ({ node, ...props }) => <a {...props} className="text-blue-600 hover:underline" />,
-                                    table: ({ node, ...props }) => <table {...props} className="w-full mb-4 border-collapse border border-gray-300" />,
-                                    thead: ({ node, ...props }) => <thead {...props} className="" />,
-                                    tbody: ({ node, ...props }) => <tbody {...props} className="" />,
-                                    tr: ({ node, ...props }) => <tr {...props} className="" />,
-                                    th: ({ node, ...props }) => <th {...props} className="px-4 py-2 text-left font-semibold border border-gray-300 bg-gray-50" />,
-                                    td: ({ node, ...props }) => <td {...props} className="px-4 py-2 border border-gray-300" />,
-                                    details: ({ node, ...props }) => <details {...props} className="mb-4" />,
-                                    summary: ({ node, ...props }) => <summary {...props} className="cursor-pointer hover:text-blue-600" />,
+                                    h1: ({ ...props }) => <h1 {...props} className="text-3xl font-bold mb-6 mt-8" />,
+                                    h2: ({ ...props }) => <h2 {...props} className="text-2xl font-bold mb-5 mt-6" />,
+                                    h3: ({ ...props }) => <h3 {...props} className="text-xl font-bold mb-4 mt-4" />,
+                                    p: ({ ...props }) => <p {...props} className="text-base leading-relaxed mb-4" />,
+                                    ul: ({ ...props }) => <ul {...props} className="list-disc mb-4 space-y-2 pl-6" />,
+                                    ol: ({ ...props }) => <ol {...props} className="list-decimal mb-4 space-y-2 pl-6" />,
+                                    li: ({ ...props }) => <li {...props} className="text-base leading-relaxed" />,
+                                    strong: ({ ...props }) => <strong {...props} className="font-semibold" />,
+                                    blockquote: ({ ...props }) => <blockquote {...props} className="border-l-4 border-gray-300 pl-4 py-2 mb-4 bg-gray-50" />,
+                                    a: ({ ...props }) => <a {...props} className="text-blue-600 hover:underline" />,
+                                    table: ({ ...props }) => <table {...props} className="w-full mb-4 border-collapse border border-gray-300" />,
+                                    thead: ({ ...props }) => <thead {...props} className="" />,
+                                    tbody: ({ ...props }) => <tbody {...props} className="" />,
+                                    tr: ({ ...props }) => <tr {...props} className="" />,
+                                    th: ({ ...props }) => <th {...props} className="px-4 py-2 text-left font-semibold border border-gray-300 bg-gray-50" />,
+                                    td: ({ ...props }) => <td {...props} className="px-4 py-2 border border-gray-300" />,
+                                    details: ({ ...props }) => <details {...props} className="mb-4" />,
+                                    summary: ({ ...props }) => <summary {...props} className="cursor-pointer hover:text-blue-600" />,
                                     code(props) {
-                                        const { node, className, children, ...rest } = props;
+                                        const { className, children, ...rest } = props;
                                         const match = /language-(\w+)/.exec(className || '');
                                         const codeId = Math.random().toString(36).substring(7);
                                         const codeString = String(children).replace(/\n$/, '');
@@ -332,8 +331,6 @@ export default function Learning() {
                                                 <SyntaxHighlighter
                                                     style={oneLight}
                                                     language={match[1]}
-                                                    PreTag="div"
-                                                    {...rest}
                                                 >
                                                     {codeString}
                                                 </SyntaxHighlighter>

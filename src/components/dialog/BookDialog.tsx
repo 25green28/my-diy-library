@@ -19,12 +19,12 @@ import {
     SelectValue
 } from "@/components/ui/select.tsx";
 
-import {useBookModalStore} from "@/components/dialog/bookModal.ts";
-import {Input} from "@/components/ui/input.tsx";
-import {useState, useEffect} from "react";
-import {Button} from "@/components/ui/button.tsx";
-import {BOOK_GENRES} from "@/assets/bookGeneres.ts";
-import type {Book} from "@/models/Book.ts";
+import { useBookModalStore } from "@/components/dialog/bookModal.ts";
+import { Input } from "@/components/ui/input.tsx";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button.tsx";
+import { BOOK_GENRES } from "@/assets/bookGeneres.ts";
+import type { Book } from "@/models/Book.ts";
 
 interface BookDialogProps {
     onBookCreated?: (book: Book) => void;
@@ -44,35 +44,20 @@ export default function BookDialog({ onBookCreated, onBookUpdated }: BookDialogP
     const [genre, setGenre] = useState(bookToEdit?.genre ?? "");
     const [year, setYear] = useState(bookToEdit?.published_year ?? "");
 
-    const fetchImage = async () => {
-        if (isEditMode) {
-            const res = await fetch(`/api/books/${bookToEdit?.id}/image`);
-            if (res.ok) {
-                const imageBlob = await res.blob();
-                const imageObjectURL = URL.createObjectURL(imageBlob);
-                setImagePreview(imageObjectURL);
+    useEffect(() => {
+        const fetchImage = async () => {
+            if (isEditMode) {
+                const res = await fetch(`/api/books/${bookToEdit?.id}/image`);
+                if (res.ok) {
+                    const imageBlob = await res.blob();
+                    const imageObjectURL = URL.createObjectURL(imageBlob);
+                    setImagePreview(imageObjectURL);
+                }
             }
         }
-    }
-
-
-    useEffect(() => {
-        if (isEditMode && bookToEdit) {
-            setTitle(bookToEdit.title);
-            setAuthor(bookToEdit.author);
-            setGenre(bookToEdit.genre);
-            setYear(bookToEdit.published_year.toString());
-        } else {
-            setTitle("");
-            setAuthor("");
-            setGenre("");
-            setYear("");
-        }
-        setSelectedImage(null);
-        setImagePreview(null);
 
         fetchImage();
-    }, [payload, isEditMode, bookToEdit]);
+    }, [isEditMode, bookToEdit?.id]);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -89,7 +74,7 @@ export default function BookDialog({ onBookCreated, onBookUpdated }: BookDialogP
         }
     };
 
-    const handleSubmit = async (e: Event) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData();
 

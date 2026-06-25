@@ -5,10 +5,9 @@ import type {Book} from "@/models/Book.ts";
 
 interface HeaderProps {
     onBookCreated?: (book: Book) => void;
-    onBookUpdated?: (book: Book) => void;
 }
 
-export default function Header({ onBookCreated, onBookUpdated }: HeaderProps) {
+export default function Header({ onBookCreated }: HeaderProps) {
     const location = useLocation();
     const open = useBookModalStore(state => state.open);
 

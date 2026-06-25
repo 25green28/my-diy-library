@@ -9,7 +9,7 @@ export interface BooksWidgetRef {
     updateBook: (updatedBook: Book) => void;
 }
 
-const BooksWidget = forwardRef<BooksWidgetRef>((props, ref) => {
+const BooksWidget = forwardRef<BooksWidgetRef>((_props, ref) => {
     const [books, setBooks] = useState<Book[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
