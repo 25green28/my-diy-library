@@ -156,4 +156,8 @@ Wyszukiwanie działa po polach:
 
 ## 📄 Licencja
 
-Ten projekt służy celom edukacyjnym.
+Ten projekt jest dostępny na licencji MIT.
+
+## 🤖 Wsparcie AI
+
+Narzędzia AI (w tym asystenci kodowania opierający się na agentach oraz sugestie wklejane bezpośrednio w kodzie) zostały wykorzystane w ograniczonym zakresie podczas rozwoju projektu, głównie jako pomoc w nauce, debugowaniu oraz przy tłumaczeniach. Ich użycie miało charakter okazjonalny i zadaniowy, a nie ogólnoprojektowy. Wszystkie sugestie zostały przeanalizowane, zrozumiane i zastosowane w sposób selektywny. Architektura, struktura oraz kluczowa implementacja zostały zaprojektowane i wykonane ręcznie.
