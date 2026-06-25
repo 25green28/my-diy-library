@@ -1,10 +1,12 @@
 import AppSidebar from "@/components/learning/sidebar/AppSidebar.tsx";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 import lessonData from "@/assets/lessons/lessons.json"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {Button} from "@/components/ui/button.tsx";
-import {ArrowRight, Bot, Loader2, CheckCircle2, XCircle, ServerCrash} from "lucide-react";
+import {ArrowRight, Bot, Loader2, CheckCircle2, XCircle, ServerCrash, Copy, Check} from "lucide-react";
 import {useCallback, useEffect, useState, useMemo} from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar.tsx";
 import { useSearchParams} from "react-router-dom";
@@ -31,6 +33,7 @@ export default function Learning() {
     const [nextButtonActivated, setNextButtonActivated] = useState(true);
     const [isRunningTests, setIsRunningTests] = useState(false);
     const [testResults, setTestResults] = useState<Array<{id: number, name: string, passed: boolean, status?: number, expectedStatus?: number, expectedBody?: string, hint?: string, body?: string, error?: string}>>([]);
+    const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null);
 
     const categories = lessonData.categories as category[];
     const categoryParam = parseInt(searchParams.get("category") || '0');
@@ -150,11 +153,21 @@ export default function Learning() {
         setIsRunningTests(false);
     }
 
+    const copyToClipboard = async (text: string, id: string) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopiedCodeId(id);
+            setTimeout(() => setCopiedCodeId(null), 2000);
+        } catch (err) {
+            console.error('Failed to copy:', err);
+        }
+    }
+
     return (
         <>
             <SidebarProvider>
                 <AppSidebar setLesson={setLesson} typedCategories={categories} currentLesson={currentLesson}/>
-                <main className={"p-5 w-full"}>
+                <main className={"p-5 w-full overflow-x-hidden"}>
                     <div className={"flex flex-row justify-between items-center w-full"}>
                         <SidebarTrigger className={"p-2 bg-gray-100 rounded-sm mb-5"}/>
                         <div className={"flex flex-row gap-2"}>
@@ -253,32 +266,54 @@ export default function Learning() {
                             </div>
                         ) : (
                             <ReactMarkdown
+                                rehypePlugins={[rehypeRaw]}
+                                remarkPlugins={[remarkGfm]}
                                 components={{
                                     h1: ({ node, ...props }) => <h1 {...props} className="text-3xl font-bold mb-6 mt-8" />,
-                                    h2: ({ node, ...props }) => <h2 {...props} className="text-2xl font-bold mb-4 mt-6" />,
-                                    h3: ({ node, ...props }) => <h3 {...props} className="text-xl font-bold mb-3 mt-4" />,
+                                    h2: ({ node, ...props }) => <h2 {...props} className="text-2xl font-bold mb-5 mt-6" />,
+                                    h3: ({ node, ...props }) => <h3 {...props} className="text-xl font-bold mb-4 mt-4" />,
                                     p: ({ node, ...props }) => <p {...props} className="text-base leading-relaxed mb-4" />,
-                                    ul: ({ node, ...props }) => <ul {...props} className="list-disc list-inside mb-4 space-y-2" />,
-                                    ol: ({ node, ...props }) => <ol {...props} className="list-decimal list-inside mb-4 space-y-2" />,
+                                    ul: ({ node, ...props }) => <ul {...props} className="list-disc mb-4 space-y-2 pl-6" />,
+                                    ol: ({ node, ...props }) => <ol {...props} className="list-decimal mb-4 space-y-2 pl-6" />,
                                     li: ({ node, ...props }) => <li {...props} className="text-base leading-relaxed" />,
                                     strong: ({ node, ...props }) => <strong {...props} className="font-semibold" />,
-                                    blockquote: ({ node, ...props }) => <blockquote {...props} className="border-l-4 border-gray-300 pl-4 py-2 mb-4 bg-gray-100" />,
-                                    a: ({ node, ...props }) => <a {...props} className="text-blue-500 hover:underline" />,
+                                    blockquote: ({ node, ...props }) => <blockquote {...props} className="border-l-4 border-gray-300 pl-4 py-2 mb-4 bg-gray-50" />,
+                                    a: ({ node, ...props }) => <a {...props} className="text-blue-600 hover:underline" />,
+                                    table: ({ node, ...props }) => <table {...props} className="w-full mb-4 border-collapse border border-gray-300" />,
+                                    thead: ({ node, ...props }) => <thead {...props} className="" />,
+                                    tbody: ({ node, ...props }) => <tbody {...props} className="" />,
+                                    tr: ({ node, ...props }) => <tr {...props} className="" />,
+                                    th: ({ node, ...props }) => <th {...props} className="px-4 py-2 text-left font-semibold border border-gray-300 bg-gray-50" />,
+                                    td: ({ node, ...props }) => <td {...props} className="px-4 py-2 border border-gray-300" />,
+                                    details: ({ node, ...props }) => <details {...props} className="mb-4" />,
+                                    summary: ({ node, ...props }) => <summary {...props} className="cursor-pointer hover:text-blue-600" />,
                                     code(props) {
                                         const { node, className, children, ...rest } = props;
                                         const match = /language-(\w+)/.exec(className || '');
+                                        const codeId = Math.random().toString(36).substring(7);
+                                        const codeString = String(children).replace(/\n$/, '');
 
                                         return match ? (
-                                            <SyntaxHighlighter
-                                                style={oneLight}
-                                                language={match[1]}
-                                                PreTag="div"
-                                                {...rest}
-                                            >
-                                                {String(children).replace(/\n$/, '')}
-                                            </SyntaxHighlighter>
+                                            <div className="relative group">
+                                                <Button
+                                                    size="sm"
+                                                    variant="ghost"
+                                                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    onClick={() => copyToClipboard(codeString, codeId)}
+                                                >
+                                                    {copiedCodeId === codeId ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                                                </Button>
+                                                <SyntaxHighlighter
+                                                    style={oneLight}
+                                                    language={match[1]}
+                                                    PreTag="div"
+                                                    {...rest}
+                                                >
+                                                    {codeString}
+                                                </SyntaxHighlighter>
+                                            </div>
                                         ) : (
-                                            <code className={className} {...rest}>
+                                            <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono break-words" {...rest}>
                                                 {children}
                                             </code>
                                         );

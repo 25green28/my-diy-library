@@ -210,7 +210,7 @@ export default function BookDialog({ onBookCreated, onBookUpdated }: BookDialogP
                                 <FieldLabel htmlFor={"bookGenre"}>
                                     Book Genre
                                 </FieldLabel>
-                                <Select value={genre} onValueChange={setGenre}>
+                                <Select value={genre} onValueChange={setGenre} required={true}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select a genre"/>
                                     </SelectTrigger>
