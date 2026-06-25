@@ -1,73 +1,173 @@
-# React + TypeScript + Vite
+# 📚 My DIY Library
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A beginner-friendly full-stack learning project that teaches how to build a Python REST API step-by-step and connect it to a modern frontend.
 
-Currently, two official plugins are available:
+It focuses on learning by building: from basic Flask concepts to a fully working backend with database integration and image uploads.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+🌍 Languages:
 
-## React Compiler
+- 🇺🇸 English (current)
+- 🇵🇱 [Polski](README.pl.md)
+- 🇮🇹 [Italiano](README.it.md)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Full CRUD API for managing books
+- RESTful architecture (GET, POST, PUT, DELETE)
+- SQLite database integration
+- Image upload support
+- Book search functionality
+- Pre-built React frontend included
+- Beginner-friendly step-by-step learning structure
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🧠 What you'll learn
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Backend fundamentals with Flask
+- REST API design principles
+- Working with databases (SQLAlchemy + SQLite)
+- Handling HTTP methods and status codes
+- Route & query parameters
+- File uploads and image handling
+- Testing APIs using tools like Postman
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+- Python
+- Flask
+- SQLAlchemy
+- SQLite
+
+### Frontend
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Lucide Icons
+
+---
+
+## ⚙️ Installation
+
+### Beginner setup (recommended)
+
+1. Make sure you have Node.js installed:
+```bash
+node -v
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+If not download it from https://nodejs.org, recommended version is 24 LTS.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+2. Download ZIP from GitHub
+3. Extract the project
+4. Open terminal in project folder
+5. Install dependencies:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+6. Run frontend:
+
+```bash
+npm run dev
+```
+
+7. Open:
+
+```text
+http://localhost:5173
+```
+
+8. Click on `Learning`
+
+---
+
+### Advanced setup
+
+```bash
+git clone https://github.com/25green28/my-diy-library.git
+cd my-diy-library
+npm install
+npm run dev
+```
+
+---
+
+## 🔌 API Endpoints
+
+| Method | Endpoint                          | Description              |
+| ------ | --------------------------------- | ------------------------ |
+| GET    | /api/books                        | Get all books           |
+| GET    | /api/books/<id>                   | Get single book         |
+| GET    | /api/books/search?q=...           | Search books            |
+| POST   | /api/books                        | Create book             |
+| PUT    | /api/books/<id>                   | Update book             |
+| DELETE | /api/books/<id>                   | Delete book             |
+| GET    | /api/books/<id>/image             | Get book image          |
+
+---
+
+## 📦 Example Book Object
+
+```json
+{
+  "id": 1,
+  "title": "1984",
+  "author": "George Orwell",
+  "genre": "Dystopian",
+  "published_year": 1949,
+  "image_url": "/api/books/1/image"
+}
+```
+
+---
+
+## 🖼️ Image Uploads
+
+Book covers are stored in the `/uploads` folder.
+
+Only filenames are stored in the database for performance and scalability.
+
+Images are served via:
+
+```
+GET /api/books/<id>/image
+```
+
+---
+
+## 🔍 Search Feature
+
+You can search books using:
+
+```
+/api/books/search?q=keyword
+```
+
+Search works on:
+
+- title
+- author
+
+---
+
+## 📈 Future Improvements
+
+* Authentication system (JWT)
+* Pagination
+* Advanced filtering
+* Cloud storage for images
+* Deployment (Render / Railway / Vercel)
+
+---
+
+## 📄 License
+
+This project is for educational purposes.
