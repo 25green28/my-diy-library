@@ -24,14 +24,16 @@ import type {category, currentLesson} from "@/assets/lessons/lessonObjects.ts";
 export function NavMain({
                             items,
                             setLesson,
-                            currentLesson
+                            currentLesson,
+                            currentLanguage
                         }: {
     items: category[],
     setLesson: (
         category: number,
         lesson: number
     ) => void,
-    currentLesson: currentLesson | undefined
+    currentLesson: currentLesson | undefined,
+    currentLanguage: string | undefined
 }) {
     const [openCategories, setOpenCategories] = useState<Set<number>>(new Set())
 
@@ -59,6 +61,18 @@ export function NavMain({
         })
     }
 
+    const getLocalizedTitle = (item: category | { title: string, titles?: {[lang:string]:string}}) => {
+        if (currentLanguage && item.titles && item.titles[currentLanguage])
+            return item.titles[currentLanguage]
+        return item.title
+    }
+
+    const getLocalizedSubTitle = (subItem: category | { title: string, titles?: {[lang:string]:string}}) => {
+        if (currentLanguage && subItem.titles && subItem.titles[currentLanguage])
+            return subItem.titles[currentLanguage]
+        return subItem.title
+    }
+
     return (
         <SidebarGroup>
             <SidebarGroupLabel>DIY library app</SidebarGroupLabel>
@@ -73,10 +87,10 @@ export function NavMain({
                     >
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
-                                <SidebarMenuButton tooltip={item.title}>
+                                <SidebarMenuButton tooltip={getLocalizedTitle(item)}>
                                     {/*{item.icon && <item.icon />}*/}
                                     {item.icon && <DynamicIcon name={item.icon}/>}
-                                    <span>{item.title}</span>
+                                    <span>{getLocalizedTitle(item)}</span>
                                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
@@ -86,7 +100,7 @@ export function NavMain({
                                         <SidebarMenuSubItem key={subItem.title}>
                                             <SidebarMenuSubButton asChild isActive={currentLesson?.parentCategory === item.id && currentLesson?.data.id === subItem.id}>
                                                 <button onClick={() => setLesson(item.id, subItem.id)}>
-                                                    <span className={"truncate"}>{subItem.title}</span>
+                                                    <span className={"truncate"}>{getLocalizedSubTitle(subItem)}</span>
                                                 </button>
                                             </SidebarMenuSubButton>
                                         </SidebarMenuSubItem>

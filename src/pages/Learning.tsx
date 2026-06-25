@@ -23,7 +23,19 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import {Separator} from "@/components/ui/separator.tsx";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
+type lessonInfo = {
+    category: number,
+    lesson: number
+}
 
 export default function Learning() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -34,38 +46,52 @@ export default function Learning() {
     const [isRunningTests, setIsRunningTests] = useState(false);
     const [testResults, setTestResults] = useState<Array<{id: number, name: string, passed: boolean, status?: number, expectedStatus?: number, expectedBody?: string, hint?: string, body?: string, error?: string}>>([]);
     const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null);
+    const [currentLanguage, setCurrentLanguage] = useState(() => {
+        const savedLanguage = localStorage.getItem("lang");
+        return savedLanguage ? JSON.parse(savedLanguage) : "en";
+    });
+
 
     const categories = lessonData.categories as category[];
-    const categoryParam = parseInt(searchParams.get("category") || '0');
-    const lessonParam = parseInt(searchParams.get("lesson") || '0');
+    const savedLessonInfo = JSON.parse(localStorage.getItem("lessonInfo") || "{}");
+    const categoryParam = parseInt(searchParams.get("category") || savedLessonInfo.category ||'0');
+    const lessonParam = parseInt(searchParams.get("lesson") || savedLessonInfo.lesson || '0');
     const currentLesson: currentLesson | undefined = useMemo(() => {
+        const lessonInformation:lessonInfo = {category: categoryParam, lesson: lessonParam};
+        localStorage.setItem("lessonInfo", JSON.stringify(lessonInformation));
         return categories[categoryParam]?.lessons[lessonParam]
             ? { parentCategory: categoryParam, data: categories[categoryParam].lessons[lessonParam]}
             : undefined;
     }, [categories, categoryParam, lessonParam]);
 
     const fetchMarkdown = useCallback(async () => {
-        if (currentLesson === undefined)
-            return;
+        if (currentLesson === undefined) return;
         setIsLoadingMarkdown(true);
         setMarkdownError(null);
         setMarkdownContent("");
         try {
-            const content = await import(currentLesson.data.path + "?raw");
+            const lessonPath = currentLesson.data.paths?.[currentLanguage] || currentLesson.data.path;
+            const content = await import(lessonPath + "?raw");
             setMarkdownContent(content.default);
         } catch (err) {
-            // console.error("Failed to load markdown: ", err);
             setMarkdownError("Failed to load lesson content");
         } finally {
             setIsLoadingMarkdown(false);
         }
-    }, [currentLesson]);
+    }, [currentLesson, currentLanguage]);
 
     useEffect(() => {
-        if (!searchParams.has('category') || !searchParams.has('lesson')) {
+        const hasQueryParams = searchParams.has('category') && searchParams.has('lesson');
+        const hasSavedLesson = savedLessonInfo.category !== undefined && savedLessonInfo.lesson !== undefined;
+
+        if (!hasQueryParams && !hasSavedLesson) {
             setLesson(0, 0);
         }
-    }, [searchParams]);
+    }, [searchParams, savedLessonInfo]);
+
+    useEffect(() => {
+        localStorage.setItem("lang", JSON.stringify(currentLanguage))
+    }, [currentLanguage]);
 
     useEffect(() => {
         fetchMarkdown();
@@ -166,7 +192,7 @@ export default function Learning() {
     return (
         <>
             <SidebarProvider>
-                <AppSidebar setLesson={setLesson} typedCategories={categories} currentLesson={currentLesson}/>
+                <AppSidebar setLesson={setLesson} typedCategories={categories} currentLesson={currentLesson} currentLanguage={currentLanguage}/>
                 <main className={"p-5 w-full overflow-x-hidden"}>
                     <div className={"flex flex-row justify-between items-center w-full"}>
                         <SidebarTrigger className={"p-2 bg-gray-100 rounded-sm mb-5"}/>
@@ -323,6 +349,20 @@ export default function Learning() {
                                 {markdownContent}
                             </ReactMarkdown>
                         )}
+                    </div>
+                    <div className={"pt-10 w-full flex justify-center"}>
+                        <Select defaultValue={"option1"} value={currentLanguage} onValueChange={setCurrentLanguage}>
+                            <SelectTrigger>
+                                <SelectValue/>
+                            </SelectTrigger>
+                            <SelectContent position={"item-aligned"}>
+                                <SelectGroup>
+                                    <SelectItem value="en"><img src="/flags/us.svg" alt="US" width={"20"}/>English</SelectItem>
+                                    <SelectItem value="pl"><img src="/flags/pl.svg" alt="PL" width={"20"}/>Polish</SelectItem>
+                                    <SelectItem value="it"><img src="/flags/it.svg" alt="IT" width={"20"}/>Italian</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
                     </div>
                 </main>
             </SidebarProvider>

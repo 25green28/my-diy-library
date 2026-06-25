@@ -10,17 +10,19 @@ import type {category, currentLesson} from "@/assets/lessons/lessonObjects.ts";
 export default function AppSidebar({
                                        setLesson,
                                        typedCategories,
-                                       currentLesson
+                                       currentLesson,
+                                       currentLanguage
     }: {
         setLesson: (category: number, lesson: number) => void,
         typedCategories: category[],
-        currentLesson: currentLesson | undefined
+        currentLesson: currentLesson | undefined,
+        currentLanguage: string | undefined
     }){
     return (
         <TooltipProvider>
             <Sidebar collapsible={"icon"}>
                 <SidebarContent>
-                    <NavMain items={typedCategories} setLesson={setLesson} currentLesson={currentLesson}/>
+                    <NavMain items={typedCategories} setLesson={setLesson} currentLesson={currentLesson} currentLanguage={currentLanguage}/>
                 </SidebarContent>
                 <SidebarFooter>
                     <NavFooter/>
