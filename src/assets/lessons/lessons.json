@@ -3,268 +3,596 @@
     {
       "id": 0,
       "title": "Welcome on the board",
+      "titles": {
+        "pl": "Witaj na pokładzie",
+        "it": "Benvenuti a bordo"
+      },
       "icon": "book-check",
       "lessons": [
         {
           "id": 0,
           "title": "About this project & me",
-          "path": "/src/assets/lessons/lessons/welcome-on-the-board/about-this-project.md"
+          "titles": {
+            "pl": "O tym projekcie i mnie",
+            "it": "Su questo progetto e di me"
+          },
+          "path": "/src/assets/lessons/lessons/welcome-on-the-board/about-this-project.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/welcome-on-the-board/about-this-project.pl.md",
+            "it": "/src/assets/lessons/lessons/welcome-on-the-board/about-this-project.it.md"
+          }
         }
       ]
     },
     {
       "id": 1,
       "title": "Project Setup",
+      "titles": {
+        "pl": "Konfiguracja projektu",
+        "it": "Configurazione del progetto"
+      },
       "icon": "bolt",
       "lessons": [
         {
           "id": 0,
           "title": "Installing Python",
-          "path": "/src/assets/lessons/lessons/project-setup/installing-python.md"
+          "titles": {
+            "pl": "Instalacja Pythona",
+            "it": "Installazione di Python"
+          },
+          "path": "/src/assets/lessons/lessons/project-setup/installing-python.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/project-setup/installing-python.pl.md",
+            "it": "/src/assets/lessons/lessons/project-setup/installing-python.it.md"
+          }
         },
         {
           "id": 1,
           "title": "Creating a virtual environment",
-          "path": "/src/assets/lessons/lessons/project-setup/creating-a-virtual-environment.md"
+          "titles": {
+            "pl": "Tworzenie środowiska wirtualnego",
+            "it": "Creazione di un ambiente virtuale"
+          },
+          "path": "/src/assets/lessons/lessons/project-setup/creating-a-virtual-environment.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/project-setup/creating-a-virtual-environment.pl.md",
+            "it": "/src/assets/lessons/lessons/project-setup/creating-a-virtual-environment.it.md"
+          }
         },
         {
           "id": 2,
           "title": "Installing Flask",
-          "path": "/src/assets/lessons/lessons/project-setup/installing-flask.md"
+          "titles": {
+            "pl": "Instalacja Flask",
+            "it": "Installazione di Flask"
+          },
+          "path": "/src/assets/lessons/lessons/project-setup/installing-flask.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/project-setup/installing-flask.pl.md",
+            "it": "/src/assets/lessons/lessons/project-setup/installing-flask.it.md"
+          }
         }
       ]
     },
     {
       "id": 2,
       "title": "Backend Fundamentals",
+      "titles": {
+        "pl": "Podstawy backendu",
+        "it": "Fondamenti del backend"
+      },
       "icon": "cloud",
       "lessons": [
         {
           "id": 0,
           "title": "What is a backend?",
-          "path": "/src/assets/lessons/lessons/backend-fundamentals/what-is-backend.md"
+          "titles": {
+            "pl": "Czym jest backend?",
+            "it": "Cos'è un backend?"
+          },
+          "path": "/src/assets/lessons/lessons/backend-fundamentals/what-is-backend.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/backend-fundamentals/what-is-backend.pl.md",
+            "it": "/src/assets/lessons/lessons/backend-fundamentals/what-is-backend.it.md"
+          }
         },
         {
           "id": 1,
           "title": "Client vs server",
-          "path": "/src/assets/lessons/lessons/backend-fundamentals/client-vs-server.md"
+          "titles": {
+            "pl": "Klient a serwer",
+            "it": "Client vs server"
+          },
+          "path": "/src/assets/lessons/lessons/backend-fundamentals/client-vs-server.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/backend-fundamentals/client-vs-server.pl.md",
+            "it": "/src/assets/lessons/lessons/backend-fundamentals/client-vs-server.it.md"
+          }
         },
         {
           "id": 2,
           "title": "HTTP requests",
-          "path": "/src/assets/lessons/lessons/backend-fundamentals/http-requests.md"
+          "titles": {
+            "pl": "Żądania HTTP",
+            "it": "Richieste HTTP"
+          },
+          "path": "/src/assets/lessons/lessons/backend-fundamentals/http-requests.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/backend-fundamentals/http-requests.pl.md",
+            "it": "/src/assets/lessons/lessons/backend-fundamentals/http-requests.it.md"
+          }
         },
         {
           "id": 3,
           "title": "JSON",
-          "path": "/src/assets/lessons/lessons/backend-fundamentals/json.md"
+          "titles": {
+            "pl": "JSON",
+            "it": "JSON"
+          },
+          "path": "/src/assets/lessons/lessons/backend-fundamentals/json.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/backend-fundamentals/json.pl.md",
+            "it": "/src/assets/lessons/lessons/backend-fundamentals/json.it.md"
+          }
         }
       ]
     },
     {
       "id": 3,
       "title": "Flask basics",
+      "titles": {
+        "pl": "Podstawy Flask",
+        "it": "Fondamenti di Flask"
+      },
       "icon": "code",
       "lessons": [
         {
           "id": 0,
           "title": "What is Flask?",
-          "path": "/src/assets/lessons/lessons/flask-basics/what-is-flask.md"
+          "titles": {
+            "pl": "Czym jest Flask?",
+            "it": "Cos'è Flask?"
+          },
+          "path": "/src/assets/lessons/lessons/flask-basics/what-is-flask.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/flask-basics/what-is-flask.pl.md",
+            "it": "/src/assets/lessons/lessons/flask-basics/what-is-flask.it.md"
+          }
         },
         {
           "id": 1,
           "title": "Running the development server",
-          "path": "/src/assets/lessons/lessons/flask-basics/running-the-development-server.md"
+          "titles": {
+            "pl": "Uruchamianie serwera deweloperskiego",
+            "it": "Esecuzione del server di sviluppo"
+          },
+          "path": "/src/assets/lessons/lessons/flask-basics/running-the-development-server.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/flask-basics/running-the-development-server.pl.md",
+            "it": "/src/assets/lessons/lessons/flask-basics/running-the-development-server.it.md"
+          }
         },
         {
           "id": 2,
           "title": "More about routes",
-          "path": "/src/assets/lessons/lessons/flask-basics/more-about-routes.md"
+          "titles": {
+            "pl": "Więcej o trasach",
+            "it": "Di più sulle rotte"
+          },
+          "path": "/src/assets/lessons/lessons/flask-basics/more-about-routes.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/flask-basics/more-about-routes.pl.md",
+            "it": "/src/assets/lessons/lessons/flask-basics/more-about-routes.it.md"
+          }
         }
       ]
     },
     {
       "id": 4,
       "title": "Working with data and routes",
+      "titles": {
+        "pl": "Praca z danymi i trasami",
+        "it": "Lavoro con dati e rotte"
+      },
       "icon": "file-text",
       "lessons": [
         {
           "id": 0,
           "title": "Route parameters",
-          "path": "/src/assets/lessons/lessons/working-with-data/route-parameters.md"
+          "titles": {
+            "pl": "Parametry tras",
+            "it": "Parametri delle rotte"
+          },
+          "path": "/src/assets/lessons/lessons/working-with-data/route-parameters.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/working-with-data/route-parameters.pl.md",
+            "it": "/src/assets/lessons/lessons/working-with-data/route-parameters.it.md"
+          }
         },
         {
           "id": 1,
           "title": "Query parameters",
-          "path": "/src/assets/lessons/lessons/working-with-data/query-parameters.md"
+          "titles": {
+            "pl": "Parametry zapytań",
+            "it": "Parametri di query"
+          },
+          "path": "/src/assets/lessons/lessons/working-with-data/query-parameters.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/working-with-data/query-parameters.pl.md",
+            "it": "/src/assets/lessons/lessons/working-with-data/query-parameters.it.md"
+          }
         },
         {
           "id": 2,
           "title": "Returning JSON",
-          "path": "/src/assets/lessons/lessons/working-with-data/returning-json.md"
+          "titles": {
+            "pl": "Zwracanie JSON",
+            "it": "Restituzione di JSON"
+          },
+          "path": "/src/assets/lessons/lessons/working-with-data/returning-json.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/working-with-data/returning-json.pl.md",
+            "it": "/src/assets/lessons/lessons/working-with-data/returning-json.it.md"
+          }
         }
       ]
     },
     {
       "id": 5,
       "title": "Databases",
+      "titles": {
+        "pl": "Bazy danych",
+        "it": "Database"
+      },
       "icon": "database",
       "lessons": [
         {
           "id": 0,
           "title": "What is a database?",
-          "path": "/src/assets/lessons/lessons/databases/what-is-database.md"
+          "titles": {
+            "pl": "Czym jest baza danych?",
+            "it": "Cos'è un database?"
+          },
+          "path": "/src/assets/lessons/lessons/databases/what-is-database.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/databases/what-is-database.pl.md",
+            "it": "/src/assets/lessons/lessons/databases/what-is-database.it.md"
+          }
         },
         {
           "id": 1,
           "title": "What is SQL?",
-          "path": "/src/assets/lessons/lessons/databases/what-is-sql.md"
+          "titles": {
+            "pl": "Czym jest SQL?",
+            "it": "Cos'è SQL?"
+          },
+          "path": "/src/assets/lessons/lessons/databases/what-is-sql.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/databases/what-is-sql.pl.md",
+            "it": "/src/assets/lessons/lessons/databases/what-is-sql.it.md"
+          }
         },
         {
           "id": 2,
           "title": "Database configuration",
-          "path": "/src/assets/lessons/lessons/databases/database-configuration.md"
+          "titles": {
+            "pl": "Konfiguracja bazy danych",
+            "it": "Configurazione del database"
+          },
+          "path": "/src/assets/lessons/lessons/databases/database-configuration.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/databases/database-configuration.pl.md",
+            "it": "/src/assets/lessons/lessons/databases/database-configuration.it.md"
+          }
         },
         {
           "id": 3,
           "title": "Creating the Book model",
-          "path": "/src/assets/lessons/lessons/databases/creating-the-book-model.md"
+          "titles": {
+            "pl": "Tworzenie modelu Book",
+            "it": "Creazione del modello Book"
+          },
+          "path": "/src/assets/lessons/lessons/databases/creating-the-book-model.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/databases/creating-the-book-model.pl.md",
+            "it": "/src/assets/lessons/lessons/databases/creating-the-book-model.it.md"
+          }
         }
       ]
     },
     {
       "id": 6,
       "title": "Testing (basics)",
+      "titles": {
+        "pl": "Testowanie (podstawy)",
+        "it": "Testing (base)"
+      },
       "icon": "chart-network",
       "lessons": [
         {
           "id": 0,
           "title": "Using Postman",
-          "path": "/src/assets/lessons/lessons/testing-basics/using-postman.md"
+          "titles": {
+            "pl": "Używanie Postmana",
+            "it": "Uso di Postman"
+          },
+          "path": "/src/assets/lessons/lessons/testing-basics/using-postman.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/testing-basics/using-postman.pl.md",
+            "it": "/src/assets/lessons/lessons/testing-basics/using-postman.it.md"
+          }
         }
       ]
     },
     {
       "id": 7,
       "title": "POST requests",
+      "titles": {
+        "pl": "Żądania POST",
+        "it": "Richieste POST"
+      },
       "icon": "send",
       "lessons": [
         {
           "id": 0,
           "title": "Creating books (POST)",
-          "path": "/src/assets/lessons/lessons/post-requests/creating-books.md"
+          "titles": {
+            "pl": "Tworzenie książek (POST)",
+            "it": "Creazione di libri (POST)"
+          },
+          "path": "/src/assets/lessons/lessons/post-requests/creating-books.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/post-requests/creating-books.pl.md",
+            "it": "/src/assets/lessons/lessons/post-requests/creating-books.it.md"
+          }
         }
       ]
     },
     {
       "id": 8,
       "title": "Reading data (GET)",
+      "titles": {
+        "pl": "Odczytywanie danych (GET)",
+        "it": "Lettura dei dati (GET)"
+      },
       "icon": "hard-drive-upload",
       "lessons": [
         {
           "id": 0,
           "title": "Fetching a single book",
-          "path": "/src/assets/lessons/lessons/fetching-data/fetching-a-single-book.md"
+          "titles": {
+            "pl": "Pobieranie pojedynczej książki",
+            "it": "Recupero di un singolo libro"
+          },
+          "path": "/src/assets/lessons/lessons/fetching-data/fetching-a-single-book.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/fetching-data/fetching-a-single-book.pl.md",
+            "it": "/src/assets/lessons/lessons/fetching-data/fetching-a-single-book.it.md"
+          }
         },
         {
           "id": 1,
           "title": "Fetching multiple books (GET)",
-          "path": "/src/assets/lessons/lessons/fetching-data/fetching-books.md"
+          "titles": {
+            "pl": "Pobieranie wielu książek (GET)",
+            "it": "Recupero di più libri (GET)"
+          },
+          "path": "/src/assets/lessons/lessons/fetching-data/fetching-books.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/fetching-data/fetching-books.pl.md",
+            "it": "/src/assets/lessons/lessons/fetching-data/fetching-books.it.md"
+          }
         },
         {
           "id": 2,
           "title": "Searching for books",
-          "path": "/src/assets/lessons/lessons/fetching-data/searching-for-books.md"
+          "titles": {
+            "pl": "Wyszukiwanie książek",
+            "it": "Ricerca di libri"
+          },
+          "path": "/src/assets/lessons/lessons/fetching-data/searching-for-books.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/fetching-data/searching-for-books.pl.md",
+            "it": "/src/assets/lessons/lessons/fetching-data/searching-for-books.it.md"
+          }
         }
       ]
     },
     {
       "id": 9,
       "title": "Modifying data (PUT)",
+      "titles": {
+        "pl": "Modyfikacja danych (PUT)",
+        "it": "Modifica dei dati (PUT)"
+      },
       "icon": "file-pen-line",
       "lessons": [
         {
           "id": 0,
           "title": "Updating a book (PUT)",
-          "path": "/src/assets/lessons/lessons/modifying-data/updating-a-book.md"
+          "titles": {
+            "pl": "Aktualizacja książki (PUT)",
+            "it": "Aggiornamento di un libro (PUT)"
+          },
+          "path": "/src/assets/lessons/lessons/modifying-data/updating-a-book.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/modifying-data/updating-a-book.pl.md",
+            "it": "/src/assets/lessons/lessons/modifying-data/updating-a-book.it.md"
+          }
         }
       ]
     },
     {
       "id": 10,
       "title": "Data validation",
+      "titles": {
+        "pl": "Walidacja danych",
+        "it": "Validazione dei dati"
+      },
       "icon": "globe-check",
       "lessons": [
         {
           "id": 0,
           "title": "Required fields",
-          "path": "/src/assets/lessons/lessons/data-validation/required-fields.md"
+          "titles": {
+            "pl": "Wymagane pola",
+            "it": "Campi obbligatori"
+          },
+          "path": "/src/assets/lessons/lessons/data-validation/required-fields.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/data-validation/required-fields.pl.md",
+            "it": "/src/assets/lessons/lessons/data-validation/required-fields.it.md"
+          }
         },
         {
           "id": 1,
           "title": "Returning errors",
-          "path": "/src/assets/lessons/lessons/data-validation/returning-errors.md"
+          "titles": {
+            "pl": "Zwracanie błędów",
+            "it": "Restituzione di errori"
+          },
+          "path": "/src/assets/lessons/lessons/data-validation/returning-errors.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/data-validation/returning-errors.pl.md",
+            "it": "/src/assets/lessons/lessons/data-validation/returning-errors.it.md"
+          }
         }
       ]
     },
     {
       "id": 11,
       "title": "Deleting data",
+      "titles": {
+        "pl": "Usuwanie danych",
+        "it": "Eliminazione dei dati"
+      },
       "icon": "shredder",
       "lessons": [
         {
           "id": 0,
           "title": "Deleting a book (DELETE)",
-          "path": "/src/assets/lessons/lessons/deleting-data/deleting-a-book.md"
+          "titles": {
+            "pl": "Usuwanie książki (DELETE)",
+            "it": "Eliminazione di un libro (DELETE)"
+          },
+          "path": "/src/assets/lessons/lessons/deleting-data/deleting-a-book.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/deleting-data/deleting-a-book.pl.md",
+            "it": "/src/assets/lessons/lessons/deleting-data/deleting-a-book.it.md"
+          }
         }
       ]
     },
     {
       "id": 12,
       "title": "Image Uploads",
+      "titles": {
+        "pl": "Przesyłanie obrazów",
+        "it": "Caricamento delle immagini"
+      },
       "icon": "image",
       "lessons": [
         {
           "id": 0,
           "title": "Adding image support to the Book model",
-          "path": "/src/assets/lessons/lessons/image-uploads/adding-image-support.md"
+          "titles": {
+            "pl": "Dodanie obsługi obrazów do modelu Book",
+            "it": "Aggiunta del supporto immagini al modello Book"
+          },
+          "path": "/src/assets/lessons/lessons/image-uploads/adding-image-support.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/image-uploads/adding-image-support.pl.md",
+            "it": "/src/assets/lessons/lessons/image-uploads/adding-image-support.it.md"
+          }
         },
         {
           "id": 1,
           "title": "Uploading images when creating books",
-          "path": "/src/assets/lessons/lessons/image-uploads/handling-image-uploads.md"
+          "titles": {
+            "pl": "Przesyłanie obrazów podczas tworzenia książek",
+            "it": "Caricamento delle immagini durante la creazione di libri"
+          },
+          "path": "/src/assets/lessons/lessons/image-uploads/handling-image-uploads.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/image-uploads/handling-image-uploads.pl.md",
+            "it": "/src/assets/lessons/lessons/image-uploads/handling-image-uploads.it.md"
+          }
         },
         {
           "id": 2,
           "title": "Serving images via a new route",
-          "path": "/src/assets/lessons/lessons/image-uploads/serving-images.md"
+          "titles": {
+            "pl": "Serwowanie obrazów przez nową trasę",
+            "it": "Servire le immagini tramite una nuova rotta"
+          },
+          "path": "/src/assets/lessons/lessons/image-uploads/serving-images.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/image-uploads/serving-images.pl.md",
+            "it": "/src/assets/lessons/lessons/image-uploads/serving-images.it.md"
+          }
         },
         {
           "id": 3,
           "title": "Replacing book images",
-          "path": "/src/assets/lessons/lessons/image-uploads/updating-images.md"
+          "titles": {
+            "pl": "Zastępowanie obrazów książek",
+            "it": "Sostituzione delle immagini dei libri"
+          },
+          "path": "/src/assets/lessons/lessons/image-uploads/updating-images.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/image-uploads/updating-images.pl.md",
+            "it": "/src/assets/lessons/lessons/image-uploads/updating-images.it.md"
+          }
         },
         {
           "id": 4,
           "title": "Deleting images when deleting books",
-          "path": "/src/assets/lessons/lessons/image-uploads/deleting-images.md"
+          "titles": {
+            "pl": "Usuwanie obrazów podczas usuwania książek",
+            "it": "Eliminazione delle immagini durante l'eliminazione dei libri"
+          },
+          "path": "/src/assets/lessons/lessons/image-uploads/deleting-images.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/image-uploads/deleting-images.pl.md",
+            "it": "/src/assets/lessons/lessons/image-uploads/deleting-images.it.md"
+          }
         },
         {
           "id": 5,
           "title": "How image uploads work",
-          "path": "/src/assets/lessons/lessons/image-uploads/how-image-uploads-work.md"
+          "titles": {
+            "pl": "Jak działają przesyłania obrazów",
+            "it": "Come funzionano i caricamenti delle immagini"
+          },
+          "path": "/src/assets/lessons/lessons/image-uploads/how-image-uploads-work.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/image-uploads/how-image-uploads-work.pl.md",
+            "it": "/src/assets/lessons/lessons/image-uploads/how-image-uploads-work.it.md"
+          }
         }
       ]
     },
     {
       "id": 13,
       "title": "Conclusion",
+      "titles": {
+        "pl": "Podsumowanie",
+        "it": "Conclusione"
+      },
       "icon": "party-popper",
       "lessons": [
         {
           "id": 0,
           "title": "Conclusion & Next Steps",
-          "path": "/src/assets/lessons/lessons/conclusion/conclusion.md"
+          "titles": {
+            "pl": "Podsumowanie i kolejne kroki",
+            "it": "Conclusione e prossimi passi"
+          },
+          "path": "/src/assets/lessons/lessons/conclusion/conclusion.md",
+          "paths": {
+            "pl": "/src/assets/lessons/lessons/conclusion/conclusion.pl.md",
+            "it": "/src/assets/lessons/lessons/conclusion/conclusion.it.md"
+          }
         }
       ]
     }
