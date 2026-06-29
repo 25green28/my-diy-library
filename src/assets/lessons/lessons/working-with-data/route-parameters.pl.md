@@ -1,326 +1,297 @@
-# Zwracanie danych w formacie JSON
+# Parametry trasy (Route parameters)
 
-Budując interfejsy API, zazwyczaj nie zwracamy odpowiedzi w formacie czystego tekstu (plain text).
+Parametry trasy (route parameters) pozwalają Flaskowi przechwytywać wartości bezpośrednio z adresu URL i przekazywać je jako argumenty do Twoich funkcji w Pythonie.
 
-Zamiast tego API zwracają dane w formacie o nazwie **JSON**.
+Są one kluczowe podczas budowania interfejsów API, ponieważ umożliwiają pracę z konkretnymi zasobami, takimi jak pojedyncze książki, użytkownicy czy zamówienia.
 
-JSON to standardowy format używany przez aplikacje internetowe do wymiany danych pomiędzy warstwą wizualną (front-endem) a serwerową (back-endem).
+> **Wskazówka:** Nie musisz kopiować wszystkich przykładów z tej lekcji do swojego pliku `app.py`. Służą one celom edukacyjnym, aby pomóc Ci zrozumieć, jak działają parametry tras.
 
-> **Wskazówka:** Nie musisz kopiować wszystkich przykładów z tej lekcji do swojego pliku `app.py`. Służą one wyłącznie celom edukacyjnym, aby pomóc Ci zrozumieć, jak działają odpowiedzi JSON.
+## Dlaczego potrzebujemy parametrów trasy?
 
-## Czym jest JSON?
+Wyobraź sobie, że budujesz API dla biblioteki.
 
-JSON to akronim od angielskiej nazwy:
+Użytkownik aplikacji może chcieć wyświetlić szczegóły:
+* Książki o ID 1
+* Książki o ID 15
+* Książki o ID 42
+
+Tworzenie osobnej trasy dla każdej istniejącej książki byłoby niemożliwe:
 
 ```text
-JavaScript Object Notation (Notacja Obiektowa Języka JavaScript)
+/book/1
+/book/2
+/book/3
+...
 
 ```
 
-Pomimo swojej nazwy, JSON jest obecnie używany przez prawie każdy język programowania, a nie tylko przez JavaScript.
+Zamiast tego Flask pozwala na tworzenie dynamicznych części adresu URL.
 
-Obiekt JSON wygląda następująco:
+Na przykład:
 
-```json
-{
-    "id": 1,
-    "title": "1984",
-    "author": "George Orwell"
-}
+```python
+@app.route('/book/<book_id>')
+def get_book(book_id):
+    return f'Book ID: {book_id}'
 
 ```
 
-JSON przechowuje informacje za pomocą struktury:
+Teraz ta jedna pojedyncza trasa obsłuży dowolne wywołanie:
 
-* Kluczy (`"title"`)
-* Wartości (`"1984"`)
+```text
+/book/1
+/book/15
+/book/42
 
-Możesz o nim myśleć jak o ustrukturyzowanym sposobie organizowania danych.
+```
+
+Flask automatycznie wyciągnie wartość z adresu URL i przekaże ją do funkcji.
 
 ---
 
-## Dlaczego interfejsy API używają formatu JSON
+## Twój pierwszy parametr trasy
 
-Wyobraź sobie, że front-end prosi Twój back-end o informacje na temat danej książki.
+Parametr trasy zapisujemy wewnątrz nawiasów ostrokątnych:
 
-Zwrócenie tekstu w takiej formie:
+```python
+@app.route('/user/<username>')
+def user_profile(username):
+    return f'User: {username}'
+
+```
+
+Jeśli ktoś odwiedzi adres:
 
 ```text
-1984 by George Orwell
+/user/john
 
 ```
 
-może i jest czytelne dla ludzi, ale dla programów komputerowych stanowi duży problem przy próbie automatycznego przetworzenia danych.
-
-Zamiast tego API zwracają dane ustrukturyzowane:
-
-```json
-{
-    "id": 1,
-    "title": "1984",
-    "author": "George Orwell"
-}
-
-```
-
-Teraz aplikacja front-endowa może w prosty sposób odwołać się do konkretnych właściwości:
+Flask przechwyci wartość:
 
 ```text
-title → 1984
-author → George Orwell
+john
 
 ```
 
-Właśnie dlatego JSON stał się powszechnym standardem w komunikacji API.
+i przypisze ją do zmiennej:
+
+```python
+username
+
+```
+
+Odpowiedź serwera będzie brzmieć:
+
+```text
+User: john
+
+```
 
 ---
 
-## Czym jest jsonify()?
+## Jak Flask przekazuje wartości
 
-Flask udostępnia wbudowaną funkcję pomocniczą o nazwie:
-
-```python
-jsonify()
-
-```
-
-Konwertuje ona pythonowe struktury danych (np. słowniki) na format JSON oraz automatycznie ustawia odpowiednie nagłówki HTTP w odpowiedzi serwera.
-
-Zanim jej użyjesz, musisz ją zaimportować:
+Zwróć uwagę, że nazwa parametru musi pojawić się w kodzie dwukrotnie:
 
 ```python
-from flask import jsonify
+@app.route('/user/<username>')
+def user_profile(username):
 
 ```
 
-Bez użycia `jsonify()`, Flask nie wiedziałby, że intencją programisty jest zwrócenie danych w formacie JSON.
-
----
-
-## Zwracanie obiektu JSON
-
-Słownik Pythona (dictionary) można bardzo łatwo przekształcić w format JSON przy użyciu funkcji `jsonify()`.
-
-Przykład:
+Nazwa użyta wewnątrz definicji trasy:
 
 ```python
-from flask import Flask, jsonify
-
-app = Flask(__name__)
-
-@app.route('/api/book')
-def get_book():
-
-    book = {
-        "id": 1,
-        "title": "1984",
-        "author": "George Orwell"
-    }
-
-    return jsonify(book)
+<username>
 
 ```
 
-Gdy użytkownik odwiedzi adres:
+musi być dokładnie taka sama jak nazwa argumentu funkcji:
 
-```text
-/api/book
-
-```
-
-Flask zwróci poprawny obiekt JSON:
-
-```json
-{
-    "id": 1,
-    "title": "1984",
-    "author": "George Orwell"
-}
+```python
+def user_profile(username):
 
 ```
+
+W przeciwnym razie Flask nie będzie wiedział, gdzie umieścić przechwyconą z adresu URL wartość.
 
 ---
 
 ## Wypróbuj sam
 
-Dodaj rok wydania (publication year) do powyższej książki i zwróć zmodyfikowany obiekt jako JSON.
+Utwórz trasę, która przechwytuje nazwę użytkownika (username) i wyświetla ją na ekranie.
 
-Spróbuj napisać kod przed otwarciem rozwiązania.
+Spróbuj napisać ją samodzielnie przed otwarciem rozwiązania.
 
 ```python
-from flask import Flask, jsonify
-
-app = Flask(__name__)
-
-@app.route('/api/book')
-def get_book():
-
-    book = {
-        "id": 1,
-        "title": "1984",
-        "author": "George Orwell",
-        "year": 1949
-    }
-
-    return jsonify(book)
+@app.route('/user/<username>')
+def user_profile(username):
+    return f'User: {username}'
 
 ```
 
 ---
 
-## Zwracanie wielu elementów (list)
+## Konwertery typów (Type converters)
 
-Interfejsy API bardzo często zwracają całe listy danych.
+Domyślnie wszystkie parametry trasy są traktowane przez Flaska jako zwykły tekst (string).
+
+Flask potrafi jednak automatycznie konwertować je na konkretne typy danych Pythona.
 
 Przykład:
 
 ```python
-@app.route('/api/books')
-def get_books():
-
-    books = [
-        {"id": 1, "title": "1984"},
-        {"id": 2, "title": "Brave New World"}
-    ]
-
-    return jsonify(books)
+@app.route('/post/<int:post_id>')
+def show_post(post_id):
+    return f'Post ID: {post_id}'
 
 ```
 
-Taka trasa zwróci następującą tablicę JSON:
+Dzięki temu Flask zaakceptuje wyłącznie liczby całkowite:
 
-```json
-[
-    {
-        "id": 1,
-        "title": "1984"
-    },
-    {
-        "id": 2,
-        "title": "Brave New World"
-    }
-]
+Adres `/post/42` zadziała poprawnie, natomiast adres `/post/hello` zwróci błąd.
 
-```
+### Dostępne konwertery
 
----
-
-## Wypróbuj sam
-
-Dodaj trzecią, dowolną książkę do powyższej listy.
-
-Spróbuj zrobić to sam przed otwarciem rozwiązania.
-
-```python
-@app.route('/api/books')
-def get_books():
-
-    books = [
-        {"id": 1, "title": "1984"},
-        {"id": 2, "title": "Brave New World"},
-        {"id": 3, "title": "Fahrenheit 451"}
-    ]
-
-    return jsonify(books)
-
-```
-
----
-
-## Kody statusu HTTP
-
-Każda odpowiedź z serwera może (i powinna) zawierać kod statusu HTTP.
-
-Przykład:
-
-```python
-return jsonify(book), 200
-
-```
-
-Druga wartość przekazywana w instrukcji `return` informuje klienta, czy żądanie zakończyło się sukcesem, czy błędem.
-
-Popularne kody statusu:
-
-| Kod | Znaczenie |
+| Konwerter | Opis |
 | --- | --- |
-| 200 | Sukces (OK) |
-| 201 | Utworzono zasób (Created) |
-| 400 | Niepoprawne żądanie (Bad request) |
-| 404 | Nie znaleziono (Not found) |
-| 500 | Wewnętrzny błąd serwera (Internal server error) |
+| `<int:id>` | Liczba całkowita (Integer) |
+| `<float:value>` | Liczba zmiennoprzecinkowa (Decimal) |
+| `<string:name>` | Tekst (domyślny format) |
+| `<path:subpath>` | Tekst z uwzględnieniem ukośników (slashes) |
 
 ---
 
-## Zwracanie odpowiedzi z błędami
+## Wypróbuj sam
 
-Informacje o błędach również powinny być zwracane w formacie JSON, aby aplikacja kliencka mogła je łatwo odczytać.
+Co powinno znaleźć się w miejscu wykropkowanym (`_____`), aby trasa przyjmowała tylko liczby?
+
+```python
+@app.route('/post/<_____:post_id>')
+def show_post(post_id):
+    return f'Post ID: {post_id}'
+
+```
+
+```python
+@app.route('/post/<int:post_id>')
+def show_post(post_id):
+    return f'Post ID: {post_id}'
+
+```
+
+---
+
+## Wiele parametrów w jednej trasie
+
+Trasy mogą przechwytywać więcej niż jedną wartość naraz.
 
 Przykład:
 
 ```python
-@app.route('/api/book/<int:book_id>')
+@app.route('/user/<username>/post/<int:post_id>')
+def show_user_post(username, post_id):
+    return f"{username}'s post #{post_id}"
+
+```
+
+Odwiedzenie adresu `/user/john/post/42` przypisze wartości:
+
+```text
+username = john
+post_id = 42
+
+```
+
+i zwróci tekst: „john's post #42”.
+
+---
+
+## Parametry opcjonalne
+
+Czasami chcemy, aby ta sama trasa działała poprawnie zarówno z parametrem, jak i bez niego.
+
+Przykład:
+
+```python
+@app.route('/page')
+@app.route('/page/<int:page_num>')
+def show_page(page_num=1):
+    return f'Page {page_num}'
+
+```
+
+Wejście na adres `/page` zwróci tekst „Page 1”, ponieważ użyta zostanie domyślna wartość argumentu (`page_num=1`).
+
+Wejście na adres `/page/5` zwróci tekst „Page 5”, ponieważ Flask nadpisze argument wartością przekazaną w URL.
+
+---
+
+## Dlaczego walidacja danych wciąż jest ważna
+
+Konwertery typów sprawdzają wyłącznie sam typ przekazywanej zmiennej.
+
+Zapis:
+
+```python
+@app.route('/book/<int:book_id>')
+
+```
+
+gwarantuje jedynie, że `book_id` będzie liczbą całkowitą. Flask nie wie jednak, czy ta liczba ma sens biznesowy w Twojej aplikacji. Użytkownik wciąż może wywołać adresy takie jak `/book/0` lub `/book/-10`.
+
+Musisz samodzielnie zadbać o logiczną walidację wartości wewnątrz funkcji, gdy jest to konieczne:
+
+```python
+@app.route('/book/<int:book_id>')
 def get_book(book_id):
 
-    if book_id > 100:
-        return jsonify({
-            "error": "Book not found"
-        }), 404
+    if book_id < 1:
+        return 'Invalid book ID', 400
 
-    return jsonify({
-        "id": book_id,
-        "title": "Book Title"
-    }), 200
+    return f'Book {book_id}'
 
 ```
-
-Jeśli użytkownik poprosi o książkę, która nie istnieje, API zwróci strukturę JSON:
-
-```json
-{
-    "error": "Book not found"
-}
-
-```
-
-wraz z kodem statusu HTTP `404 Not Found`.
 
 ---
 
-## Dlaczego spójność formatu JSON ma znaczenie
+## Wypróbuj sam
 
-Wyobraź sobie sytuację, w której jedna trasa w Twoim projekcie zwraca:
+Uzupełnij poniższy warunek, aby identyfikatory mniejsze niż 1 były odrzucane z kodem błędu 400.
 
-```json
-{
-    "title": "1984"
-}
+```python
+@app.route('/book/<int:book_id>')
+def get_book(book_id):
 
-```
+    if _______:
+        return 'Invalid book ID', 400
 
-a inna trasa zwraca:
-
-```json
-{
-    "book_title": "1984"
-}
+    return f'Book {book_id}'
 
 ```
 
-Programista tworzący front-end musi teraz pisać skomplikowane warunki, aby obsłużyć oba te formaty.
+```python
+if book_id < 1:
 
-Spójne API jest znacznie łatwiejsze w użyciu, integracji i późniejszym utrzymaniu. Staraj się zachować jednolitą strukturę odpowiedzi w całym swoim projekcie.
+```
 
 ---
 
-## Najlepsze praktyki
+## Znaczenie parametrów trasy
 
-* Zawsze zwracaj dane JSON za pomocą funkcji `jsonify()`
-* Dbaj o to, aby struktura odpowiedzi była prosta i spójna
-* Używaj jasnych i zrozumiałych nazw właściwości (kluczy)
-* Zwracaj odpowiednie kody statusu HTTP
-* Formaty błędów przekazuj również jako obiekty JSON
-* Wysyłaj tylko te dane, których klient faktycznie potrzebuje
+Parametry trasy są fundamentem każdego profesjonalnego interfejsu API.
+
+Przykłady:
+
+```text
+GET    /api/books/1
+GET    /api/books/15
+DELETE /api/books/42
+
+```
+
+Definiując uniwersalną trasę `@app.route('/api/books/<int:book_id>')`, pozwalasz Flaskowi automatycznie obsługiwać i identyfikować żądane zasoby. Bez parametrów tras tworzenie dynamicznych aplikacji internetowych byłoby niesamowicie trudne.
 
 ---
 
@@ -328,62 +299,62 @@ Spójne API jest znacznie łatwiejsze w użyciu, integracji i późniejszym utrz
 
 W tej lekcji dowiedziałeś się:
 
-* Czym jest format JSON
-* Dlaczego nowoczesne API korzystają z JSON-a
-* Do czego służy funkcja `jsonify()` we Flasku
-* Jak zwracać pojedyncze obiekty JSON oraz ich listy
-* Jak poprawnie dołączać kody statusu HTTP do odpowiedzi
-* Jak zwracać czytelne komunikaty o błędach
+* Czym są parametry trasy
+* W jaki sposób Flask przechwytuje dane bezpośrednio z adresów URL
+* Jak poprawnie przekazywać te wartości do funkcji Pythona
+* Do czego służą i jak działają konwertery typów (`int`, `float`, itd.)
+* Jak obsługiwać wiele parametrów w jednej trasie
+* Jak tworzyć elastyczne trasy z parametrami opcjonalnymi
+* Dlaczego dodatkowa walidacja wartości logicznych jest ważna
 
-JSON to podstawowy sposób komunikacji front-endu z serwerem, dlatego pełne zrozumienie tej lekcji jest niezbędne przed przystąpieniem do budowania własnych funkcjonalności API.
+Parametry tras to jeden z najważniejszych elementów budulcowych architektur REST API, ponieważ umożliwiają Twojej aplikacji dynamiczną pracę na określonych, unikalnych zasobach.
 
-W kolejnej lekcji zaczniesz tworzyć trasy API, które będą zwracać realne dane pobrane z Twojej aplikacji.
+W kolejnej lekcji dowiesz się, jak przekazywać dodatkowe, opcjonalne informacje w adresach URL za pomocą tzw. parametrów zapytania (query parameters).
 
 ---
 
 ## Rozwiązywanie problemów (Troubleshooting)
 
-### Błąd: jsonify is not defined
+### Otrzymuję błąd 404 Not Found
 
-Jeśli w konsoli widzisz błąd:
+Upewnij się, że struktura wpisywanego adresu URL dokładnie odpowiada definicji trasy w kodzie.
 
-```text
-NameError: name 'jsonify' is not defined
-
-```
-
-upewnij się, że dodałeś poprawny import na samej górze pliku:
-
-```python
-from flask import jsonify
-
-```
+Jeśli trasa `@app.route('/book/<int:book_id>')` oczekuje liczby całkowitej (integer), wywołanie adresu `/book/10` zadziała, ale wywołanie `/book/hello` zakończy się błędem 404, ponieważ tekst nie pasuje do reguły konwertera `int`.
 
 ---
 
-### Odpowiedź nie jest formatem JSON
+### Parametr nie jest dostępny wewnątrz mojej funkcji
 
-Upewnij się, że w instrukcji zwracania wartości używasz funkcji pomocniczej:
+Upewnij się, że nazwa parametru jest identyczna w obu miejscach:
 
 ```python
-return jsonify(data)
+@app.route('/user/<username>')
+def user_profile(username):
 
 ```
 
-zamiast bezpośredniego:
-
-```python
-return data
-
-```
+Wielkość liter oraz zapis muszą się idealnie pokrywać.
 
 ---
 
-### Moje zmiany nie pojawiają się w przeglądarce
+### Trasa działa, ale wyświetlana wartość jest niepoprawna
+
+Użyj funkcji `print()`, aby sprawdzić, co dokładnie widzi serwer:
+
+```python
+print(book_id)
+
+```
+
+Następnie zweryfikuj w konsoli, czy dane przesyłane w adresie URL pokrywają się z Twoimi oczekiwaniami.
+
+---
+
+### Moje zmiany w kodzie nie są widoczne
 
 Jeśli Flask nie odświeża automatycznie kodu po zapisaniu pliku:
 
-1. Zatrzymaj serwer ręcznie w terminalu:
+1. Wyłącz serwer ręcznie w terminalu:
 
 ```text
 Ctrl + C
@@ -397,15 +368,9 @@ python app.py
 
 ```
 
-Upewnij się również, że masz włączony tryb debugowania w kodzie:
+Upewnij się również, że parametr debugowania jest ustawiony na `True`:
 
 ```python
 app.run(debug=True)
 
 ```
-
----
-
-### Przeglądarka wyświetla surowy tekst JSON
-
-To zupełnie normalne zjawisko. Przeglądarki internetowe domyślnie wyświetlają strukturę JSON jako zwykły tekst. W prawdziwej aplikacji to kod front-endowy odbiera ten niewidoczny dla użytkownika strumień danych i renderuje go w ładny, przyjazny graficznie sposób.

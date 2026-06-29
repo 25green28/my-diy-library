@@ -1,326 +1,297 @@
-# Ritornare dati in formato JSON
+# Parametri di rotta (Route parameters)
 
-Quando si creano delle API, di norma non si restituiscono risposte in formato testo semplice (plain text).
+I parametri di rotta (route parameters) consentono a Flask di catturare valori variabili direttamente dall'URL per poi passarli come argomenti alle tue funzioni Python.
 
-Al contrario, le API restituiscono le informazioni in un formato strutturato chiamato **JSON**.
+Sono elementi fondamentali nello sviluppo delle API perché permettono di interagire con risorse specifiche, come un singolo libro, un utente o un preciso ordine.
 
-Il formato JSON è lo standard globale utilizzato dalle applicazioni moderne per scambiare dati in modo efficiente tra la parte visibile (front-end) e il server (back-end).
+> **Suggerimento:** Non è necessario copiare tutti gli esempi di questo capitolo all'interno del tuo file `app.py`. Servono esclusivamente a farti comprendere la logica di funzionamento dei parametri di rotta.
 
-> **Suggerimento:** Non è necessario copiare tutti gli esempi di questo capitolo all'interno del tuo file `app.py`. Questi esempi servono unicamente a farti comprendere la logica di funzionamento delle risposte JSON.
+## Perché abbiamo bisogno dei parametri di rotta?
 
-## Cos'è il JSON?
+Immagina di voler sviluppare un'API per la gestione di una libreria.
 
-JSON è l'acronimo di:
+Un utente potrebbe voler visualizzare:
+* Il libro con ID 1
+* Il libro con ID 15
+* Il libro con ID 42
+
+Creare una rotta statica separata per ogni singolo libro presente nel sistema diventerebbe rapidamente impossibile:
 
 ```text
-JavaScript Object Notation (Notazione Oggettiva di JavaScript)
+/book/1
+/book/2
+/book/3
+...
 
 ```
 
-Nonostante il nome richiami esplicitamente il linguaggio JavaScript, il JSON è un formato indipendente utilizzato da quasi tutti i linguaggi di programmazione esistenti.
+Per evitare questo problema, Flask permette di rendere dinamica una parte dell'URL.
 
-Un oggetto JSON si presenta così:
+Ad esempio:
 
-```json
-{
-    "id": 1,
-    "title": "1984",
-    "author": "George Orwell"
-}
+```python
+@app.route('/book/<book_id>')
+def get_book(book_id):
+    return f'Book ID: {book_id}'
 
 ```
 
-Il JSON organizza e memorizza le informazioni combinando:
+Adesso, questa singola rotta è in grado di gestire autonomamente chiamate diverse come:
 
-* Chiavi (`"title"`)
-* Valori (`"1984"`)
+```text
+/book/1
+/book/15
+/book/42
 
-Puoi vederlo come un modo pulito e rigoroso di strutturare le informazioni.
+```
+
+Flask estrae il valore dinamico dall'URL e lo passa direttamente alla funzione associata.
 
 ---
 
-## Perché le API usano il formato JSON
+## Il tuo primo parametro di rotta
 
-Immagina che il front-end richieda al tuo server backend i dettagli relativi a un libro.
+Un parametro di rotta viene definito inserendo il nome tra parentesi angolari:
 
-Restituire una stringa di testo del genere:
+```python
+@app.route('/user/<username>')
+def user_profile(username):
+    return f'User: {username}'
+
+```
+
+Se un utente naviga all'indirizzo:
 
 ```text
-1984 by George Orwell
+/user/john
 
 ```
 
-può risultare facilmente leggibile per un essere umano, ma diventa estremamente difficile da interpretare ed elaborare per un software in modo automatizzato.
-
-Le API risolvono questo problema restituendo dati strutturati:
-
-```json
-{
-    "id": 1,
-    "title": "1984",
-    "author": "George Orwell"
-}
-
-```
-
-In questo modo, il codice del front-end può accedere istantaneamente alle singole proprietà:
+Flask cattura la stringa:
 
 ```text
-title → 1984
-author → George Orwell
+john
 
 ```
 
-Ecco perché il JSON è diventato lo standard assoluto per le risposte delle API web.
+e la assegna alla variabile:
+
+```python
+username
+
+```
+
+Di conseguenza, la risposta restituita sarà:
+
+```text
+User: john
+
+```
 
 ---
 
-## Cos'è jsonify()?
+## Come Flask assegna il valore
 
-Flask mette a disposizione una funzione di supporto nativa chiamata:
-
-```python
-jsonify()
-
-```
-
-Questa funzione ha il compito di convertire le strutture dati di Python (come i dizionari) in stringhe JSON formattate correttamente, impostando in automatico anche i corretti header di risposta HTTP.
-
-Prima di poterla richiamare nel codice, è necessario importarla:
+Fai attenzione a un dettaglio: il nome del parametro deve comparire esattamente due volte:
 
 ```python
-from flask import jsonify
+@app.route('/user/<username>')
+def user_profile(username):
 
 ```
 
-Senza l'utilizzo di `jsonify()`, Flask non sarebbe in grado di capire che la tua intenzione è inviare al client dei dati in formato JSON.
-
----
-
-## Restituire un oggetto JSON
-
-Un dizionario Python (dictionary) può essere convertito istantaneamente in JSON tramite la funzione `jsonify()`.
-
-Esempio:
+Il nome specificato nella rotta:
 
 ```python
-from flask import Flask, jsonify
-
-app = Flask(__name__)
-
-@app.route('/api/book')
-def get_book():
-
-    book = {
-        "id": 1,
-        "title": "1984",
-        "author": "George Orwell"
-    }
-
-    return jsonify(book)
+<username>
 
 ```
 
-Quando un utente naviga all'indirizzo:
+deve coincidere perfettamente con il nome dell'argomento della funzione:
 
-```text
-/api/book
-
-```
-
-Il server Flask risponderà con il seguente oggetto:
-
-```json
-{
-    "id": 1,
-    "title": "1984",
-    "author": "George Orwell"
-}
+```python
+def user_profile(username):
 
 ```
+
+In caso contrario, Flask non saprà dove inserire il valore recuperato dall'URL.
 
 ---
 
 ## Mettiti alla prova
 
-Aggiungi l'anno di pubblicazione (publication year) al dizionario del libro e restituisci l'oggetto aggiornato in formato JSON.
+Crea una rotta che catturi un nome utente (username) e lo mostri a schermo.
 
-Prova a scrivere il codice prima di consultare la soluzione.
+Prova a scriverla da solo prima di visualizzare la soluzione.
 
 ```python
-from flask import Flask, jsonify
-
-app = Flask(__name__)
-
-@app.route('/api/book')
-def get_book():
-
-    book = {
-        "id": 1,
-        "title": "1984",
-        "author": "George Orwell",
-        "year": 1949
-    }
-
-    return jsonify(book)
+@app.route('/user/<username>')
+def user_profile(username):
+    return f'User: {username}'
 
 ```
 
 ---
 
-## Restituire liste di elementi (Array)
+## Convertitori di tipo (Type converters)
 
-Molto spesso le API devono restituire interi elenchi di dati correlati.
+Di default, tutti i parametri di rotta estratti vengono trattati da Flask come stringhe di testo semplici.
+
+Tuttavia, Flask offre la possibilità di convertirli automaticamente in tipi di dato Python specifici.
 
 Esempio:
 
 ```python
-@app.route('/api/books')
-def get_books():
-
-    books = [
-        {"id": 1, "title": "1984"},
-        {"id": 2, "title": "Brave New World"}
-    ]
-
-    return jsonify(books)
+@app.route('/post/<int:post_id>')
+def show_post(post_id):
+    return f'Post ID: {post_id}'
 
 ```
 
-La chiamata a questa rotta produrrà un array JSON:
+Configurato così, Flask accetterà esclusivamente valori numerici interi:
 
-```json
-[
-    {
-        "id": 1,
-        "title": "1984"
-    },
-    {
-        "id": 2,
-        "title": "Brave New World"
-    }
-]
+L'indirizzo `/post/42` funzionerà correttamente, mentre l'indirizzo `/post/hello` restituirà un errore.
 
-```
+### Convertitori disponibili
 
----
-
-## Mettiti alla prova
-
-Inserisci un terzo libro a tua scelta all'interno della lista precedente.
-
-Prova a farlo da solo prima di guardare la soluzione ufficiale.
-
-```python
-@app.route('/api/books')
-def get_books():
-
-    books = [
-        {"id": 1, "title": "1984"},
-        {"id": 2, "title": "Brave New World"},
-        {"id": 3, "title": "Fahrenheit 451"}
-    ]
-
-    return jsonify(books)
-
-```
-
----
-
-## Codici di stato HTTP
-
-Ogni singola risposta inviata dal server può includere un codice di stato HTTP numerico.
-
-Esempio:
-
-```python
-return jsonify(book), 200
-
-```
-
-Il secondo valore inserito dopo la virgola comunica esplicitamente al client se la richiesta è andata a buon fine o meno.
-
-I codici di stato più utilizzati:
-
-| Codice | Significato |
+| Convertitore | Descrizione |
 | --- | --- |
-| 200 | Successo (OK) |
-| 201 | Risorsa Creatta (Created) |
-| 400 | Richiesta Errata (Bad request) |
-| 404 | Non Trovato (Not found) |
-| 500 | Errore Interno del Server (Internal server error) |
+| `<int:id>` | Numero intero (Integer) |
+| `<float:value>` | Numero decimale (Float) |
+| `<string:name>` | Testo semplice (comportamento di default) |
+| `<path:subpath>` | Testo che può includere anche gli slash (`/`) |
 
 ---
 
-## Restituire risposte di errore
+## Mettiti alla prova
 
-Anche le segnalazioni di errore devono essere inviate strutturandole in formato JSON, così che il client possa gestirle.
+Cosa dovresti inserire al posto dello spazio vuoto (`_____`) per fare in modo che la rotta accetti solo numeri interi?
+
+```python
+@app.route('/post/<_____:post_id>')
+def show_post(post_id):
+    return f'Post ID: {post_id}'
+
+```
+
+```python
+@app.route('/post/<int:post_id>')
+def show_post(post_id):
+    return f'Post ID: {post_id}'
+
+```
+
+---
+
+## Parametri multipli
+
+Le rotte possono catturare più di un valore dinamico contemporaneamente all'interno dello stesso URL.
 
 Esempio:
 
 ```python
-@app.route('/api/book/<int:book_id>')
+@app.route('/user/<username>/post/<int:post_id>')
+def show_user_post(username, post_id):
+    return f"{username}'s post #{post_id}"
+
+```
+
+Navigando all'indirizzo `/user/john/post/42`, Flask assegnerà le seguenti variabili:
+
+```text
+username = john
+post_id = 42
+
+```
+
+restituendo in output il testo: "john's post #42".
+
+---
+
+## Parametri opzionali
+
+In alcuni casi, potresti volere che una rotta risponda correttamente sia quando il parametro viene inserito, sia quando viene omesso.
+
+Esempio:
+
+```python
+@app.route('/page')
+@app.route('/page/<int:page_num>')
+def show_page(page_num=1):
+    return f'Page {page_num}'
+
+```
+
+Se visiti l'indirizzo `/page`, l'output sarà "Page 1" poiché verrà applicato il valore di default inserito nella funzione (`page_num=1`).
+
+Se visiti l'indirizzo `/page/5`, l'output sarà "Page 5" perché Flask sovrascriverà l'argomento con il valore presente nell'URL.
+
+---
+
+## Perché la convalida dei dati rimane importante
+
+I convertitori di tipo si occupano esclusivamente di verificare la natura del dato (ad esempio, che sia un numero).
+
+Un costrutto come:
+
+```python
+@app.route('/book/<int:book_id>')
+
+```
+
+garantisce solo che `book_id` sia un intero. Flask non può sapere se quel numero sia valido o logico all'interno del contesto della tua applicazione. Un utente malizioso o distratto potrebbe comunque inviare richieste agli indirizzi `/book/0` o `/book/-10`.
+
+È fondamentale implementare una logica di convalida manuale all'interno della funzione quando necessario:
+
+```python
+@app.route('/book/<int:book_id>')
 def get_book(book_id):
 
-    if book_id > 100:
-        return jsonify({
-            "error": "Book not found"
-        }), 404
+    if book_id < 1:
+        return 'Invalid book ID', 400
 
-    return jsonify({
-        "id": book_id,
-        "title": "Book Title"
-    }), 200
+    return f'Book {book_id}'
 
 ```
-
-Se un utente richiede un libro con un ID inesistente, l'API risponderà con il JSON:
-
-```json
-{
-    "error": "Book not found"
-}
-
-```
-
-unito al codice di stato HTTP `404 Not Found`.
 
 ---
 
-## L'importanza di un JSON coerente
+## Mettiti alla prova
 
-Immagina lo scenario in cui una rotta del tuo progetto restituisca:
+Completa la condizione logica sottostante in modo da rifiutare tutti gli ID inferiori a 1 con un codice di errore 400.
 
-```json
-{
-    "title": "1984"
-}
+```python
+@app.route('/book/<int:book_id>')
+def get_book(book_id):
 
-```
+    if _______:
+        return 'Invalid book ID', 400
 
-e un'altra rotta restituisca invece:
-
-```json
-{
-    "book_title": "1984"
-}
+    return f'Book {book_id}'
 
 ```
 
-Chi sviluppa il front-end sarà costretto a implementare logiche extra per gestire queste differenze di nomenclatura.
+```python
+if book_id < 1:
 
-Un'API coerente è molto più semplice da usare, integrare e mantenere nel tempo. Cerca di mantenere sempre la stessa struttura di chiavi per tutta la durata del tuo progetto.
+```
 
 ---
 
-## Best practices
+## L'importanza dei parametri di rotta nelle API reali
 
-* Restituisci sempre i dati in formato JSON avvalendoti di `jsonify()`
-* Mantieni la struttura delle risposte il più semplice e coerente possibile
-* Utilizza nomi di proprietà (chiavi) chiari e autoesplicativi
-* Associa sempre il corretto codice di stato HTTP alle risposte
-* Gestisci anche i messaggi di errore inviandoli in formato JSON
-* Invia esclusivamente i dati strettamente necessari al client
+I parametri di rotta sono i pilastri strutturali su cui si poggiano le API REST nel mondo reale.
+
+Esempi di chiamate standard:
+
+```text
+GET    /api/books/1
+GET    /api/books/15
+DELETE /api/books/42
+
+```
+
+Dichiarando una rotta generica `@app.route('/api/books/<int:book_id>')`, Flask è in grado di identificare e servire le risorse in modo completamente automatizzato. Senza i parametri di rotta, strutturare architetture web dinamiche risulterebbe estremamente complesso.
 
 ---
 
@@ -328,84 +299,78 @@ Un'API coerente è molto più semplice da usare, integrare e mantenere nel tempo
 
 In questa lezione hai appreso:
 
-* Cos'è e come si presenta il formato JSON
-* Per quale motivo le API moderne scelgono il JSON
-* Qual è il ruolo della funzione `jsonify()` in Flask
-* Come inviare oggetti JSON singoli o liste di elementi
-* Come configurare i codici di stato HTTP nelle risposte
-* Come strutturare le risposte in caso di errore del server
+* Cosa sono i parametri di rotta
+* In che modo Flask estrae i valori dinamici dagli URL
+* Come mappare correttamente i parametri all'interno delle funzioni Python
+* Come forzare la conversione dei tipi di dato (`int`, `float`, ecc.)
+* Come gestire più parametri all'interno dello stesso URL
+* Come definire rotte flessibili con parametri opzionali
+* Perché è importante aggiungere una convalida logica ai valori numerici
 
-Il formato JSON rappresenta il pilastro della comunicazione tra front-end e back-end, di conseguenza comprenderne l'utilizzo è un requisito essenziale prima di iniziare a scrivere i tuoi endpoint.
+I parametri di rotta sono i mattoni fondamentali delle API REST poiché consentono alla tua applicazione di puntare e manipolare specifiche risorse in modo dinamico.
 
-Nel prossimo capitolo inizierai a implementare le rotte API che interagiranno direttamente con i dati reali della tua applicazione.
+Nel prossimo capitolo imparerai come leggere ulteriori informazioni opzionali fornite all'interno degli URL mediante i parametri di query (query parameters).
 
 ---
 
 ## Risoluzione dei problemi (Troubleshooting)
 
-### Errore: jsonify is not defined
+### Ricevo un errore 404 Not Found
 
-Se sul terminale compare l'errore:
+Assicurati che la struttura dell'URL digitato nel client corrisponda esattamente alla rotta definita nel codice.
 
-```text
-NameError: name 'jsonify' is not defined
-
-```
-
-verifica di aver inserito correttamente la riga di importazione in cima al file:
-
-```python
-from flask import jsonify
-
-```
+Se la tua rotta `@app.route('/book/<int:book_id>')` richiede esplicitamente un valore numerico intero, l'URL `/book/10` funzionerà correttamente, mentre `/book/hello` fallirà restituendo un errore 404 perché la stringa non soddisfa i vincoli del convertitore `int`.
 
 ---
 
-### La risposta non è in formato JSON
+### Il parametro non risulta accessibile all'interno della funzione
 
-Assicurati di aver inserito la chiamata alla funzione di supporto nella riga del return:
+Verifica accuratamente che il nome del parametro coincida in entrambi i punti:
 
 ```python
-return jsonify(data)
+@app.route('/user/<username>')
+def user_profile(username):
 
 ```
 
-invece di scrivere semplicemente:
-
-```python
-return data
-
-```
+La nomenclatura e la distinzione tra maiuscole e minuscole devono corrispondere al 100%.
 
 ---
 
-### Le modifiche apportate non si aggiornano
+### La rotta risponde, ma il valore visualizzato è errato
 
-Se vedi che Flask non applica le modifiche in tempo reale dopo il salvataggio del file:
+Inserisci una riga di controllo per stampare sul terminale il valore catturato:
 
-1. Arresta manualmente il server dal terminale premendo:
+```python
+print(book_id)
+
+```
+
+In questo modo potrai verificare nella console del server se i dati estratti dall'URL corrispondono a quelli attesi.
+
+---
+
+### Le modifiche applicate al codice non si aggiornano
+
+Se noti que Flask non ricarica automaticamente lo script dopo il salvataggio:
+
+1. Arresta manualmente il processo dal terminale premendo:
 
 ```text
 Ctrl + C
 
 ```
 
-2. Avvia nuovamente lo script:
+2. Riavvia il server:
 
 ```bash
 python app.py
 
 ```
 
-Assicurati inoltre che il debug sia configurato su True:
+Controlla inoltre che la modalità di debug sia attiva nel file:
 
 ```python
 app.run(debug=True)
 
 ```
-
----
-
-### Il browser mostra il codice JSON come testo semplice
-
-Questo comportamento è del tutto normale. I browser web mostrano nativamente il JSON come testo statico non formattato. In un'applicazione reale, è proprio il codice del front-end a catturare questo flusso di dati invisibile all'utente finale per poi impaginarlo all'interno di una veste grafica moderna e piacevole.
